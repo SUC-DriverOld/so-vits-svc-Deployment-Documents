@@ -472,7 +472,7 @@ spk_list = ['Sucial']  # 这里是说话人的名字，之前准备训练样本�
 slice_db = -40  # 默认-40，嘈杂的音频可以-30，干声保留呼吸可以-50
 wav_format = 'wav'  # 音频输出格式
 ```
-- 如果下一步推理生成时出现错误，请尝试以下修改：(感谢kahotv提供建议)
+- 如果下一步推理生成时出现错误，请尝试以下修改：(感谢kahotv提供建议) [详细信息](https://github.com/SUC-DriverOld/so-vits-svc-Chinese-Detaild-Documents/issues/1)
 
 ```shell
 //inference_main.py line35 第35行，
