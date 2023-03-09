@@ -475,9 +475,9 @@ wav_format = 'wav'  # 音频输出格式
 - 如果下一步推理生成时出现错误，请尝试以下修改：(感谢kahotv提供建议) [详细信息](https://github.com/SUC-DriverOld/so-vits-svc-Chinese-Detaild-Documents/issues/1)
 
 ```shell
-//inference_main.py line35 第35行，
+#inference_main.py line35 第35行，
 wav_path = Path(raw_audio_path).with_suffix('.wav')
-//改为
+#改为
 wav_path = str(Path(raw_audio_path).with_suffix('.wav'))
 ```
 
