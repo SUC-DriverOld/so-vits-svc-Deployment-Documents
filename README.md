@@ -176,6 +176,8 @@ libavcodec     58.100.100 / 58.100.100
 > **G与D预训练模型**
 > <https://huggingface.co/innnky/sovits_pretrained/resolve/main/G_0.pth>
 > <https://huggingface.co/innnky/sovits_pretrained/resolve/main/D_0.pth>
+> **上述三个底模如果原链接下载不了请点击下方的链接**
+> <https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo> 提取码：80eo
 
 - ```hubert-soft-0d54a1f4.pt```放入```.\hubert```文件夹
 - ```D_0.pth和G_0.pth```文件放入```.\logs\32k```文件夹
