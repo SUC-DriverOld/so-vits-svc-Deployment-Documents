@@ -1,6 +1,6 @@
 # SO-VITS-SVC详细安装、训练、推理使用步骤
 
-本帮助文档为项目 [so-vits-svc](https://github.com/innnky/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/innnky/so-vits-svc#readme)文档
+本帮助文档为项目 [so-vits-svc](https://github.com/MaxMax2016/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/MaxMax2016/so-vits-svc#readme)文档
 撰写：Sucial [点击跳转B站主页](https://space.bilibili.com/445022409)
 
 ----
@@ -501,6 +501,6 @@ wav_path = str(Path(raw_audio_path).with_suffix('.wav'))
 ## 5. 感谢名单
 >
 > - **以下是对本文档的撰写有帮助的感谢名单：**
-> so-vits-svc [官方源代码和帮助文档](https://github.com/innnky/so-vits-svc)
+> so-vits-svc [官方源代码和帮助文档](https://github.com/MaxMax2016/so-vits-svc)
 > B站up主inifnite_loop [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) [相关专栏](https://www.bilibili.com/read/cv21425662)
 > 所有提供训练音频样本的人员
