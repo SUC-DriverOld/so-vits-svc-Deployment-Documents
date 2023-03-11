@@ -159,11 +159,7 @@ libavcodec     58.100.100 / 58.100.100
 
 ### - 下载项目源码
 
-- 前往 [so-vits-svc](https://github.com/innnky/so-vits-svc) 选择```32k```分支（本教程针对```32k```）下载源代码。安装了git的可直接git以下地址
-
-```shell
-    git@github.com:innnky/so-vits-svc.git
-```
+- 前往 [so-vits-svc](https://github.com/MaxMax2016/so-vits-svc) 选择```32k```分支（本教程针对```32k```）下载源代码。安装了git的可直接git以下地址
 
 - 解压到任意文件夹
 
