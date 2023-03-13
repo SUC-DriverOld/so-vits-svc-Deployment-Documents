@@ -1,11 +1,11 @@
-# SO-VITS-SVC详细安装、训练、推理使用步骤
+# SO-VITS-SVC3.0详细安装、训练、推理使用步骤
 
 ## 2023-3-12文档更新说明：
 ## 由于特殊原因，本项目文档将停止更新，详情请见原作者首页，感谢各位的支持！
 
 ----
 
-本帮助文档为项目 [so-vits-svc](https://github.com/MaxMax2016/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/MaxMax2016/so-vits-svc#readme)文档
+本帮助文档为项目 [so-vits-svc3.0](https://github.com/MaxMax2016/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/MaxMax2016/so-vits-svc#readme)文档
 撰写：Sucial [点击跳转B站主页](https://space.bilibili.com/445022409)
 
 ## 1. 环境依赖
