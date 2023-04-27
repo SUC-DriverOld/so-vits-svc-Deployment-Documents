@@ -1,3 +1,511 @@
+# SO-VITS-SVC4.0详细安装、训练、推理使用步骤
+
+本帮助文档为项目 [so-vits-svc4.0](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
+撰写：Sucial [点击跳转B站主页](https://space.bilibili.com/445022409)
+**写在开头：与3.0版本相比，4.0版本的安装、训练、推理操作更为简单**
+
+----
+
+## 1. 环境依赖
+
+> - **本项目需要的环境：**
+>   NVIDIA-CUDA
+>   Python <= 3.10
+>   Pytorch
+>   FFmpeg
+
+### - Cuda
+
+- 在cmd控制台里输入```nvidia-smi.exe```以查看显卡驱动版本和对应的cuda版本
+
+- 前往 [NVIDIA-Developer](https://developer.nvidia.com/) 官网下载与系统**对应**的Cuda版本
+  以```Cuda-11.7```版本为例（**注：本文下述所有配置均在```Cuda-11.7```下演示**）[Cuda11.7下载地址](https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local) 根据自己的系统和需求选择安装（一般本地Windows用户请依次选择```Windows```, ```x86_64```, ```系统版本```, ```exe(local)```）
+
+- 安装成功之后在cmd控制台中输入```nvcc -V```, 出现类似以下内容则安装成功：
+
+```shell
+    nvcc: NVIDIA (R) Cuda compiler driver
+    Copyright (c) 2005-2022 NVIDIA Corporation
+    Built on Tue_May__3_19:00:59_Pacific_Daylight_Time_2022
+    Cuda compilation tools, release 11.7, V11.7.64
+    Build cuda_11.7.r11.7/compiler.31294372_0
+```
+
+#### **特别注意！**
+
+- 目前为止pytorch最高支持到```cuda11.7```
+- 如果您在上述第一步中查看到自己的Cuda版本>11.7，请依然选择11.7进行下载安装（Cuda有版本兼容性）并且安装完成后再次在cmd输入```nvidia-smi.exe```并不会出现cuda版本变化，即任然显示的是>11,7的版本
+- **Cuda的卸载方法：**打开控制面板-程序-卸载程序，将带有```NVIDIA CUDA```的程序全部卸载即可（一共5个）
+
+### - Python
+
+- 前往 [Python官网](https://www.python.org/) 下载Python，版本需要低于3.10（详细安装方法以及添加Path此处省略，网上随便一查都有）
+- 安装完成后在cmd控制台中输入```python```出现类似以下内容则安装成功：
+
+```shell
+    Python 3.10.4 (tags/v3.10.4:9d38120, Mar 23 2022, 23:13:41) [MSC v.1929 64 bit (AMD64)] on win32
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> 
+```
+
+- 配置python下载镜像源（有国外网络条件可跳过）
+  在cmd控制台依次执行
+
+```shell
+    # 设置清华大学下载镜像
+    pip config set global.index-url http://pypi.tuna.tsinghua.edu.cn/simple
+    pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn
+```
+
+#### 安装依赖库
+
+- 在任意位置新建名为```requirements.txt```的文本文件，输入以下内容保存
+
+```shell
+    Flask==2.1.2
+    Flask_Cors==3.0.10
+    gradio==3.4.1
+    numpy==1.23.5
+    playsound==1.3.0
+    PyAudio==0.2.12
+    pydub==0.25.1
+    pyworld==0.3.2
+    requests==2.28.1
+    scipy==1.10.0
+    sounddevice==0.4.5
+    SoundFile==0.10.3.post1
+    starlette==0.19.1
+    tqdm==4.63.0
+    scikit-maad
+    praat-parselmouth
+    tensorboard
+    librosa
+    fairseq
+```
+
+- 在该文本文件所处文件夹内右击空白处选择 **在终端中打开** 并执行下面命令以安装库（若出现报错请尝试用```pip install [库名称]```重新单独安装直至成功）
+
+```shell
+    pip install -r requirements.txt
+```
+
+- 接下来我们需要**单独安装**```torch```, ```torchaudio```, ```torchvision```这三个库，下面提供两种方法
+
+#### 方法1（便捷但不建议，因为我在测试这种方法过程中发现有问题，对后续配置AI有影响
+
+> 直接前往 [Pytorch官网](https://pytorch.org/get-started/locally/) 选择所需版本然后复制Run this Command栏显示的命令至cmd安装（不建议）
+
+#### 方法2（较慢但稳定，建议）
+
+- **前往该地址使用```Ctrl+F```搜索直接下载whl包** [点击前往](https://download.pytorch.org/whl/)
+  
+  > - 这个项目需要的是
+  >   ```torch==1.10.0+cu113```
+  >   ```torchaudio==0.10.0+cu113```
+  >   ```1.10.0``` 和   ```0.10.0```表示是```pytorch```版本，```cu113```表示```cuda```版本```11.3```
+  >   以此类推，请选择**适合自己的版本**安装
+
+- **下面我将以```Cuda11.7```版本为例**
+  ***--示例开始--***
+  
+  > - 我们需要安装以下三个库
+  > 1. [torch-1.13.0+cu117-cp310-cp310-win_amd64.whl](https://download.pytorch.org/whl/cu117/torch-1.13.0%2Bcu117-cp310-cp310-win_amd64.whl) 其中cp310指```python3.10```, ```win-amd64```表示windows 64位操作系统
+  > 2. [torchaudio-0.13.0+cu117-cp310-cp310-win_amd64.whl](https://download.pytorch.org/whl/cu117/torchaudio-0.13.0%2Bcu117-cp310-cp310-win_amd64.whl)
+  > 3. [torchvision-0.14.0+cu117-cp310-cp310-win_amd64.whl](https://download.pytorch.org/whl/cu117/torchvision-0.14.0%2Bcu117-cp310-cp310-win_amd64.whl)
+
+- 下载完成后进入进入下载的whl文件的目录，在所处文件夹内右击空白处选择 **在终端中打开** 并执行下面命令以安装库
+
+```shell
+    pip install .\torch-1.13.0+cu117-cp310-cp310-win_amd64.whl
+    # 回车运行(安装时间较长)
+    pip install .\torchaudio-0.13.0+cu117-cp310-cp310-win_amd64.whl
+    # 回车运行
+    pip install .\torchvision-0.14.0+cu117-cp310-cp310-win_amd64.whl 
+    # 回车运行
+```
+
+- 务必在出现```Successfully installed ...```之后再执行下一条命令，第一个torch包安装时间较长
+  ***--示例结束--***
+
+安装完```torch```, ```torchaudio```, ```torchvision```这三个库之后，在cmd控制台运用以下命令检测cuda与torch版本是否匹配
+
+```shell
+    python
+    # 回车运行
+    import torch
+    # 回车运行
+    print(torch.__version__)
+    # 回车运行
+    print(torch.cuda.is_available())
+    # 回车运行
+```
+
+- 最后一行出现```True```则成功，出现```False```则失败，需要重新安装
+
+### - FFmpeg
+
+- 前往 [FFmpeg官网](https://ffmpeg.org/) 下载。解压至任意位置并在高级系统设置-环境变量中添加Path定位至```.\ffmpeg\bin```（详细安装方法以及添加Path此处省略，网上随便一查都有）
+- 安装完成后在cmd控制台中输入```ffmpeg -version```出现类似以下内容则安装成功
+
+```shell
+ffmpeg version git-2020-08-12-bb59bdb Copyright (c) 2000-2020 the FFmpeg developers
+built with gcc 10.2.1 (GCC) 20200805
+configuration: [此处省略一大堆内容]
+libavutil      56. 58.100 / 56. 58.100
+libavcodec     58.100.100 / 58.100.100
+...
+```
+
+## 2. 预训练AI
+
+### - 下载项目源码
+
+- 前往 [so-vits-svc4.0](https://github.com/svc-develop-team/so-vits-svc) 下载源代码。
+  你也可以根据需要下载以下两个：
+  改善了交互的一个分支推荐：[34j/so-vits-svc-fork](https://github.com/34j/so-vits-svc-fork)
+  支持实时转换的一个客户端：[w-okada/voice-changer](https://github.com/w-okada/voice-changer)
+
+- 解压到任意文件夹
+
+### - 下载预训练模型
+
+- 这部分官方文档写得很详细，我这边直接引用
+
+#### **必须项**
+
+- contentvec ：[checkpoint_best_legacy_500.pt](https://ibm.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr)
+- 放在`hubert`目录下
+
+```shell
+# contentvec
+http://obs.cstcloud.cn/share/obs/sankagenkeshi/checkpoint_best_legacy_500.pt
+# 也可手动下载放在hubert目录
+```
+
+#### **可选项(强烈建议使用)**
+
+- 预训练底模文件： `G_0.pth` `D_0.pth`
+- 放在`logs/44k`目录下
+  **从svc-develop-team(待定)或任何其他地方获取**
+
+虽然底模一般不会引起什么版权问题，但还是请注意一下，比如事先询问作者，又或者作者在模型描述中明确写明了可行的用途
+
+### - 准备训练样本
+
+> 准备的训练数据，建议60-100条语音(**格式务必为wav，不同的说话人建立不同的文件夹**)，每条语音控制在**4-8秒！**（确保语音不要有噪音或尽量降低噪音，一个文件夹内语音必须是一个人说的），可以训练出效果不错的模型。
+
+长音频可以使用辅助音频自动切片软件进行大量切片 [audio-slicer](https://github.com/openvpi/audio-slicer)
+
+- 将语音连带文件夹（有多个人就多个文件夹）一起放入```.\dataset_raw```文件夹里，文件结构类似如下：
+
+```shell
+dataset_raw
+├───speaker0
+│   ├───xxx1-xxx1.wav
+│   ├───...
+│   └───Lxx-0xx8.wav
+└───speaker1
+    ├───xx2-0xxx2.wav
+    ├───...
+    └───xxx7-xxx007.wav
+```
+
+- 此外还需要在```.\dataset_raw```文件夹内新建并编辑```config.json```，代码如下：
+
+```shell
+"n_speakers": 10    //修改数字为说话人的人数
+"spk":{
+    "speaker0": 0,  //修改speaker0为第一个说话人的名字，需要和文件夹名字一样，后面的: 0, 不需要改
+    "speaker1": 1,  //以此类推
+    "speaker2": 2,
+    //以此类推
+}
+```
+
+### - 样本预处理
+
+#### 下面的所有步骤若出现报错请多次尝试，若一直报错就是第一部分环境依赖没有装到位，可以根据报错内容重新安装对应的库。（一般如果正确安装了的话出现报错请多次尝试或者关机重启，肯定可以解决报错的。）
+
+#### 1. 重采样
+
+- 在```so-vits-svc```文件夹内运行终端，直接执行：
+
+```shell
+    python resample.py
+```
+
+- 成功运行后，在```.\dataset\32k```文件夹中会有说话人的wav语音。
+
+#### 2. 自动划分训练集，验证集，测试集，自动生成配置文件
+
+- 在```so-vits-svc```文件夹内运行终端，直接执行：
+
+```shell
+    python preprocess_flist_config.py
+```
+
+- 出现类似以下内容则处理成功：
+
+```shell
+PS E:\vs\so-vits-svc> python preprocess_flist_config.py
+100%|████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:00<00:00, 1993.49it/s]
+Writing ./filelists/train.txt
+100%|████████████████████████████████████████████████████████████████████████████████████████████| 16/16 [00:00<?, ?it/s]
+Writing ./filelists/val.txt
+100%|████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<?, ?it/s]
+Writing ./filelists/test.txt
+100%|████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [00:00<?, ?it/s]
+Writing configs/config.json
+```
+
+#### 3. 生成hubert和f0
+
+- 在```so-vits-svc```文件夹内运行终端，直接执行：
+
+```shell
+    python preprocess_hubert_f0.py
+```
+
+- 出现类似以下内容则处理成功：（我这里演示时只用了20条音频）
+
+```shell
+PS E:\vs\so-vits-svc-32k> python preprocess_hubert_f0.py
+Loading hubert for content...
+Loaded hubert.
+100%|██████████████████████████████████████████████████████████████████████████████████| 20/20 [00:06<00:00,  3.03it/s]
+```
+
+- 执行完以上步骤后 dataset 目录便是预处理完成的数据，可以删除 dataset_raw 文件夹了
+
+#### 4. 修改配置文件（必须）
+
+- 打开上面第二步过程中生成的配置文件```.\configs\config.json```修改第```13```行代码```"batch_size"```的数值。这边解释一下```"batch_size": 12,```数值12要根据自己电脑的显存（任务管理器-GPU- **专用**GPU内存）来调整
+  
+  > - **修改建议**
+  >   6G显存 建议修改成2-3
+  >   8G显存 建议修改成4-6
+  >   "batch_size"参数调小可以解决显存不够的问题
+
+## 3. 开始训练
+
+- 在```so-vits-svc```文件夹内运行终端，直接执行下面命令开始训练
+  **注意：开始训练前建议重启一下电脑清理内存和显存，并且关闭后台游戏，动态壁纸等等软件，最好只留一个cmd窗口**
+
+```shell
+    python train.py -c configs/config.json -m 44k
+```
+
+- 出现以下报错就是显存不够了
+
+```shell
+torch.cuda.OutOfMemoryError: CUDA out of menory. Tried to allocate 16.80 MiB (GPU 0; 8.0 GiB total capacity; 7.11 Gi8 already allocated; 0 bytes free; 7.30 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation. See documentation for Memory Management and PYTORCH_cUDA_ALLOC_CONF
+# 注意：一定是 0 bytes free < Tried to allocate 16.80 MiB 才是显存不足，不然就是别的问题
+```
+
+- **这边报错可能会比较多，如果出现报错先尝试重新执行```python train.py -c configs/config.json -m 32k```，多重试几遍，或者关机重启，一般是会成功的。如果报错一直是同一个报错，那就是对应的那里出问题了（要靠报错找问题所在）**
+- 成功执行以后应该是类似如下内容：
+
+```shell
+2023-04-01 17:02:21,633 44k INFO {'train': {'log_interval': 200, 'eval_interval': 800, 'seed': 1234, 'epochs': 10000, 'learning_rate': 0.0001, 'betas': [0.8, 0.99], 'eps': 1e-09, 'batch_size': 2, 'fp16_run': False, 'lr_decay': 0.999875, 'segment_size': 10240, 'init_lr_ratio': 1, 'warmup_epochs': 0, 'c_mel': 45, 'c_kl': 1.0, 'use_sr': True, 'max_speclen': 512, 'port': '8001', 'keep_ckpts': 3}, 'data': {'training_files': 'filelists/train.txt', 'validation_files': 'filelists/val.txt', 'max_wav_value': 32768.0, 'sampling_rate': 44100, 'filter_length': 2048, 'hop_length': 512, 'win_length': 2048, 'n_mel_channels': 80, 'mel_fmin': 0.0, 'mel_fmax': 22050}, 'model': {'inter_channels': 192, 'hidden_channels': 192, 'filter_channels': 768, 'n_heads': 2, 'n_layers': 6, 'kernel_size': 3, 'p_dropout': 0.1, 'resblock': '1', 'resblock_kernel_sizes': [3, 7, 11], 'resblock_dilation_sizes': [[1, 3, 5], [1, 3, 5], [1, 3, 5]], 'upsample_rates': [8, 8, 2, 2, 2], 'upsample_initial_channel': 512, 'upsample_kernel_sizes': [16, 16, 4, 4, 4], 'n_layers_q': 3, 'use_spectral_norm': False, 'gin_channels': 256, 'ssl_dim': 256, 'n_speakers': 1}, 'spk': {'sanwu': 0}, 'model_dir': './logs\\44k'}
+2023-04-01 17:02:21,634 44k WARNING E:\vs\so-vits-svc\so-vits-svc-4.0-sanwu is not a git repository, therefore hash value comparison will be ignored.
+2023-04-01 17:02:24,816 44k INFO Loaded checkpoint './logs\44k\G_2400.pth' (iteration 7)
+2023-04-01 17:02:25,289 44k INFO Loaded checkpoint './logs\44k\D_2400.pth' (iteration 7)
+2023-04-01 17:04:07,531 44k INFO Train Epoch: 7 [27%]
+2023-04-01 17:04:07,531 44k INFO Losses: [1.178899884223938, 5.447257995605469, 13.873568534851074, 45.92221450805664, 1.7247810363769531], step: 2400, lr: 9.991253280566489e-05
+2023-04-01 17:04:12,999 44k INFO Saving model and optimizer state at iteration 7 to ./logs\44k\G_2400.pth
+2023-04-01 17:04:13,783 44k INFO Saving model and optimizer state at iteration 7 to ./logs\44k\D_2400.pth
+2023-04-01 17:06:45,604 44k INFO Train Epoch: 7 [79%]
+2023-04-01 17:06:45,604 44k INFO Losses: [1.1601612567901611, 4.299866199493408, 13.368327140808105, 34.780784606933594, 1.5297999382019043], step: 2600, lr: 9.991253280566489e-05
+2023-04-01 17:07:39,541 44k INFO ====> Epoch: 7, cost 317.91 s
+2023-04-01 17:09:00,870 44k INFO Train Epoch: 8 [31%]
+2023-04-01 17:09:00,871 44k INFO Losses: [0.7684269547462463, 4.85490608215332, 17.213212966918945, 42.981754302978516, 1.2239456176757812], step: 2800, lr: 9.990004373906418e-05
+2023-04-01 17:10:57,125 44k INFO Train Epoch: 8 [83%]
+2023-04-01 17:10:57,126 44k INFO Losses: [1.4237611293792725, 3.9369957447052, 13.494928359985352, 34.12102127075195, 1.412590503692627], step: 3000, lr: 9.990004373906418e-05
+2023-04-01 17:11:34,132 44k INFO ====> Epoch: 8, cost 234.59 s
+2023-04-01 17:13:16,350 44k INFO Train Epoch: 9 [36%]
+2023-04-01 17:13:16,350 44k INFO Losses: [0.9615359306335449, 5.3759379386901855, 11.088563919067383, 34.991233825683594, 1.9573057889938354], step: 3200, lr: 9.98875562335968e-05
+2023-04-01 17:13:20,401 44k INFO Saving model and optimizer state at iteration 9 to ./logs\44k\G_3200.pth
+2023-04-01 17:13:21,223 44k INFO Saving model and optimizer state at iteration 9 to ./logs\44k\D_3200.pth
+2023-04-01 17:13:21,813 44k INFO .. Free up space by deleting ckpt ./logs\44k\G_800.pth
+2023-04-01 17:13:21,814 44k INFO .. Free up space by deleting ckpt ./logs\44k\D_800.pth
+2023-04-01 17:15:17,549 44k INFO Train Epoch: 9 [88%]
+2023-04-01 17:15:17,550 44k INFO Losses: [1.2361057996749878, 4.204023838043213, 13.108729362487793, 37.149662017822266, 1.6868081092834473], step: 3400, lr: 9.98875562335968e-05
+2023-04-01 17:15:45,216 44k INFO ====> Epoch: 9, cost 251.08 s
+```
+
+- 出现类似以上的内容就说明是在开始训练了（显存会直接爆满）。停止训练有下面两种方法：
+  
+  > 1. 按```Ctrl+C```
+  > 2. 直接右上角叉掉
+  >    在控制台中运行 ```python train.py -c configs/config.json -m 44k```即可继续训练
+
+- 注意：上述训练过程第一次运行时可能会出现如下报错，不用理会即可（如果你懂pth文件结构可以尝试修复）
+
+```shell
+2023-04-01 09:58:55,507 44k INFO emb_g.weight is not in the checkpoint
+2023-04-01 09:58:55,507 44k INFO pre.weight is not in the checkpoint
+2023-04-01 09:58:55,508 44k INFO pre.bias is not in the checkpoint
+2023-04-01 09:58:55,508 44k INFO enc_p.proj.weight is not in the checkpoint
+2023-04-01 09:58:55,508 44k INFO enc_p.proj.bias is not in the checkpoint
+2023-04-01 09:58:55,508 44k INFO enc_p.f0_emb.weight is not in the checkpoint
+2023-04-01 09:58:55,508 44k INFO enc_p.enc_.attn_layers.0.emb_rel_k is not in the checkpoint
+2023-04-01 09:58:55,509 44k INFO enc_p.enc_.attn_layers.0.emb_rel_v is not in the checkpoint
+2023-04-01 09:58:55,509 44k INFO enc_p.enc_.attn_layers.0.conv_q.weight is not in the checkpoint
+2023-04-01 09:58:55,509 44k INFO enc_p.enc_.attn_layers.0.conv_q.bias is not in the checkpoint
+2023-04-01 09:58:55,509 44k INFO enc_p.enc_.attn_layers.0.conv_k.weight is not in the checkpoint
+2023-04-01 09:58:55,509 44k INFO enc_p.enc_.attn_layers.0.conv_k.bias is not in the checkpoint
+2023-04-01 09:58:55,509 44k INFO enc_p.enc_.attn_layers.0.conv_v.weight is not in the checkpoint
+2023-04-01 09:58:55,510 44k INFO enc_p.enc_.attn_layers.0.conv_v.bias is not in the checkpoint
+2023-04-01 09:58:55,510 44k INFO enc_p.enc_.attn_layers.0.conv_o.weight is not in the checkpoint
+2023-04-01 09:58:55,510 44k INFO enc_p.enc_.attn_layers.0.conv_o.bias is not in the checkpoint
+#此处省略更多
+#…………
+```
+
+### - 日志及训练次数的查看
+
+- 日志保存的位置：```.\logs\44k\train.log```
+  **阅读举例：**
+
+```shell
+# 示例3
+2023-02-08 18:32:24,942 44k INFO [2.252035617828369, 2.5846095085144043, 8.220404624938965, 5   17.75478744506836, 0.9781494140625, 2000, 9.911637167309565e-05]
+2023-02-08 18:32:28,889 44k INFO Saving model and optimizer state at iteration 72 to ./logs\44k\G_2000.pth
+2023-02-08 18:32:29,661 44k INFO Saving model and optimizer state at iteration 72 to ./logs\44k\D_2000.pth
+# 示例1
+2023-02-08 18:32:39,907 44k INFO ====> Epoch: 72, cost xxx s
+2023-02-08 18:33:00,099 44k INFO ====> Epoch: 73, cost xxx s
+2023-02-08 18:33:20,682 44k INFO ====> Epoch: 74, cost xxx s
+2023-02-08 18:33:40,887 44k INFO ====> Epoch: 75, cost xxx s
+2023-02-08 18:34:01,460 44k INFO ====> Epoch: 76, cost xxx s
+2023-02-08 18:34:21,798 44k INFO ====> Epoch: 77, cost xxx s
+2023-02-08 18:34:41,866 44k INFO ====> Epoch: 78, cost xxx s
+2023-02-08 18:34:54,712 44k INFO Train Epoch: 79 [57%]
+# 示例2
+2023-02-08 18:34:54,712 44k INFO [2.282658100128174, 2.5492446422576904, 10.027194023132324, 15.401838302612305, 1.598284363746643, 2200, 9.902967736366644e-05]
+```
+
+> **以下的解释我引用了B站up主inifnite_loop的解释，[相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) [相关专栏](https://www.bilibili.com/read/cv21425662)**
+> 
+> - 需要关注两个参数：Epoch和global_step
+>   Epoch表示迭代批次，每一批次可以看作一个迭代分组
+>   Global_step表示总体迭代次数
+> - 两者的关系是global_step = 最多语音说话人的语音数 /  batch_size  * epoch
+>   batch_size是配置文件中的参数
+> - **示例1:** 每一次迭代输出内 ```====> Epoch: 74``` 表示第74迭代批次完成
+> - **示例2:** ```Global_step``` 每200次输出一次 （配置文件中的参数```log_interval```）
+> - **示例3:** ```Global_step``` 每1000次(未改配置文件应该默认是800次)输出一次（配置文件中的参数```eval_interval```），会保存模型到新的文件
+
+### - 保存的训练模型
+
+> 以上，我们谈论到了每1000次(未改配置文件应该默认是800次)迭代才会保存一次模型样本，那么，这些样本保存在哪里呢？如何处理这些样本呢？下面我将详细讲述。
+
+- 训练模型保存位置：```.\logs\44k```
+- 训练一定时间后打开这个路径，你会发现有很多文件：
+
+```shell
+D_0.pth
+D_1000.pth
+D_2000.pth
+D_3000.pth
+D_4000.pth
+...
+G_0.pth
+G_1000.pth
+G_2000.pth
+G_3000.pth
+G_4000.pth
+...
+```
+
+## 4. 推理使用
+
+> 按上述方法训练得到最后一次的G和D后，该如何使用这些模型呢？下面我将讲述具体的使用操作方法
+
+### - 准备干声
+
+- 准备一首歌的干声，干声可以靠软件提取，我这边推荐的是Ultimate Vocal Remover，该软件开源并且可以在Github上下载到。[下载地址](https://github.com/Anjok07/ultimatevocalremovergui)
+- 用音频处理软件（如Au，Studio One等）将这个干声分成若干段**不超过40秒**的片段并且一一保存
+- 你也可以使用 **音频自动切片软件** [Audio Slicer](https://github.com/openvpi/audio-slicer)
+- 将你处理好的干声片段放入```.\raw```文件夹
+
+### - 修改推理代码
+
+- 打开```inference_main.py```，修改第```25-46```行，具体修改内容如下（其实注释很清楚，我照搬了）
+
+```shell
+# 一定要设置的部分
+    parser.add_argument('-m', '--model_path', type=str, default="logs/44k/G_4800.pth", help='模型路径')
+    parser.add_argument('-c', '--config_path', type=str, default="configs/config.json", help='配置文件路径')
+    parser.add_argument('-cl', '--clip', type=float, default=0, help='音频自动切片，0为不切片，单位为秒/s')
+    parser.add_argument('-n', '--clean_names', type=str, nargs='+', default=["vocals (1)","vocals (2)","vocals (3)","vocals (4)","vocals (5)","vocals (6)","vocals (7)","vocals (8)"], help='wav文件名列表，放在raw文件夹下')
+    parser.add_argument('-t', '--trans', type=int, nargs='+', default=[0], help='音高调整，支持正负（半音）')
+    parser.add_argument('-s', '--spk_list', type=str, nargs='+', default=['Hanser'], help='合成目标说话人名称')
+
+    # 可选项部分
+    parser.add_argument('-a', '--auto_predict_f0', action='store_true', default=False,
+                        help='语音转换自动预测音高，转换歌声时不要打开这个会严重跑调')
+    parser.add_argument('-cm', '--cluster_model_path', type=str, default="logs/44k/kmeans_10000.pt", help='聚类模型路径，如果没有训练聚类则随便填')
+    parser.add_argument('-cr', '--cluster_infer_ratio', type=float, default=0, help='聚类方案占比，范围0-1，若没有训练聚类模型则填0即可')
+    parser.add_argument('-lg', '--linear_gradient', type=float, default=0, help='两段音频切片的交叉淡入长度，如果自动切片后出现人声不连贯可调整该数值，如果连贯建议采用默认值0，单位为秒/s')
+
+    # 不用动的部分
+    parser.add_argument('-sd', '--slice_db', type=int, default=-40, help='默认-40，嘈杂的音频可以-30，干声保留呼吸可以-50')
+    parser.add_argument('-d', '--device', type=str, default=None, help='推理设备，None则为自动选择cpu和gpu')
+    parser.add_argument('-ns', '--noice_scale', type=float, default=0.4, help='噪音级别，会影响咬字和音质，较为玄学')
+    parser.add_argument('-p', '--pad_seconds', type=float, default=0.5, help='推理音频pad秒数，由于未知原因开头结尾会有异响，pad一小段静音段后就不会出现')
+    parser.add_argument('-wf', '--wav_format', type=str, default='wav', help='音频输出格式')
+    parser.add_argument('-lgr', '--linear_gradient_retain', type=float, default=0.75, help='自动音频切片后，需要舍弃每段切片的头尾。该参数设置交叉长度保留的比例，范围0-1,左开右闭')
+```
+
+- 支持命令行
+
+```shell
+# 例
+python inference_main.py -m "logs/44k/G_30400.pth" -c "configs/config.json" -n "君の知らない物語-src.wav" -t 0 -s "nen"
+```
+
+必填项部分
+
+- `-m` | `--model_path`：模型路径
+- `-c` | `--config_path`：配置文件路径
+- `-n` | `--clean_names`：wav 文件名列表，放在 raw 文件夹下
+- `-t` | `--trans`：音高调整，支持正负（半音）
+- `-s` | `--spk_list`：合成目标说话人名称
+- `-cl` | `--clip`：音频强制切片，默认0为自动切片，单位为秒/s
+
+可选项部分：部分具体见下一节
+
+- `-lg` | `--linear_gradient`：两段音频切片的交叉淡入长度，如果强制切片后出现人声不连贯可调整该数值，如果连贯建议采用默认值0，单位为秒
+- `-fmp` | `--f0_mean_pooling`：是否对F0使用均值滤波器(池化)，对部分哑音有改善。注意，启动该选项会导致推理速度下降，默认关闭
+- `-a` | `--auto_predict_f0`：语音转换自动预测音高，转换歌声时不要打开这个会严重跑调
+- `-cm` | `--cluster_model_path`：聚类模型路径，如果没有训练聚类则随便填
+- `-cr` | `--cluster_infer_ratio`：聚类方案占比，范围0-1，若没有训练聚类模型则默认0即可
+
+### - 推理生成
+
+- 修改完成后保存代码，在```so-vits-svc```文件夹内运行终端，执行下面命令开始推理生成
+
+```shell
+    python .\inference_main.py
+```
+
+- 待黑窗口自动关闭后，推理生成完成。生成的音频文件在```.\results```文件夹下
+- 如果听上去效果不好，就多训练模型。
+
+### - 后期处理
+
+- 将生成的干音和歌曲伴奏（也可以通过Ultimate Vocal Remover提取）导入音频处理软件&宿主软件（如Au，Studio One等）进行混音和母带处理，最终得到成品。
+
+## 5. 感谢名单
+
+> - **以下是对本文档的撰写有帮助的感谢名单：**
+>   so-vits-svc [官方源代码和帮助文档](https://github.com/svc-develop-team/so-vits-svc)
+>   B站up主inifnite_loop [3.0版本相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) 以及 [3.0版本相关专栏](https://www.bilibili.com/read/cv21425662)
+>   所有提供训练音频样本的人员
+
+----
+
 # SO-VITS-SVC3.0详细安装、训练、推理使用步骤
 
 ## 2023-3-12文档更新说明：
