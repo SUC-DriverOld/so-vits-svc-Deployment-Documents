@@ -1,9 +1,20 @@
-# SO-VITS-SVC4.0详细安装、训练、推理使用步骤
-
-本帮助文档为项目 [so-vits-svc4.0](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
+本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 撰写：Sucial [点击跳转B站主页](https://space.bilibili.com/445022409)
-**写在开头：与3.0版本相比，4.0版本的安装、训练、推理操作更为简单**
+# 写在开头：与3.0版本相比，4.0和4.1版本的安装、训练、推理操作更为简单
+# 下面的文章仅介绍4.0版本的安装方法（其实是懒的更新）因为4.1的安装过程官方写的真的很详细！！！点击访问[官方文档](https://github.com/svc-develop-team/so-vits-svc)
+----
+# 2023.8.2文档更新：
+## 1. 提供4.1训练底模，需自行下载，下载地址：https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model 还包含扩散模型训练底模
 
+## 2. 提供4.0训练底模，需自行下载，下载地址：https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/tree/main/sovits_768l12_pre_large_320k 并需要改名为G_0.pth和D_0.pth
+
+## 3. 提供3.0训练底模，需自行下载，下载地址：https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo 提取码：80eo 
+
+## 4. 修改了一下文档内容。
+
+# 其实到这里你完全可以参考官方的文档来一步一步配置了，但如果你不清楚前置环境配置，可以继续往下阅读下面文章的第一部分 1. 环境依赖 即可
+----
+# SO-VITS-SVC4.0详细安装、训练、推理使用步骤
 ----
 
 ## 1. 环境依赖
@@ -59,37 +70,7 @@
 
 #### 安装依赖库
 
-- 在任意位置新建名为```requirements.txt```的文本文件，输入以下内容保存
-
-```shell
-    Flask==2.1.2
-    Flask_Cors==3.0.10
-    gradio==3.4.1
-    numpy==1.23.5
-    playsound==1.3.0
-    PyAudio==0.2.12
-    pydub==0.25.1
-    pyworld==0.3.2
-    requests==2.28.1
-    scipy==1.10.0
-    sounddevice==0.4.5
-    SoundFile==0.10.3.post1
-    starlette==0.19.1
-    tqdm==4.63.0
-    scikit-maad
-    praat-parselmouth
-    tensorboard
-    librosa
-    fairseq
-```
-
-- 在该文本文件所处文件夹内右击空白处选择 **在终端中打开** 并执行下面命令以安装库（若出现报错请尝试用```pip install [库名称]```重新单独安装直至成功）
-
-```shell
-    pip install -r requirements.txt
-```
-
-- 接下来我们需要**单独安装**```torch```, ```torchaudio```, ```torchvision```这三个库，下面提供两种方法
+- 首先我们需要**单独安装**```torch```, ```torchaudio```, ```torchvision```这三个库，下面提供两种方法
 
 #### 方法1（便捷但不建议，因为我在测试这种方法过程中发现有问题，对后续配置AI有影响
 
@@ -142,6 +123,38 @@
 
 - 最后一行出现```True```则成功，出现```False```则失败，需要重新安装
 
+## 然后安装依赖（仅供参考，新版本的依赖有所变化了，以官方requirements.txt为准）
+
+- 在任意位置新建名为```requirements.txt```的文本文件，输入以下内容保存
+
+```shell
+    Flask==2.1.2
+    Flask_Cors==3.0.10
+    gradio==3.4.1
+    numpy==1.23.5
+    playsound==1.3.0
+    PyAudio==0.2.12
+    pydub==0.25.1
+    pyworld==0.3.2
+    requests==2.28.1
+    scipy==1.10.0
+    sounddevice==0.4.5
+    SoundFile==0.10.3.post1
+    starlette==0.19.1
+    tqdm==4.63.0
+    scikit-maad
+    praat-parselmouth
+    tensorboard
+    librosa
+    fairseq
+```
+
+- 在该文本文件所处文件夹内右击空白处选择 **在终端中打开** 并执行下面命令以安装库（若出现报错请尝试用```pip install [库名称]```重新单独安装直至成功）
+
+```shell
+    pip install -r requirements.txt
+```
+
 ### - FFmpeg
 
 - 前往 [FFmpeg官网](https://ffmpeg.org/) 下载。解压至任意位置并在高级系统设置-环境变量中添加Path定位至```.\ffmpeg\bin```（详细安装方法以及添加Path此处省略，网上随便一查都有）
@@ -155,6 +168,8 @@ libavutil      56. 58.100 / 56. 58.100
 libavcodec     58.100.100 / 58.100.100
 ...
 ```
+
+# 到这里继续往下参考价值没有官方文档高了，建议直接阅读官方文档！！！
 
 ## 2. 预训练AI
 
