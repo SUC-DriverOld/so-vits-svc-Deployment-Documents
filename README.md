@@ -1,7 +1,7 @@
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 撰写：Sucial [点击跳转B站主页](https://space.bilibili.com/445022409)
 # 写在开头：与3.0版本相比，4.0和4.1版本的安装、训练、推理操作更为简单
-# 下面的文章仅介绍4.0版本的安装方法（其实是懒的更新）因为4.1的安装过程官方写的真的很详细！！！点击访问[官方文档](https://github.com/svc-develop-team/so-vits-svc)
+# 建议直接点击访问[官方文档](https://github.com/svc-develop-team/so-vits-svc)
 ----
 # 2023.8.2文档更新：
 ## 1. 提供4.1训练底模，需自行下载，下载地址：https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model 还包含扩散模型训练底模
@@ -14,6 +14,8 @@
 
 # 其实到这里你完全可以参考官方的文档来一步一步配置了，但如果你不清楚前置环境配置，可以继续往下阅读下面文章的第一部分 1. 环境依赖 即可
 ----
+# 下面的文章仅介绍4.0版本的安装方法（其实是懒的更新）因为4.1的安装过程官方写的真的很详细！！！
+
 # SO-VITS-SVC4.0详细安装、训练、推理使用步骤
 ----
 
