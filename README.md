@@ -19,8 +19,6 @@
 
 ## 参考资料
 
-我写的教程文档：https://github.com/SUC-DriverOld/so-vits-svc-Chinese-Detaild-Documents
-
 官方README文档：https://github.com/svc-develop-team/so-vits-svc
 
 一些报错的解决办法（来自B站up：**羽毛布団**）：https://www.bilibili.com/read/cv22206231
