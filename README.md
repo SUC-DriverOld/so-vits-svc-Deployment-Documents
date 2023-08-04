@@ -71,10 +71,10 @@
 ## 5. 其他可选项
 
 - 模型压缩
-- 声线混合（本教程不讲）
-  - 静态声线混合（本教程不讲）
-  - 动态声线混合（本教程不讲）
-- Onnx导出（本教程不讲）
+- 声线混合
+  - 静态声线混合
+  - 动态声线混合
+- Onnx导出
 
 ## 6. 简单混音处理及成品导出
 
@@ -689,7 +689,7 @@ python train_index.py -c configs/config.json
 python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="logs/44k/release.pth"
 ```
 
-## 5.2 声线混合（本教程不讲）
+## 5.2 声线混合
 
 ### 5.2.1 静态声线混合
 
@@ -723,7 +723,7 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 推理的时候使用`--use_spk_mix`参数即可启用动态声线混合
 
-## 5.3 Onnx导出（本教程不讲）
+## 5.3 Onnx导出
 
 使用 [onnx_export.py](onnx_export.py)
 
