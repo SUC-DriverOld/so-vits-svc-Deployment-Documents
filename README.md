@@ -277,9 +277,11 @@
 ## 1.4 安装依赖
 
 - 在项目文件夹内右击空白处选择 **在终端中打开** 并执行下面命令以安装库（若出现报错请尝试用```pip install [库名称]```重新单独安装直至成功）
+- **注意，如果requirements_win.txt里有torch的三个包，请删除掉（因为上文已经手动安装过了）**
+- **注意，项目文件夹内含有三个requirements的txt分别对应不同系统和需求，请根据需求选择其中一个**（没什么特殊需求并且是windows系统的话选requirements_win.txt）
 
 ```shell
-    pip install -r requirements.txt
+    pip install -r requirements_win.txt
 ```
 
 ## 1.5 FFmpeg
@@ -738,7 +740,7 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 # ✅6. 简单混音处理及成品导出
 
-### 以FL studio或Studio One为例
+### 使用Ultimate Vocal Remover，SpectraLayers 10，RipX等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One等等）处理推理后音频，具体流程比较麻烦，请参考https://www.bilibili.com/video/BV1CP411x7Vf/
 
 
 
