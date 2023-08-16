@@ -201,7 +201,7 @@
 
 ## 1.2 Python
 
-- 前往 [Python官网](https://www.python.org/) 下载Python，版本需要低于3.10（详细安装方法以及添加Path此处省略，网上随便一查都有）
+- 前往 [Python官网](https://www.python.org/) 下载Python，版本需要低于3.10（**建议3.8.9**）（详细安装方法以及添加Path此处省略，网上随便一查都有）
 - 安装完成后在cmd控制台中输入```python```出现类似以下内容则安装成功：
 
 ```shell
@@ -209,6 +209,9 @@
     Type "help", "copyright", "credits" or "license" for more information.
     >>> 
 ```
+**注：关于 Python 版本问题**
+
+在进行测试后，我们认为`Python 3.8.9`能够稳定地运行该项目
 
 - 配置python下载镜像源（有国外网络条件可跳过）
   在cmd控制台依次执行
