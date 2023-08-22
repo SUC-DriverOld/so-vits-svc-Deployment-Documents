@@ -1,6 +1,7 @@
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 撰写：Sucial [点击跳转B站主页](https://space.bilibili.com/445022409)
 # 写在开头：与3.0版本相比，4.0和4.1版本的安装、训练、推理操作更为简单，建议直接点击访问[官方文档](https://github.com/svc-develop-team/so-vits-svc)
+# 如需3.0版本的教程，请切换分支至3.0
 ----
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
