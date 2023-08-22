@@ -1,25 +1,6 @@
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 撰写：Sucial [点击跳转B站主页](https://space.bilibili.com/445022409)
-# 写在开头：与3.0版本相比，4.0和4.1版本的安装、训练、推理操作更为简单
-# 建议直接点击访问[官方文档](https://github.com/svc-develop-team/so-vits-svc)
-----
-# 2023.8.17文档更新：
-
-## 1. 完善6.简单混音处理及成品导出部分的教程，添加可供参考的B站视频https://www.bilibili.com/video/BV1CP411x7Vf/
-
-## 2. 修改1.环境依赖中Python的版本问题和依赖项requirements的描述错误
-
-# 2023.8.2文档更新：
-
-## 1. 提供4.1训练底模，需自行下载，下载地址：https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model 还包含扩散模型训练底模
-
-## 2. 提供4.0训练底模，需自行下载，下载地址：https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/tree/main/sovits_768l12_pre_large_320k 并需要改名为G_0.pth和D_0.pth
-
-## 3. 提供3.0训练底模，需自行下载，下载地址：https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo 提取码：80eo 
-
-## 4. 修改了一下文档内容。
-
-# 其实到这里你完全可以参考官方的文档来一步一步配置了，但如果你不清楚前置环境配置，可以继续往下阅读下面文章的第一部分 1. 环境依赖 即可
+# 写在开头：与3.0版本相比，4.0和4.1版本的安装、训练、推理操作更为简单，建议直接点击访问[官方文档](https://github.com/svc-develop-team/so-vits-svc)
 ----
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
@@ -293,6 +274,9 @@
 ```shell
     pip install -r requirements_win.txt
 ```
+### 关于fairseq安装不了的问题，windows的解决方案如下
+- 第一步：更新pip到最新版
+- 第二步：安装visual studio 2022，社区版就行，然后组件里装“使用c++的桌面开发”。全部安装完成之后再重新pip install farseq即可完成安装
 
 ## 1.5 FFmpeg
 
@@ -411,11 +395,11 @@ wget -P pretrain/ http://obs.cstcloud.cn/share/obs/sankagenkeshi/checkpoint_best
 
 
 
-> ### 提供4.1训练底模，需自行下载，下载地址：https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model 还包含扩散模型训练底模
->
-> ### 提供4.0训练底模，需自行下载，下载地址：https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/tree/main/sovits_768l12_pre_large_320k 并需要改名为G_0.pth和D_0.pth
->
-> ### 提供3.0训练底模，需自行下载，下载地址：https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo 提取码：80eo 
+### 提供4.1训练底模，需自行下载，下载地址：https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model 还包含扩散模型训练底模
+
+### 提供4.0训练底模，需自行下载，下载地址：https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/tree/main/sovits_768l12_pre_large_320k 并需要改名为G_0.pth和D_0.pth
+
+### 提供3.0训练底模，需自行下载，下载地址：https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo 提取码：80eo 
 
 
 
