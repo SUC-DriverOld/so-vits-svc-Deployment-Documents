@@ -6,6 +6,12 @@
 **相关参考资料**
 [官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [一些报错的解决办法（来自 B 站 up：**羽毛布団**）](https://www.bilibili.com/read/cv22206231)
 
+**提醒**
+
+1. 若遇到本文档内未提到的报错，您可以在 issues 中提问
+2. 若遇到项目 bug，请给原项目提 issues
+3. 想要更加完善这份教程，欢迎来提 pr
+
 ---
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
@@ -39,7 +45,7 @@
   - [0.3 训练周期](#03-训练周期)
 - [✅1. 环境依赖](#1-环境依赖)
   - [1.1 Cuda](#11-cuda)
-      - [**特别注意！**](#特别注意)
+    - [**特别注意！**](#特别注意)
   - [1.2 Python](#12-python)
   - [1.3 Pytorch](#13-pytorch)
   - [1.4 安装依赖](#14-安装依赖)
@@ -52,15 +58,15 @@
   - [2.0 关于兼容 4.0 模型的问题](#20-关于兼容-40-模型的问题)
   - [2.1 关于 Python 版本问题](#21-关于-python-版本问题)
   - [2.2 预先下载的模型文件](#22-预先下载的模型文件)
-      - [**必须项**](#必须项)
-        - [**1. 若使用 contentvec 作为声音编码器（推荐）**](#1-若使用-contentvec-作为声音编码器推荐)
-        - [**2. 若使用 hubertsoft 作为声音编码器**](#2-若使用-hubertsoft-作为声音编码器)
-        - [**3. 若使用 Whisper-ppg 作为声音编码器**](#3-若使用-whisper-ppg-作为声音编码器)
-        - [**4. 若使用 cnhubertlarge 作为声音编码器**](#4-若使用-cnhubertlarge-作为声音编码器)
-        - [**5. 若使用 dphubert 作为声音编码器**](#5-若使用-dphubert-作为声音编码器)
-        - [**6. 若使用 OnnxHubert/ContentVec 作为声音编码器**](#6-若使用-onnxhubertcontentvec-作为声音编码器)
-      - [**编码器列表**](#编码器列表)
-      - [**可选项(强烈建议使用)**](#可选项强烈建议使用)
+    - [**必须项**](#必须项)
+      - [**1. 若使用 contentvec 作为声音编码器（推荐）**](#1-若使用-contentvec-作为声音编码器推荐)
+      - [**2. 若使用 hubertsoft 作为声音编码器**](#2-若使用-hubertsoft-作为声音编码器)
+      - [**3. 若使用 Whisper-ppg 作为声音编码器**](#3-若使用-whisper-ppg-作为声音编码器)
+      - [**4. 若使用 cnhubertlarge 作为声音编码器**](#4-若使用-cnhubertlarge-作为声音编码器)
+      - [**5. 若使用 dphubert 作为声音编码器**](#5-若使用-dphubert-作为声音编码器)
+      - [**6. 若使用 OnnxHubert/ContentVec 作为声音编码器**](#6-若使用-onnxhubertcontentvec-作为声音编码器)
+    - [**编码器列表**](#编码器列表)
+    - [**可选项(强烈建议使用)**](#可选项强烈建议使用)
     - [提供 4.1 训练底模，需自行下载，下载地址：https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model 还包含扩散模型训练底模](#提供-41-训练底模需自行下载下载地址httpshuggingfacecosucialso-vits-svc41-pretrain_model-还包含扩散模型训练底模)
     - [提供 4.0 训练底模，需自行下载，下载地址：https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/tree/main/sovits_768l12_pre_large_320k 并需要改名为 G_0.pth 和 D_0.pth](#提供-40-训练底模需自行下载下载地址httpshuggingfacecodatasetsms903sovits40-768vec-layer12treemainsovits_768l12_pre_large_320k-并需要改名为-g_0pth-和-d_0pth)
     - [提供 3.0 训练底模，需自行下载，下载地址：https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo 提取码：80eo](#提供-30-训练底模需自行下载下载地址httpspanbaiducoms1uw6w3gobvmbvey1qt_azhapwd80eo-提取码80eo)
@@ -84,9 +90,9 @@
     - [注意](#注意-1)
   - [3.2 WebUI 推理](#32-webui-推理)
 - [✅4. 增强效果的可选项](#4-增强效果的可选项)
-    - [自动 f0 预测](#自动-f0-预测)
-    - [聚类音色泄漏控制](#聚类音色泄漏控制)
-    - [特征检索](#特征检索)
+  - [自动 f0 预测](#自动-f0-预测)
+  - [聚类音色泄漏控制](#聚类音色泄漏控制)
+  - [特征检索](#特征检索)
 - [✅5.其他可选项](#5其他可选项)
   - [5.1 模型压缩](#51-模型压缩)
   - [5.2 声线混合](#52-声线混合)
@@ -94,9 +100,9 @@
     - [5.2.2 动态声线混合](#522-动态声线混合)
   - [5.3 Onnx 导出](#53-onnx-导出)
 - [✅6. 简单混音处理及成品导出](#6-简单混音处理及成品导出)
-    - [使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考https://www.bilibili.com/video/BV1CP411x7Vf/](#使用-ultimate-vocal-removerspectralayers-10ripx-等软件预处理推理前音频使用音频宿主软件fl-studiostudio-one-等等处理推理后音频具体流程比较麻烦请参考httpswwwbilibilicomvideobv1cp411x7vf)
+  - [使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考 https://www.bilibili.com/video/BV1CP411x7Vf/](#使用-ultimate-vocal-removerspectralayers-10ripx-等软件预处理推理前音频使用音频宿主软件fl-studiostudio-one-等等处理推理后音频具体流程比较麻烦请参考httpswwwbilibilicomvideobv1cp411x7vf)
 - [✅ 附录：常见报错的解决办法](#-附录常见报错的解决办法)
-  - [报错及解决方法，来自https://www.bilibili.com/read/cv22206231](#报错及解决方法来自httpswwwbilibilicomreadcv22206231)
+  - [报错及解决方法，来自 https://www.bilibili.com/read/cv22206231](#报错及解决方法来自httpswwwbilibilicomreadcv22206231)
 
 <!-- /code_chunk_output -->
 
