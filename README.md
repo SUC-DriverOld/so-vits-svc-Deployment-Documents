@@ -6,7 +6,7 @@
 **相关参考资料**
 [官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [一些报错的解决办法（来自 B 站 up：**羽毛布団**）](https://www.bilibili.com/read/cv22206231)
 
-**提醒**: 若遇到本文档内未提到的报错，您可以在 issues 中提问; 若遇到项目 bug，请给原项目提 issues; 想要更加完善这份教程，欢迎来提 pr
+**文档的持续完善**：若遇到本文档内未提到的报错，您可以在 issues 中提问；若遇到项目 bug，请给原项目提 issues；想要更加完善这份教程，欢迎来提 pr
 
 ---
 
