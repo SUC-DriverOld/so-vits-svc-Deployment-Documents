@@ -6,11 +6,7 @@
 **相关参考资料**
 [官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [一些报错的解决办法（来自 B 站 up：**羽毛布団**）](https://www.bilibili.com/read/cv22206231)
 
-**提醒**
-
-1. 若遇到本文档内未提到的报错，您可以在 issues 中提问
-2. 若遇到项目 bug，请给原项目提 issues
-3. 想要更加完善这份教程，欢迎来提 pr
+**提醒**: 若遇到本文档内未提到的报错，您可以在 issues 中提问; 若遇到项目 bug，请给原项目提 issues; 想要更加完善这份教程，欢迎来提 pr
 
 ---
 
@@ -103,6 +99,7 @@
   - [使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考 https://www.bilibili.com/video/BV1CP411x7Vf/](#使用-ultimate-vocal-removerspectralayers-10ripx-等软件预处理推理前音频使用音频宿主软件fl-studiostudio-one-等等处理推理后音频具体流程比较麻烦请参考httpswwwbilibilicomvideobv1cp411x7vf)
 - [✅ 附录：常见报错的解决办法](#-附录常见报错的解决办法)
   - [报错及解决方法，来自 https://www.bilibili.com/read/cv22206231](#报错及解决方法来自httpswwwbilibilicomreadcv22206231)
+- [✅感谢名单](#感谢名单)
 
 <!-- /code_chunk_output -->
 
@@ -192,11 +189,7 @@
 
 # ✅1. 环境依赖
 
-> - **本项目需要的环境：**
->   NVIDIA-CUDA
->   Python = 3.8.9
->   Pytorch
->   FFmpeg
+**本项目需要的环境**：NVIDIA-CUDA | Python = 3.8.9 | Pytorch | FFmpeg
 
 ## 1.1 Cuda
 
@@ -234,6 +227,7 @@
 **注：关于 Python 版本问题**
 
 在进行测试后，我们认为`Python 3.8.9`能够稳定地运行该项目
+(但不排除高版本也可以运行)
 
 - 配置 python 下载镜像源（有国外网络条件可跳过）
   在 cmd 控制台依次执行
@@ -382,6 +376,7 @@ libavcodec     58.100.100 / 58.100.100
 ## 2.1 关于 Python 版本问题
 
 在进行测试后，我们认为`Python 3.8.9`能够稳定地运行该项目
+(但不排除高版本也可以运行)
 
 配置及训练
 
@@ -459,8 +454,6 @@ wget -P pretrain/ http://obs.cstcloud.cn/share/obs/sankagenkeshi/checkpoint_best
 
 - 扩散模型预训练底模文件： `model_0.pt`
   - 放在`logs/44k/diffusion`目录下
-
-从 svc-develop-team(待定)或任何其他地方获取 Sovits 底模
 
 扩散模型引用了[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的 Diffusion Model，底模与[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的扩散模型底模通用，可以去[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)获取扩散模型的底模
 
@@ -648,7 +641,7 @@ RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 
 ## 3.1 命令行推理
 
-使用 [inference_main.py](inference_main.py)
+使用 inference_main.py
 
 ```shell
 # 例
@@ -720,6 +713,14 @@ pause
   - 使用 cpu 性能较好的机器训练，据我的经验在腾讯云 6 核 cpu 训练每个 speaker 需要约 4 分钟即可完成训练
   - 执行`python cluster/train_cluster.py`，模型的输出会在`logs/44k/kmeans_10000.pt`
   - 聚类模型目前可以使用 gpu 进行训练，执行`python cluster/train_cluster.py --gpu`
+ 
+```shell
+# CPU
+python cluster/train_cluster.py
+# GPU
+python cluster/train_cluster.py --gpu
+```
+
 - 推理过程：
   - `inference_main.py`中指定`cluster_model_path`
   - `inference_main.py`中指定`cluster_infer_ratio`，`0`为完全不使用聚类，`1`为只使用聚类，通常设置`0.5`即可
@@ -748,7 +749,7 @@ python train_index.py -c configs/config.json
 
 生成的模型含有继续训练所需的信息。如果确认不再训练，可以移除模型中此部分信息，得到约 1/3 大小的最终模型。
 
-使用 [compress_model.py](compress_model.py)
+使用 compress_model.py
 
 ```shell
 # 例
@@ -791,13 +792,13 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 ## 5.3 Onnx 导出
 
-使用 [onnx_export.py](onnx_export.py)
+使用 onnx_export.py
 
 - 新建文件夹：`checkpoints` 并打开
 - 在`checkpoints`文件夹中新建一个文件夹作为项目文件夹，文件夹名为你的项目名称，比如`aziplayer`
 - 将你的模型更名为`model.pth`，配置文件更名为`config.json`，并放置到刚才创建的`aziplayer`文件夹下
-- 将 [onnx_export.py](onnx_export.py) 中`path = "NyaruTaffy"` 的 `"NyaruTaffy"` 修改为你的项目名称，`path = "aziplayer" (onnx_export_speaker_mix，为支持角色混合的onnx导出)`
-- 运行 [onnx_export.py](onnx_export.py)
+- 将 onnx_export.py 中`path = "NyaruTaffy"` 的 `"NyaruTaffy"` 修改为你的项目名称，`path = "aziplayer" (onnx_export_speaker_mix，为支持角色混合的onnx导出)`
+- 运行 onnx_export.py
 - 等待执行完毕，在你的项目文件夹下会生成一个`model.onnx`，即为导出的模型
 
 注意：Hubert Onnx 模型请使用 MoeSS 提供的模型，目前无法自行导出（fairseq 中 Hubert 有不少 onnx 不支持的算子和涉及到常量的东西，在导出时会报错或者导出的模型输入输出 shape 和结果都有问题）
@@ -846,8 +847,11 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 **报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**
 答：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件
 
-> - **以下是对本文档的撰写有帮助的感谢名单：**
->   so-vits-svc [官方源代码和帮助文档](https://github.com/MaxMax2016/so-vits-svc)
->   B 站 up 主 inifnite_loop [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) [相关专栏](https://www.bilibili.com/read/cv21425662)
->   一些报错的解决办法[（B 站 up 主：**羽毛布団** 相关专栏）](https://www.bilibili.com/read/cv22206231)
->   所有提供训练音频样本的人员
+----
+
+# 感谢名单：
+
+- so-vits-svc [官方源代码和帮助文档](https://github.com/MaxMax2016/so-vits-svc)
+- B 站 up 主 inifnite_loop [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) [相关专栏](https://www.bilibili.com/read/cv21425662)
+- 一些报错的解决办法[（B 站 up 主：**羽毛布団** 相关专栏）](https://www.bilibili.com/read/cv22206231)
+- 所有提供训练音频样本的人员
