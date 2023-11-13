@@ -217,9 +217,8 @@
 
 #### **特别注意！**
 
-- 目前（2023/3/28）为止 pytorch 最高支持到`cuda11.7`
-- 如果您在上述第一步中查看到自己的 Cuda 版本>11.7，请依然选择 11.7 进行下载安装（Cuda 有版本兼容性）并且安装完成后再次在 cmd 输入`nvidia-smi.exe`并不会出现 cuda 版本变化，即任然显示的是>11,7 的版本
-- Cuda 的卸载方法：打开控制面板-程序-卸载程序，将带有`NVIDIA CUDA`的程序全部卸载即可（一共 5 个）
+- Cuda需要与下方 1.3 Pytorch版本相匹配
+- 卸载方法：打开控制面板-程序-卸载程序，将带有`NVIDIA CUDA`的程序全部卸载即可（一共 5 个）
 
 ## 1.2 Python
 
@@ -253,14 +252,15 @@ pip config set global.index-url https://pypi.python.org/simple
 
 - 以下是一些国内常用的镜像源
 
+**python国内镜像源**
+- 清华: https://pypi.tuna.tsinghua.edu.cn/simple
+- 豆瓣: http://pypi.douban.com/simple/
+- 阿里云: http://mirrors.aliyun.com/pypi/simple/
+- 中国科技大学: https://pypi.mirrors.ustc.edu.cn/simple/
+- 华中科技大学: http://pypi.hustunique.com/
+- 山东理工大学: http://pypi.sdutlinux.org/
+
 ```shell
-# python国内镜像源
-清华: https://pypi.tuna.tsinghua.edu.cn/simple
-豆瓣: http://pypi.douban.com/simple/
-阿里云: http://mirrors.aliyun.com/pypi/simple/
-中国科技大学: https://pypi.mirrors.ustc.edu.cn/simple/
-华中理工大学: http://pypi.hustunique.com/
-山东理工大学: http://pypi.sdutlinux.org/
 # 临时更换
 pip install package -i https://pypi.tuna.tsinghua.edu.cn/simple
 # 永久更换
