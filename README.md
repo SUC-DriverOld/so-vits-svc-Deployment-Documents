@@ -18,9 +18,6 @@
 
 <!-- code_chunk_output -->
 
-- [✅SoftVC VITS Singing Voice Conversion 教程目录](#softvc-vits-singing-voice-conversion-教程目录)
-  - [本文档配套视频教程 点击前往](#本文档配套视频教程-点击前往httpswwwbilibilicomvideobv1hr4y197cy)
-- [SoftVC VITS Singing Voice Conversion 教程](#softvc-vits-singing-voice-conversion-教程)
 - [✅0. 用前须知](#0-用前须知)
   - [0.0 任何国家，地区，组织和个人使用此项目必须遵守以下法律](#00-任何国家地区组织和个人使用此项目必须遵守以下法律)
     - [《民法典》](#民法典)
