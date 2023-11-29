@@ -212,7 +212,7 @@
 
 ## 1.2 Python
 
-- 前往 [Python 官网](https://www.python.org/) 下载 Python，版本需要低于 3.10（**建议 3.8.9**）（详细安装方法以及添加 Path 此处省略，网上随便一查都有）
+- 前往 [Python 官网](https://www.python.org/) 下载 Python，版本需要低于 3.10（**建议使用3.8或3.9**）（详细安装方法以及添加 Path 此处省略，网上随便一查都有）
 - 安装完成后在 cmd 控制台中输入`python`出现类似以下内容则安装成功：
 
 ```shell
@@ -223,7 +223,7 @@
 
 **注：关于 Python 版本问题**
 
-在进行测试后，我们认为`Python 3.8.9`能够稳定地运行该项目
+在进行测试后，我们认为Python 3.8.9和3.9.17 能够稳定地运行该项目
 (但不排除高版本也可以运行)
 
 - 配置 python 下载镜像源（有国外网络条件可跳过）
@@ -843,6 +843,67 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 **报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**
 答：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件
+
+**在安装依赖时出现的相关报错汇总**
+
+**1. webUI 相关报错**
+
+出现以下报错时：
+
+- 启动 webUI 时报错：`ImportError: cannot import name 'Schema' from 'pydantic'`
+- webUI 加载模型时报错：`AttributeError("'Dropdown' object has no attribute 'update'")`
+- **凡是涉及到 fastapi, gradio, pydantic 这三个依赖的报错**
+
+**解决方法如下**：
+请限制以下依赖版本:
+
+```shell
+fastapi==0.84.0 (>0.80.0 <=0.88.0)
+gradio==3.41.2 (>=3.41.2 <=3.42.0)
+pydantic==1.10.12
+```
+
+具体解决方法为：在安装完`requirements_win.txt`后，在 cmd 中依次输入以下命令以更新依赖包：
+
+```shell
+pip install --upgrade fastapi==0.84.0
+pip install --upgrade gradio==3.41.2
+pip install --upgrade pydantic==1.10.12
+```
+
+**2. 依赖找不到导致的无法安装**
+
+出现**类似**以下报错时：
+
+```shell
+ERROR: Could not find a version that satisfies the requirement librosa==0.9.1 (from versions: none)
+ERROR: No matching distribution found for librosa==0.9.1
+# 主要特征是
+No matching distribution found for xxxxx
+Could not find a version that satisfies the requirement xxxx
+```
+
+具体解决方法为：更换安装源。手动安装这一依赖时添加下载源，以下是两个常用的镜像源地址
+
+- 清华大学：https://pypi.tuna.tsinghua.edu.cn/simple
+- 阿里云：http://mirrors.aliyun.com/pypi/simple
+
+具体方法为：`pip install [包名称] -i [下载源地址]`，例如我想在阿里源下载 librosa 这个依赖，并且要求依赖版本是 0.9.1，那么应该在 cmd 中输入以下命令：
+
+```shell
+pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
+```
+
+**主模型训练时出现的相关报错汇总**
+
+#### 1. 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
+
+```shell
+raise RuntimeError(f'DataLoader worker (pid(s) {pids_str}) exited unexpectedly') from e
+RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
+```
+
+解决方法：调小 batchsize 值，调大虚拟内存，重启电脑清理显存，直到 batchsize 值和虚拟内存合适不报错为止
 
 ----
 
