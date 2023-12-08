@@ -12,6 +12,8 @@
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
 
+## 最后更新时间：2023.12.8
+
 ## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
