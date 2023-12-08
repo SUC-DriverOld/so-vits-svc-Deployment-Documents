@@ -808,7 +808,7 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 # ✅ 附录：常见报错的解决办法
 
-## 报错及解决方法，来自https://www.bilibili.com/read/cv22206231
+### 部分报错及解决方法，来自https://www.bilibili.com/read/cv22206231
 
 **报错：`UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position xx`**
 答：数据集文件名中不要包含中文或日文等非西文字符。
