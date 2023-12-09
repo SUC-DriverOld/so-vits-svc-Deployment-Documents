@@ -214,18 +214,18 @@
 
 ## 1.2 Python
 
-- 前往 [Python 官网](https://www.python.org/) 下载 Python，版本需要低于 3.10（**建议使用3.8或3.9**）（详细安装方法以及添加 Path 此处省略，网上随便一查都有）
+- 前往 [Python 官网](https://www.python.org/) 下载 Python3.8.9（若使用conda配置python遇到没有3.8.9版本也可以直接输入3.8）详细安装方法以及添加 Path 此处省略，网上随便一查都有）
 - 安装完成后在 cmd 控制台中输入`python`出现类似以下内容则安装成功：
 
 ```shell
-    Python 3.10.4 (tags/v3.10.4:9d38120, Mar 23 2022, 23:13:41) [MSC v.1929 64 bit (AMD64)] on win32
+    Python 3.8.9（tags/v3.8.9:9d38120, Mar 23 2022, 23:13:41) [MSC v.1929 64 bit (AMD64)] on win32
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
 ```
 
 **注：关于 Python 版本问题**
 
-在进行测试后，我们认为Python 3.8.9和3.9.17 能够稳定地运行该项目
+在进行测试后，我们认为Python 3.8.9能够稳定地运行该项目
 (但不排除高版本也可以运行)
 
 - 配置 python 下载镜像源（有国外网络条件可跳过）
