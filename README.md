@@ -12,7 +12,7 @@
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
 
-## 最后更新时间：2023.12.25
+## 最后更新时间：2023.12.25，由于学业考试紧张，该项目近期内暂时暂停维护，包括B站视频
 
 ## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)
 
