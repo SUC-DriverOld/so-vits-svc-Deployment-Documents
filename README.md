@@ -12,7 +12,7 @@
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
 
-## 最后更新时间：2023.12.8
+## 最后更新时间：2023.12.25
 
 ## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)
 
@@ -180,7 +180,7 @@
 
 ## 0.3 训练周期
 
-在**有底模**的前提下，选取**200 条音频**作为训练集，经多次测试（RTX3060, `batch_size = 3`）得到以下结论：
+在**有底模**的前提下，选取**200 条音频**作为训练集，经多次测试（RTX3060,专用显存6G， `batch_size = 3`）得到以下结论：
 
 1. 模型达到基本收敛的训练步数 10w+（若每晚训练约 8 小时，需要约 7 天+）
 2. 模型大概能用（一些高低音可能有问题）的训练步数约 2w-3w（若每晚训练约 8 小时，需要约 2-3 天）
@@ -233,7 +233,7 @@
 
 ```shell
     # 设置清华大学下载镜像
-    pip config set global.index-url http://pypi.tuna.tsinghua.edu.cn/simple
+    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
     pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn
 ```
 
