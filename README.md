@@ -294,6 +294,14 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
     pip install -r requirements_win.txt
 ```
 
+确保安装正确无误后请更新以下三个依赖：
+
+```shell
+pip install --upgrade fastapi==0.84.0
+pip install --upgrade gradio==3.41.2
+pip install --upgrade pydantic==1.10.12
+```
+
 ### 关于 fairseq 安装不了的问题，windows 的解决方案如下
 
 - 第一步：更新 pip 到最新版
