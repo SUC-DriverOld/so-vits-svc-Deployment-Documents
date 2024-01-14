@@ -446,18 +446,17 @@ wget -P pretrain/ http://obs.cstcloud.cn/share/obs/sankagenkeshi/checkpoint_best
 #### **编码器列表**
 
 - "vec768l12"
-
-* "vec256l9"
-* "vec256l9-onnx"
-* "vec256l12-onnx"
-* "vec768l9-onnx"
-* "vec768l12-onnx"
-* "hubertsoft-onnx"
-* "hubertsoft"
-* "whisper-ppg"
-* "cnhubertlarge"
-* "dphubert"
-* "whisper-ppg-large"
+- "vec256l9"
+- "vec256l9-onnx"
+- "vec256l12-onnx"
+- "vec768l9-onnx"
+- "vec768l12-onnx"
+- "hubertsoft-onnx"
+- "hubertsoft"
+- "whisper-ppg"
+- "cnhubertlarge"
+- "dphubert"
+- "whisper-ppg-large"
 
 #### **可选项(强烈建议使用)**
 
