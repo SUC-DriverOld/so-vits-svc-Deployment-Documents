@@ -12,7 +12,7 @@
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
 
-## 最后更新时间：2024.1.14
+## 最后更新时间：2024.2.10。本次更新结束，文档和教程视频进入【暂停维护】状态
 
 ## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)
 
@@ -203,6 +203,8 @@
 - 前往 [NVIDIA-Developer](https://developer.nvidia.com/) 官网下载与系统**对应**的 Cuda 版本
   以`Cuda-11.7`版本为例（**注：本文下述所有配置均在`Cuda-11.7`下演示**）[Cuda11.7 下载地址](https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local) 根据自己的系统和需求选择安装（一般本地 Windows 用户请依次选择`Windows`, `x86_64`, `系统版本`, `exe(local)`）
 
+- **此处建议CUDA版本不要超过11.7，因为下面torch有要求**
+
 - 安装成功之后在 cmd 控制台中输入`nvcc -V`, 出现类似以下内容则安装成功：
 
 ```shell
@@ -267,6 +269,8 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## 1.3 Pytorch
+
+- 经过多次实验测得，pytorch2.0.1+cu117为稳定版本，所以此处建议安装torch11.7
 
 - 首先我们需要**单独安装**`torch`, `torchaudio`, `torchvision`这三个库，直接前往 [Pytorch 官网](https://pytorch.org/get-started/locally/) 选择所需版本然后复制 Run this Command 栏显示的命令至 cmd 安装
 
