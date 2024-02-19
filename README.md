@@ -12,7 +12,9 @@
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
 
-## 最后更新时间：2024.2.10。本次更新结束，文档和教程视频进入【暂停维护】状态
+## 最后更新时间：2024.2.19。本次更新结束，文档和教程视频进入【暂停维护】状态。
+
+## 2.19更新：添加conda环境配置文件Sovits.yaml，会使用conda的可以通过该配置文件一件配置环境（环境使用torch：2.0.1+cu117）
 
 ## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)
 
