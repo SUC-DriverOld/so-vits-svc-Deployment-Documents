@@ -859,8 +859,8 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 **报错：`The expand size of the tensor (768) must match the existing size (256) at non-singleton dimension 0.`**
 答：把 dataset/44k 下的内容全部删了，重新走一遍预处理流程
 
-**报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**
-答：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件
+**报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**或报错: 配置文件中的编码器与模型维度不匹配
+答：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。检查配置文件中的”ssl_dim”一项，如果这项是256，那你的speech encoder应当修改为“vec256|9”，如果是768，则是"vec768|12"
 
 **在安装依赖时出现的相关报错汇总**
 
