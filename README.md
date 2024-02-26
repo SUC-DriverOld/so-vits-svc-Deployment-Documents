@@ -1,12 +1,12 @@
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 撰写：Sucial [点击跳转 B 站主页](https://space.bilibili.com/445022409)
 
-**写在开头：与 3.0 版本相比，4.0 和 4.1 版本的安装、训练、推理操作更为简单，建议直接点击访问[官方文档](https://github.com/svc-develop-team/so-vits-svc)。如需 3.0 版本的教程，请切换至 [3.0 分支](https://github.com/SUC-DriverOld/so-vits-svc-Chinese-Detaild-Documents/tree/3.0)**
+**写在开头：如需 so-vits-svc3.0 版本的教程，请切换至 [3.0 分支](https://github.com/SUC-DriverOld/so-vits-svc-Chinese-Detaild-Documents/tree/3.0)**
 
-**相关参考资料**
-[官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [一些报错的解决办法（来自 B 站 up：**羽毛布団**）](https://www.bilibili.com/read/cv22206231)
+**相关教程和参考资料**
+[官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [一些报错的解决办法（来自 B 站 up：**羽毛布団**）](https://www.bilibili.com/read/cv22206231) | [本文档配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)
 
-**文档的持续完善**：若遇到本文档内未提到的报错，您可以在 issues 中提问；若遇到项目 bug，请给原项目提 issues；想要更加完善这份教程，欢迎来提 pr
+**文档的持续完善**：若遇到本文档内未提到的报错，您可以在 issues 中提问；若遇到项目 bug，请给原项目提 issues；想要更加完善这份教程，欢迎来给教程提 pr！
 
 ---
 
@@ -16,7 +16,7 @@
 
 ## 本次更新大改教程文档，建议仔细阅读！
 
-## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)。注意：配套视频可能较老，仅供参考，一切以最新教程文档为准。
+## 点击前往：[本文档配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 注意：配套视频可能较老，仅供参考，一切以最新教程文档为准。
 
 - [✅0. 用前须知](#0-用前须知)
   - [0.0 任何国家，地区，组织和个人使用此项目必须遵守以下法律](#00-任何国家地区组织和个人使用此项目必须遵守以下法律)
@@ -142,9 +142,9 @@
 
 在**有底模**的前提下，选取**500 条音频**作为训练集，经多次测试（RTX3060 Laptop,专用显存6G， `batch_size = 3`）得到以下结论：
 
-1. 模型训练步数 10w+（若每晚训练约 8 小时，需要约 7 天+）
-2. 模型训练步数 2w-3w（若每晚训练约 8 小时，需要约 2-3 天）
-3. 模型训练步数 5w-8w（若每晚训练约 8 小时，需要约 4-5 天）
+1. 模型训练步数 10w+（若每晚训练约 8 小时，需要约 3 晚+）
+2. 模型训练步数 2w-3w（若每晚训练约 8 小时，需要约 1 晚）
+3. 模型训练步数 5w-8w（若每晚训练约 8 小时，需要约 2-3 晚）
 
 **模型怎样才算训练好了**？
 
@@ -746,11 +746,37 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 # ✅6. 简单混音处理及成品导出
 
-### 使用音频宿主软件处理推理后音频，具体流程比较麻烦，请参考配套视频教程或其他更专业的混音教程。
+### 使用音频宿主软件处理推理后音频，具体流程比较麻烦，请参考 [配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 或其他更专业的混音教程。
 
 # ✅ 附录：常见报错的解决办法
 
-**部分报错及解决方法，来自https://www.bilibili.com/read/cv22206231**
+**部分报错及解决方法，来自羽毛布団大佬https://www.bilibili.com/read/cv22206231**
+
+## 关于爆显存
+
+如果你在终端或 WebUI 界面的报错中出现了这样的报错:
+
+```
+OutOfMemoryError: CUDA out of memory.Tried to allocate XX GiB (GPU O: XX GiB total capacity; XX GiB already allocated; XX MiB Free: XX GiB reserved in total by PyTorch)
+```
+
+不要怀疑，你的显卡显存或虚拟内存不够用了。以下是100%解决问题的解决方法，照着做必能解决。请不要再在各种地方提问这个问题了
+
+1. 在报错中找到 XX GiB already allocated 之后，是否显示 0 bytes free，如果是 0 bytes free 那么看第2，3，4步，如果显示 XX MiB free 或者 XX GiB free，看第 5 步
+2. 如果是预处理的时候爆显存:
+  a. 换用对显存占用友好的 fo 预测器 (友好度从高到低: pm >= harvest >= rmvpe ≈ fcpe >> crepe)，建议首选 rmvpe 或fcpe
+  b. 多进程预处理改为1
+3. 如果是训练的时候爆显存
+  a. 检查数据集有没有过长的切片 (20秒以上）
+  b. 调小批量大小 (batch size)
+  c. 更换一个占用低的项目
+  d. 去 AutoDL 等云算力平台上面租一张大显存的显卡跑
+4. 如果是推理的时候爆显存:
+  a. 推理源 (千声) 不干净 (有残留的混响，伴奏，和声)，导致自动切片切不开。提取干声最佳实践请参考[UVR5歌曲人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)
+  b. 调大切片闽值 (比如-40调成-30，再大就不建议了，你也不想唱一半就被切一刀吧)
+  c. 设置强制切片，从60秒开始尝试，每次减小10秒，直到能成功推理
+  d. 使用 cpu 推理，速度会很慢但是不会爆显存
+5. 如果显示仍然有空余显存却还是爆显存了，是你的虚拟内存不够大，调整到至少 50G 以上
 
 ## 数据集预处理时的相关报错
 
