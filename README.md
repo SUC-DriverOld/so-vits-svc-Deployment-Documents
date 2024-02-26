@@ -14,77 +14,39 @@
 
 ## 最后更新时间：2024.2.26。本次更新结束，文档和教程视频进入【暂停维护】状态。
 
-## 最新更新：添加conda环境配置文件Sovits.yaml，会使用conda的可以通过该配置文件一件配置环境（环境使用torch：2.0.1+cu117）
+## 本次更新大改教程文档，建议仔细阅读！
 
-## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)
-
-<!-- @import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} -->
-
-<!-- code_chunk_output -->
+## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)。注意：配套视频可能较老，仅供参考，一切以最新教程文档为准。
 
 - [✅0. 用前须知](#0-用前须知)
   - [0.0 任何国家，地区，组织和个人使用此项目必须遵守以下法律](#00-任何国家地区组织和个人使用此项目必须遵守以下法律)
-    - [《民法典》](#民法典)
-      - [第一千零一十九条](#第一千零一十九条)
-      - [第一千零二十四条](#第一千零二十四条)
-      - [第一千零二十七条](#第一千零二十七条)
-      - [《中华人民共和国宪法》](#中华人民共和国宪法httpwwwgovcnguoqing2018-0322content_5276318htm)
-      - [《中华人民共和国刑法》](#中华人民共和国刑法httpgongbaocourtgovcndetailsf8e30d0689b23f57bfc782d21035c3htmlsw中华人民共和国刑法)
-      - [《中华人民共和国民法典》](#中华人民共和国民法典httpgongbaocourtgovcndetails51eb6750b8361f79be8f90d09bc202html)
-      - [本教程仅供交流与学习使用，请勿用于违法违规或违反公序良德等不良用途](#本教程仅供交流与学习使用请勿用于违法违规或违反公序良德等不良用途)
-      - [出于对音源提供者的尊重请勿用于鬼畜用途](#出于对音源提供者的尊重请勿用于鬼畜用途)
-    - [0.0.1. 继续使用视为已同意本教程所述相关条例，本教程已进行劝导义务，不对后续可能存在问题负责。](#001-继续使用视为已同意本教程所述相关条例本教程已进行劝导义务不对后续可能存在问题负责)
-    - [0.0.2. 声明](#002-声明)
-    - [0.0.3. 使用规约](#003-使用规约)
-    - [Warning：请自行解决数据集授权问题，禁止使用非授权数据集进行训练！任何由于使用非授权数据集进行训练造成的问题，需自行承担全部责任和后果！与仓库、仓库维护者、svc develop team、教程发布者 无关](#warning请自行解决数据集授权问题禁止使用非授权数据集进行训练任何由于使用非授权数据集进行训练造成的问题需自行承担全部责任和后果与仓库-仓库维护者-svc-develop-team-教程发布者-无关)
   - [0.1 硬件需求](#01-硬件需求)
   - [0.2 提前准备](#02-提前准备)
   - [0.3 训练周期](#03-训练周期)
 - [✅1. 环境依赖](#1-环境依赖)
   - [1.1 Cuda](#11-cuda)
-    - [**特别注意！**](#特别注意)
   - [1.2 Python](#12-python)
   - [1.3 Pytorch](#13-pytorch)
   - [1.4 安装依赖](#14-安装依赖)
-    - [关于 fairseq 安装不了的问题，windows 的解决方案如下](#关于-fairseq-安装不了的问题windows-的解决方案如下)
-    - [在安装依赖时出现的相关报错汇总](#在安装依赖时出现的相关报错汇总)
-      - [1. webUI 相关报错](#1-webui-相关报错)
-      - [2. 依赖找不到导致的无法安装](#2-依赖找不到导致的无法安装)
   - [1.5 FFmpeg](#15-ffmpeg)
 - [✅2. 配置及训练（参考官方文档）](#2-配置及训练参考官方文档)
   - [2.0 关于兼容 4.0 模型的问题](#20-关于兼容-40-模型的问题)
   - [2.1 关于 Python 版本问题](#21-关于-python-版本问题)
   - [2.2 预先下载的模型文件](#22-预先下载的模型文件)
-    - [**必须项**](#必须项)
-      - [**1. 若使用 contentvec 作为声音编码器（推荐）**](#1-若使用-contentvec-作为声音编码器推荐)
-      - [**2. 若使用 hubertsoft 作为声音编码器**](#2-若使用-hubertsoft-作为声音编码器)
-      - [**3. 若使用 Whisper-ppg 作为声音编码器**](#3-若使用-whisper-ppg-作为声音编码器)
-      - [**4. 若使用 cnhubertlarge 作为声音编码器**](#4-若使用-cnhubertlarge-作为声音编码器)
-      - [**5. 若使用 dphubert 作为声音编码器**](#5-若使用-dphubert-作为声音编码器)
-      - [**6. 若使用 OnnxHubert/ContentVec 作为声音编码器**](#6-若使用-onnxhubertcontentvec-作为声音编码器)
-    - [**编码器列表**](#编码器列表)
-    - [**可选项(强烈建议使用)**](#可选项强烈建议使用)
-    - [提供 4.1 训练底模，需自行下载，下载地址：https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model 还包含扩散模型训练底模](#提供-41-训练底模需自行下载下载地址httpshuggingfacecosucialso-vits-svc41-pretrain_model-还包含扩散模型训练底模)
-    - [提供 4.0 训练底模，需自行下载，下载地址：https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/tree/main/sovits_768l12_pre_large_320k 并需要改名为 G_0.pth 和 D_0.pth](#提供-40-训练底模需自行下载下载地址httpshuggingfacecodatasetsms903sovits40-768vec-layer12treemainsovits_768l12_pre_large_320k-并需要改名为-g_0pth-和-d_0pth)
-    - [提供 3.0 训练底模，需自行下载，下载地址：https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo 提取码：80eo](#提供-30-训练底模需自行下载下载地址httpspanbaiducoms1uw6w3gobvmbvey1qt_azhapwd80eo-提取码80eo)
-      - [**可选项(根据情况选择)**](#可选项根据情况选择)
+    - [必须项](#必须项)
+    - [可选项(强烈建议使用)](#可选项强烈建议使用)
+    - [可选项(根据情况选择)](#可选项根据情况选择)
   - [2.3 数据集准备](#23-数据集准备)
   - [2.4 数据预处理](#24-数据预处理)
     - [2.4.0 音频切片](#240-音频切片)
     - [2.4.1 重采样至 44100Hz 单声道](#241-重采样至-44100hz-单声道)
-      - [注意](#注意)
     - [2.4.2 自动划分训练集、验证集，以及自动生成配置文件](#242-自动划分训练集-验证集以及自动生成配置文件)
-      - [此时可以在生成的 config.json 与 diffusion.yaml 修改部分参数](#此时可以在生成的-configjson-与-diffusionyaml-修改部分参数)
-        - [**声码器列表**](#声码器列表)
     - [2.4.3 生成 hubert 与 f0](#243-生成-hubert-与-f0)
   - [2.5 训练](#25-训练)
     - [2.5.1 扩散模型（可选）](#251-扩散模型可选)
     - [2.5.2 主模型训练](#252-主模型训练)
-    - [主模型训练时出现的相关报错汇总](#主模型训练时出现的相关报错汇总)
-      - [1. 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly](#1-报错runtimeerror-dataloader-worker-pids-13920-exited-unexpectedly)
 - [✅3. 推理（参考官方文档）](#3-推理参考官方文档)
   - [3.1 命令行推理](#31-命令行推理)
-    - [注意](#注意-1)
   - [3.2 WebUI 推理](#32-webui-推理)
 - [✅4. 增强效果的可选项](#4-增强效果的可选项)
   - [自动 f0 预测](#自动-f0-预测)
@@ -97,12 +59,8 @@
     - [5.2.2 动态声线混合](#522-动态声线混合)
   - [5.3 Onnx 导出](#53-onnx-导出)
 - [✅6. 简单混音处理及成品导出](#6-简单混音处理及成品导出)
-  - [使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考配套视频教程
 - [✅ 附录：常见报错的解决办法](#-附录常见报错的解决办法)
-  - [报错及解决方法，来自 https://www.bilibili.com/read/cv22206231](#报错及解决方法来自httpswwwbilibilicomreadcv22206231)
 - [✅感谢名单](#感谢名单)
-
-<!-- /code_chunk_output -->
 
 # SoftVC VITS Singing Voice Conversion 教程
 
@@ -197,6 +155,7 @@
 # ✅1. 环境依赖
 
 **本项目需要的环境**：NVIDIA-CUDA | Python = 3.8.9 | Pytorch | FFmpeg
+**注意：现已添加conda环境配置文件Sovits.yaml，会使用conda的可以通过该配置文件一件配置环境**（环境使用torch：2.0.1+cu117），**请从code处下载**。
 
 ## 1.1 Cuda
 
@@ -275,6 +234,7 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 - 经过多次实验测得，pytorch2.0.1+cu117为稳定版本，所以此处建议安装torch11.7
 
 - 首先我们需要**单独安装**`torch`, `torchaudio`, `torchvision`这三个库，直接前往 [Pytorch 官网](https://pytorch.org/get-started/locally/) 选择所需版本然后复制 Run this Command 栏显示的命令至 cmd 安装
+- 如需手动指定`torch`的版本在其后面添加版本号即可，例如`…… torch==2.1.0 ……`
 
 - 安装完`torch`, `torchaudio`, `torchvision`这三个库之后，在 cmd 控制台运用以下命令检测 cuda 与 torch 版本是否匹配
 
@@ -282,8 +242,6 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
     python
     # 回车运行
     import torch
-    # 回车运行
-    print(torch.__version__)
     # 回车运行
     print(torch.cuda.is_available())
     # 回车运行
@@ -312,56 +270,6 @@ pip install --upgrade pydantic==1.10.12
 
 - 第一步：更新 pip 到最新版
 - 第二步：安装 visual studio 2022，社区版就行，然后组件里装“使用 c++的桌面开发”。全部安装完成之后再重新 pip install farseq 即可完成安装
-
-### 在安装依赖时出现的相关报错汇总
-
-#### 1. webUI 相关报错
-
-出现以下报错时：
-
-- 启动 webUI 时报错：`ImportError: cannot import name 'Schema' from 'pydantic'`
-- webUI 加载模型时报错：`AttributeError("'Dropdown' object has no attribute 'update'")`
-- **凡是涉及到 fastapi, gradio, pydantic 这三个依赖的报错**
-
-**解决方法如下**：
-请限制以下依赖版本:
-
-```shell
-fastapi==0.84.0 (>0.80.0 <=0.88.0)
-gradio==3.41.2 (>=3.41.2 <=3.42.0)
-pydantic==1.10.12
-```
-
-具体解决方法为：在安装完`requirements_win.txt`后，在 cmd 中依次输入以下命令以更新依赖包：
-
-```shell
-pip install --upgrade fastapi==0.84.0
-pip install --upgrade gradio==3.41.2
-pip install --upgrade pydantic==1.10.12
-```
-
-#### 2. 依赖找不到导致的无法安装
-
-出现**类似**以下报错时：
-
-```shell
-ERROR: Could not find a version that satisfies the requirement librosa==0.9.1 (from versions: none)
-ERROR: No matching distribution found for librosa==0.9.1
-# 主要特征是
-No matching distribution found for xxxxx
-Could not find a version that satisfies the requirement xxxx
-```
-
-具体解决方法为：更换安装源。手动安装这一依赖时添加下载源，以下是两个常用的镜像源地址
-
-- 清华大学：https://pypi.tuna.tsinghua.edu.cn/simple
-- 阿里云：http://mirrors.aliyun.com/pypi/simple
-
-具体方法为：`pip install [包名称] -i [下载源地址]`，例如我想在阿里源下载 librosa 这个依赖，并且要求依赖版本是 0.9.1，那么应该在 cmd 中输入以下命令：
-
-```shell
-pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
-```
 
 ## 1.5 FFmpeg
 
@@ -477,26 +385,39 @@ wget -P pretrain/ http://obs.cstcloud.cn/share/obs/sankagenkeshi/checkpoint_best
 
 虽然底模一般不会引起什么版权问题，但还是请注意一下，比如事先询问作者，又或者作者在模型描述中明确写明了可行的用途
 
-### 提供 4.1 训练底模，需自行下载，下载地址：https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model 还包含扩散模型训练底模
+**提供 4.1 训练底模，需自行下载（需具备外网条件）**:
+- 下载地址1：官方Huggingface下载 [D_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_D_320000.pth) [G_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_G_320000.pth) [model_0.pt](https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/resolve/main/fix_pitch_add_vctk_600k/model_0.pt)
+- 下载地址2：[点击跳转下载](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model) 包含扩散模型训练底模
+- 下载地址3：[百度网盘转存](https://pan.baidu.com/s/17IlNuphFHAntLklkMNtagg?pwd=dkp9) 此处不更新，随时可能落后
 
-### 提供 4.0 训练底模，需自行下载，下载地址：https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/tree/main/sovits_768l12_pre_large_320k 并需要改名为 G_0.pth 和 D_0.pth
-
-### 提供 3.0 训练底模，需自行下载，下载地址：https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo 提取码：80eo
+**提供 3.0 训练底模，需自行下载**
+- 下载地址：[百度网盘转存](https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo)
 
 #### **可选项(根据情况选择)**
+
+##### NSF-HIFIGAN
 
 如果使用`NSF-HIFIGAN增强器`或`浅层扩散`的话，需要下载预训练的 NSF-HIFIGAN 模型，如果不需要可以不下载
 
 - 预训练的 NSF-HIFIGAN 声码器 ：[nsf_hifigan_20221211.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip)
   - 解压后，将四个文件放在`pretrain/nsf_hifigan`目录下
+ 
+##### RMVPE
 
-```shell
-# nsf_hifigan
-wget -P pretrain/ https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip
-unzip -od pretrain/nsf_hifigan pretrain/nsf_hifigan_20221211.zip
-# 也可手动下载放在pretrain/nsf_hifigan目录
-# 地址：https://github.com/openvpi/vocoders/releases/tag/nsf-hifigan-v1
-```
+如果使用`rmvpe`F0预测器的话，需要下载预训练的 RMVPE 模型
+
+- 下载模型[rmvpe.zip](https://github.com/yxlllc/RMVPE/releases/download/230917/rmvpe.zip)，目前首推该权重。
+  - 解压缩`rmvpe.zip`，并将其中的`model.pt`文件改名为`rmvpe.pt`并放在`pretrain`目录下
+
+##### FCPE(预览版)
+
+- [FCPE(Fast Context-base Pitch Estimator)](https://github.com/CNChTu/MelPE)是由svc-develop-team自主研发的一款全新的F0预测器，是一个为实时语音转换所设计的专用F0预测器，他将在未来成为Sovits实时语音转换的首选F0预测器.（论文未来会有的）
+
+如果使用 `fcpe` F0预测器的话，需要下载预训练的 FCPE 模型
+
+- 下载模型 [fcpe.pt](https://huggingface.co/datasets/ylzz1997/rmvpe_pretrain_model/resolve/main/fcpe.pt)
+  - 放在`pretrain`目录下
+
 
 ## 2.3 数据集准备
 
@@ -584,13 +505,27 @@ python preprocess_flist_config.py --speech_encoder vec768l12 --vol_aug
 
 #### 此时可以在生成的 config.json 与 diffusion.yaml 修改部分参数
 
-- `keep_ckpts`：训练时保留最后几个模型，`0`为保留所有，默认只保留最后`3`个
+##### config.json
 
-- `all_in_mem`,`cache_all_data`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
+* `keep_ckpts`：训练时保留最后几个模型，`0`为保留所有，默认只保留最后`3`个
 
-- `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
+* `all_in_mem`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
 
-- `vocoder_name` : 选择一种声码器，默认为`nsf-hifigan`.
+* `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
+
+* `vocoder_name` : 选择一种声码器，默认为`nsf-hifigan`.
+
+##### diffusion.yaml
+
+* `cache_all_data`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
+
+* `duration`：训练时音频切片时长，可根据显存大小调整，**注意，该值必须小于训练集内音频的最短时间！**
+
+* `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
+
+* `timesteps` : 扩散模型总步数，默认为 1000.
+
+* `k_step_max` : 训练时可仅训练`k_step_max`步扩散以节约训练时间，注意，该值必须小于`timesteps`，0 为训练整个扩散模型，**注意，如果不训练整个扩散模型将无法使用仅扩散模型推理！**
 
 ##### **声码器列表**
 
@@ -612,11 +547,13 @@ crepe
 dio
 pm
 harvest
+rmvpe
+fcpe
 ```
 
 如果训练集过于嘈杂，请使用 crepe 处理 f0
 
-如果省略 f0_predictor 参数，默认值为 dio
+如果省略 f0_predictor 参数，默认值为 rmvpe
 
 尚若需要浅扩散功能（可选），需要增加--use_diff 参数，比如
 
@@ -643,17 +580,6 @@ python train.py -c configs/config.json -m 44k
 ```
 
 模型训练结束后，模型文件保存在`logs/44k`目录下，扩散模型在`logs/44k/diffusion`下
-
-### 主模型训练时出现的相关报错汇总
-
-#### 1. 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
-
-```shell
-raise RuntimeError(f'DataLoader worker (pid(s) {pids_str}) exited unexpectedly') from e
-RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
-```
-
-解决方法：调小 batchsize 值，调大虚拟内存，重启电脑清理显存，直到 batchsize 值和虚拟内存合适不报错为止
 
 # ✅3. 推理（参考官方文档）
 
@@ -725,7 +651,7 @@ python webUI.py
 使用聚类前面的已有步骤不用进行任何的变动，只需要额外训练一个聚类模型，虽然效果比较有限，但训练成本也比较低
 
 - 训练过程：
-  - 使用 cpu 性能较好的机器训练，据我的经验在腾讯云 6 核 cpu 训练每个 speaker 需要约 4 分钟即可完成训练
+  - 使用 cpu 性能较好的机器训练
   - 执行`python cluster/train_cluster.py`，模型的输出会在`logs/44k/kmeans_10000.pt`
   - 聚类模型目前可以使用 gpu 进行训练，执行`python cluster/train_cluster.py --gpu`
  
@@ -820,76 +746,23 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 # ✅6. 简单混音处理及成品导出
 
-### 使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考配套视频教程
+### 使用音频宿主软件处理推理后音频，具体流程比较麻烦，请参考配套视频教程或其他更专业的混音教程。
 
 # ✅ 附录：常见报错的解决办法
 
-### 部分报错及解决方法，来自https://www.bilibili.com/read/cv22206231
+**部分报错及解决方法，来自https://www.bilibili.com/read/cv22206231**
 
-**报错：`UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position xx`**
-答：数据集文件名中不要包含中文或日文等非西文字符。
+## 数据集预处理时的相关报错
 
-**报错：页面文件太小，无法完成操作。**
-答：调整一下虚拟内存大小，具体的方法各种地方一搜就能搜到，不展开了。
+**1. 报错：`UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position xx`**
+答：数据集文件名中不要包含中文或日文等非西文字符，特别注意**中文**括号，逗号，冒号，分号，引号等等都是不行的。
 
-**报错：`UnboundLocalError: local variable 'audio' referenced before assignment`**
-答：上传的推理音频需要是 16 位整数 wav 格式，用 Au 转换一下就好。或者装个 ffmpeg 一劳永逸地解决问题。
-
-**报错：`AssertionError: CPU training is not allowed.`**
-答：非 N 卡跑不了的。
-
-**报错：`torch.cuda.OutOfMemoryError: CUDA out of memory`**
-答：爆显存了，试着把 batch_size 改小，改到 1 还爆的话建议云端训练。
-
-**报错：`RuntimeError: DataLoader worker (pid(s) xxxx) exited unexpectedly`**
-答：把虚拟内存再调大一点。
-
-**报错：`NotImplementedError: Only 2D, 3D, 4D, 5D padding with non-constant padding are supported for no`**
-答：数据集切片切太长了，5-10 秒差不多。
-
-**报错：`CUDA error: CUBLAS_STATUS_NOT_INITIALIZED when calling 'cublasCreate(handle)'`**
-答：爆显存了，基本上跟 CUDA 有关的报错大都是爆显存……
-
-**报错：`torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with exit code 3221225477`**
-答：调大虚拟内存，管理员运行脚本
-
-**报错：`'HParams' object has no attribute 'xxx'`**
-答：无法找到音色，一般是配置文件和模型没对应，打开配置文件拉到最下面看看有没有你训练的音色
-
-**报错：`The expand size of the tensor (768) must match the existing size (256) at non-singleton dimension 0.`**
+**2. 报错：`The expand size of the tensor (768) must match the existing size (256) at non-singleton dimension 0.`**
 答：把 dataset/44k 下的内容全部删了，重新走一遍预处理流程
 
-**报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**或报错: 配置文件中的编码器与模型维度不匹配
-答：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。检查配置文件中的”ssl_dim”一项，如果这项是256，那你的speech encoder应当修改为“vec256|9”，如果是768，则是"vec768|12"
+## 安装依赖时出现的相关报错
 
-**在安装依赖时出现的相关报错汇总**
-
-**1. webUI 相关报错**
-
-出现以下报错时：
-
-- 启动 webUI 时报错：`ImportError: cannot import name 'Schema' from 'pydantic'`
-- webUI 加载模型时报错：`AttributeError("'Dropdown' object has no attribute 'update'")`
-- **凡是涉及到 fastapi, gradio, pydantic 这三个依赖的报错**
-
-**解决方法如下**：
-请限制以下依赖版本:
-
-```shell
-fastapi==0.84.0 (>0.80.0 <=0.88.0)
-gradio==3.41.2 (>=3.41.2 <=3.42.0)
-pydantic==1.10.12
-```
-
-具体解决方法为：在安装完`requirements_win.txt`后，在 cmd 中依次输入以下命令以更新依赖包：
-
-```shell
-pip install --upgrade fastapi==0.84.0
-pip install --upgrade gradio==3.41.2
-pip install --upgrade pydantic==1.10.12
-```
-
-**2. 依赖找不到导致的无法安装**
+**1. 依赖找不到导致的无法安装**
 
 出现**类似**以下报错时：
 
@@ -906,15 +779,16 @@ Could not find a version that satisfies the requirement xxxx
 - 清华大学：https://pypi.tuna.tsinghua.edu.cn/simple
 - 阿里云：http://mirrors.aliyun.com/pypi/simple
 
-具体方法为：`pip install [包名称] -i [下载源地址]`，例如我想在阿里源下载 librosa 这个依赖，并且要求依赖版本是 0.9.1，那么应该在 cmd 中输入以下命令：
+使用`pip install [包名称] -i [下载源地址]`，例如我想在阿里源下载 librosa 这个依赖，并且要求依赖版本是 0.9.1，那么应该在 cmd 中输入以下命令：
 
 ```shell
 pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 ```
+## 预处理时出现的相关报错
 
-**主模型训练时出现的相关报错汇总**
+## 主模型训练时出现的相关报错
 
-#### 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
+**1. 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly**
 
 ```shell
 raise RuntimeError(f'DataLoader worker (pid(s) {pids_str}) exited unexpectedly') from e
@@ -922,6 +796,38 @@ RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 ```
 
 解决方法：调小 batchsize 值，调大虚拟内存，重启电脑清理显存，直到 batchsize 值和虚拟内存合适不报错为止
+
+**2. 报错：`torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with exit code 3221225477`**
+解决方法：调大虚拟内存，管理员运行cmd
+
+**3. 报错：`AssertionError: CPU training is not allowed.`**
+没有解决方法：非 N 卡跑不了。
+
+**4. 报错：页面文件太小，无法完成操作。**
+解决方法：调大虚拟内存大小，具体的方法各种地方一搜就能搜到，不展开了。
+
+## 使用WebUI时相关报错
+
+**1. 出现以下报错时**：
+
+- 启动 webUI 时报错：`ImportError: cannot import name 'Schema' from 'pydantic'`
+- webUI 加载模型时报错：`AttributeError("'Dropdown' object has no attribute 'update'")`
+- **凡是报错中涉及到 fastapi, gradio, pydantic 这三个依赖的报错**
+
+**解决方法如下**：
+需限制部分依赖版本，在安装完`requirements_win.txt`后，在 cmd 中依次输入以下命令以更新依赖包：
+
+```shell
+pip install --upgrade fastapi==0.84.0
+pip install --upgrade gradio==3.41.2
+pip install --upgrade pydantic==1.10.12
+```
+
+**2. 报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**或报错: 配置文件中的编码器与模型维度不匹配
+解决方法：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。检查配置文件中的”ssl_dim”一项，如果这项是256，那你的speech encoder应当修改为“vec256|9”，如果是768，则是"vec768|12"
+
+**3. 报错：`'HParams' object has no attribute 'xxx'`**
+解决方法：无法找到音色，一般是配置文件和模型没对应，打开配置文件拉到最下面看看有没有你训练的音色
 
 ----
 
