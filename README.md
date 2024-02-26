@@ -12,9 +12,9 @@
 
 # ✅SoftVC VITS Singing Voice Conversion 教程目录
 
-## 最后更新时间：2024.2.19。本次更新结束，文档和教程视频进入【暂停维护】状态。
+## 最后更新时间：2024.2.26。本次更新结束，文档和教程视频进入【暂停维护】状态。
 
-## 2.19更新：添加conda环境配置文件Sovits.yaml，会使用conda的可以通过该配置文件一件配置环境（环境使用torch：2.0.1+cu117）
+## 最新更新：添加conda环境配置文件Sovits.yaml，会使用conda的可以通过该配置文件一件配置环境（环境使用torch：2.0.1+cu117）
 
 ## 本文档配套视频教程 [点击前往](https://www.bilibili.com/video/BV1Hr4y197Cy/)
 
@@ -97,7 +97,7 @@
     - [5.2.2 动态声线混合](#522-动态声线混合)
   - [5.3 Onnx 导出](#53-onnx-导出)
 - [✅6. 简单混音处理及成品导出](#6-简单混音处理及成品导出)
-  - [使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考 https://www.bilibili.com/video/BV1CP411x7Vf/](#使用-ultimate-vocal-removerspectralayers-10ripx-等软件预处理推理前音频使用音频宿主软件fl-studiostudio-one-等等处理推理后音频具体流程比较麻烦请参考httpswwwbilibilicomvideobv1cp411x7vf)
+  - [使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考配套视频教程
 - [✅ 附录：常见报错的解决办法](#-附录常见报错的解决办法)
   - [报错及解决方法，来自 https://www.bilibili.com/read/cv22206231](#报错及解决方法来自httpswwwbilibilicomreadcv22206231)
 - [✅感谢名单](#感谢名单)
@@ -820,7 +820,7 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 # ✅6. 简单混音处理及成品导出
 
-### 使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考https://www.bilibili.com/video/BV1CP411x7Vf/
+### 使用 Ultimate Vocal Remover，SpectraLayers 10，RipX 等软件预处理推理前音频，使用音频宿主软件（FL studio，Studio One 等等）处理推理后音频，具体流程比较麻烦，请参考配套视频教程
 
 # ✅ 附录：常见报错的解决办法
 
