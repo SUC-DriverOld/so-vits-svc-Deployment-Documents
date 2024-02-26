@@ -746,7 +746,7 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 # ✅6. 简单混音处理及成品导出
 
-### 使用音频宿主软件处理推理后音频，具体流程比较麻烦，请参考 [配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 或其他更专业的混音教程。
+### 使用音频宿主软件处理推理后音频，具体流程比较麻烦，请参考 [配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 或其他更专业的混音教程。
 
 # ✅ 附录：常见报错的解决办法
 
