@@ -162,9 +162,10 @@
 - 在 cmd 控制台里输入`nvidia-smi.exe`以查看显卡驱动版本和对应的 cuda 版本
 
 - 前往 [NVIDIA-Developer](https://developer.nvidia.com/) 官网下载与系统**对应**的 Cuda 版本
+- **此处强烈建议CUDA版本选择11.7，测试下来最稳定**
+
   以`Cuda-11.7`版本为例（**注：本文下述所有配置均在`Cuda-11.7`下演示**）[Cuda11.7 下载地址](https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local) 根据自己的系统和需求选择安装（一般本地 Windows 用户请依次选择`Windows`, `x86_64`, `系统版本`, `exe(local)`）
 
-- **此处建议CUDA版本不要超过11.7，因为下面torch有要求**
 
 - 安装成功之后在 cmd 控制台中输入`nvcc -V`, 出现类似以下内容则安装成功：
 
@@ -216,8 +217,7 @@ pip config set global.index-url https://pypi.python.org/simple
 
 **python国内镜像源**
 - 清华: https://pypi.tuna.tsinghua.edu.cn/simple
-- 豆瓣: http://pypi.douban.com/simple/
-- 阿里云: http://mirrors.aliyun.com/pypi/simple/
+- 阿里云: https://mirrors.aliyun.com/pypi/simple/
 - 中国科技大学: https://pypi.mirrors.ustc.edu.cn/simple/
 - 华中科技大学: http://pypi.hustunique.com/
 - 山东理工大学: http://pypi.sdutlinux.org/
@@ -231,10 +231,15 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 ## 1.3 Pytorch
 
-- 经过多次实验测得，pytorch2.0.1+cu117为稳定版本，所以此处建议安装torch11.7
+- 经过多次实验测得，pytorch2.0.1+cu117为稳定版本，所以此处**强烈建议安装CUDA11.7的Pytorch**
 
 - 首先我们需要**单独安装**`torch`, `torchaudio`, `torchvision`这三个库，直接前往 [Pytorch 官网](https://pytorch.org/get-started/locally/) 选择所需版本然后复制 Run this Command 栏显示的命令至 cmd 安装
 - 如需手动指定`torch`的版本在其后面添加版本号即可，例如`…… torch==2.1.0 ……`
+- 由于版本更新，11.7的Pytorch可能复制不到下载链接，此时可以复制下方的安装命令进行安装。
+
+```shell
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+```
 
 - 安装完`torch`, `torchaudio`, `torchvision`这三个库之后，在 cmd 控制台运用以下命令检测 cuda 与 torch 版本是否匹配
 
@@ -756,7 +761,7 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 如果你在终端或 WebUI 界面的报错中出现了这样的报错:
 
-```
+```shell
 OutOfMemoryError: CUDA out of memory.Tried to allocate XX GiB (GPU O: XX GiB total capacity; XX GiB already allocated; XX MiB Free: XX GiB reserved in total by PyTorch)
 ```
 
@@ -777,14 +782,6 @@ OutOfMemoryError: CUDA out of memory.Tried to allocate XX GiB (GPU O: XX GiB tot
   c. 设置强制切片，从60秒开始尝试，每次减小10秒，直到能成功推理
   d. 使用 cpu 推理，速度会很慢但是不会爆显存
 5. 如果显示仍然有空余显存却还是爆显存了，是你的虚拟内存不够大，调整到至少 50G 以上
-
-## 数据集预处理时的相关报错
-
-**1. 报错：`UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position xx`**
-答：数据集文件名中不要包含中文或日文等非西文字符，特别注意**中文**括号，逗号，冒号，分号，引号等等都是不行的。
-
-**2. 报错：`The expand size of the tensor (768) must match the existing size (256) at non-singleton dimension 0.`**
-答：把 dataset/44k 下的内容全部删了，重新走一遍预处理流程
 
 ## 安装依赖时出现的相关报错
 
@@ -810,7 +807,24 @@ Could not find a version that satisfies the requirement xxxx
 ```shell
 pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 ```
-## 预处理时出现的相关报错
+
+**2. 报错ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9**
+
+此报错的原因是因为torch官方更新，使得当前的torch版本太新导致的，解决方法两个：
+
+1. 升级python至3.9（但可能造成不稳定）
+2. 降低torch版本（建议）也可理解为降低CUDA版本，比如我目前使用的是2.0.1+cu117。
+
+注意：**如果你在之前已经配置好了环境并且能用了，请忽略此条提醒**
+
+## 数据集预处理时的相关报错
+
+**1. 报错：`UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position xx`**
+答：数据集文件名中不要包含中文或日文等非西文字符，特别注意**中文**括号，逗号，冒号，分号，引号等等都是不行的。
+
+**2. 报错：`The expand size of the tensor (768) must match the existing size (256) at non-singleton dimension 0.`**
+答：把 dataset/44k 下的内容全部删了，重新走一遍预处理流程
+
 
 ## 主模型训练时出现的相关报错
 
