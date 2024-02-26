@@ -764,7 +764,7 @@ OutOfMemoryError: CUDA out of memory.Tried to allocate XX GiB (GPU O: XX GiB tot
 
 1. 在报错中找到 XX GiB already allocated 之后，是否显示 0 bytes free，如果是 0 bytes free 那么看第2，3，4步，如果显示 XX MiB free 或者 XX GiB free，看第 5 步
 2. 如果是预处理的时候爆显存:
-  a. 换用对显存占用友好的 fo 预测器 (友好度从高到低: pm >= harvest >= rmvpe ≈ fcpe >> crepe)，建议首选 rmvpe 或fcpe
+  a. 换用对显存占用友好的 f0 预测器 (友好度从高到低: pm >= harvest >= rmvpe ≈ fcpe >> crepe)，建议首选 rmvpe 或fcpe
   b. 多进程预处理改为1
 3. 如果是训练的时候爆显存
   a. 检查数据集有没有过长的切片 (20秒以上）
