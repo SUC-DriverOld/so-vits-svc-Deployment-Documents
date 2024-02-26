@@ -849,7 +849,8 @@ pip install --upgrade gradio==3.41.2
 pip install --upgrade pydantic==1.10.12
 ```
 
-**2. 报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**或报错: 配置文件中的编码器与模型维度不匹配
+**2. 报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**
+或**报错: 配置文件中的编码器与模型维度不匹配**
 解决方法：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。检查配置文件中的”ssl_dim”一项，如果这项是256，那你的speech encoder应当修改为“vec256|9”，如果是768，则是"vec768|12"
 
 **3. 报错：`'HParams' object has no attribute 'xxx'`**
