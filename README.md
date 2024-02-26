@@ -914,7 +914,7 @@ pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 
 **主模型训练时出现的相关报错汇总**
 
-#### 1. 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
+#### 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 
 ```shell
 raise RuntimeError(f'DataLoader worker (pid(s) {pids_str}) exited unexpectedly') from e
@@ -927,7 +927,7 @@ RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 
 # 感谢名单：
 
-- so-vits-svc [官方源代码和帮助文档](https://github.com/MaxMax2016/so-vits-svc)
+- so-vits-svc [官方源代码和帮助文档](https://github.com/svc-develop-team/so-vits-svc)
 - B 站 up 主 inifnite_loop [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) [相关专栏](https://www.bilibili.com/read/cv21425662)
 - 一些报错的解决办法[（B 站 up 主：**羽毛布団** 相关专栏）](https://www.bilibili.com/read/cv22206231)
 - 所有提供训练音频样本的人员
