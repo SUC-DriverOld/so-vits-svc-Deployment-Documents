@@ -820,7 +820,7 @@ pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 ## 数据集预处理和模型训练时的相关报错
 
 **1. 报错：`UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position xx`**
-答：数据集文件名中不要包含中文或日文等非西文字符，特别注意**中文**括号，逗号，冒号，分号，引号等等都是不行的。
+答：数据集文件名中不要包含中文或日文等非西文字符，特别注意**中文**括号，逗号，冒号，分号，引号等等都是不行的。改完名字**一定要**重新预处理，然后再进行训练！！！
 
 **2. 报错：`The expand size of the tensor (768) must match the existing size (256) at non-singleton dimension 0.`**
 答：把 dataset/44k 下的内容全部删了，重新走一遍预处理流程
