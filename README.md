@@ -817,7 +817,7 @@ pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 
 注意：**如果你在之前已经配置好了环境并且能用了，请忽略此条提醒**
 
-## 数据集预处理时的相关报错
+## 数据集预处理和模型训练时的相关报错
 
 **1. 报错：`UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position xx`**
 答：数据集文件名中不要包含中文或日文等非西文字符，特别注意**中文**括号，逗号，冒号，分号，引号等等都是不行的。
