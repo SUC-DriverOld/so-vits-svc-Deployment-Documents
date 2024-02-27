@@ -841,7 +841,7 @@ RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 解决方法：调大虚拟内存，管理员运行cmd
 
 **3. 报错：`AssertionError: CPU training is not allowed.`**
-没有解决方法：非 N 卡跑不了。
+没有解决方法：非 N 卡跑不了。（也不是完全跑不了，但如果你是纯萌新的话，那我的回答确实就是：跑不了）
 
 **4. 报错：页面文件太小，无法完成操作。**
 解决方法：调大虚拟内存大小，具体的方法各种地方一搜就能搜到，不展开了。
