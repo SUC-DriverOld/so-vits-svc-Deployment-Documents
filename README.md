@@ -14,9 +14,9 @@
 
 ## 最后更新时间：2024.2.26。本次更新结束，文档和教程视频进入【暂停维护】状态。
 
-## 本次更新大改教程文档，建议仔细阅读！
+我写的一个 so-vits-svc 一键配置环境，启动 webUI 的脚本：[so-vits-svc-webUI-QuickStart-bat](https://github.com/SUC-DriverOld/so-vits-svc-webUI-QuickStart-bat) 欢迎使用！
 
-## 点击前往：[本文档配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 注意：配套视频可能较老，仅供参考，一切以最新教程文档为准。
+点击前往：[本文档配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 注意：配套视频可能较老，仅供参考，一切以最新教程文档为准。
 
 - [✅0. 用前须知](#0-用前须知)
   - [0.0 任何国家，地区，组织和个人使用此项目必须遵守以下法律](#00-任何国家地区组织和个人使用此项目必须遵守以下法律)
