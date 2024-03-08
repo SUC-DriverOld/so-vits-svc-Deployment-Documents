@@ -1,74 +1,34 @@
+<div align="center">
+
+# SoftVC VITS Singing Voice Conversion 本地部署教程
+
+**最后更新时间：2024.3.8，本次更新结束，文档和教程视频进入【暂停维护】状态**
+
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
-撰写：Sucial [点击跳转 B 站主页](https://space.bilibili.com/445022409)
 
-**写在开头：如需 so-vits-svc3.0 版本的教程，请切换至 [3.0 分支](https://github.com/SUC-DriverOld/so-vits-svc-Chinese-Detaild-Documents/tree/3.0)**
+撰写：Sucial | 点击跳转 [Bilibili 主页](https://space.bilibili.com/445022409)
 
-**相关教程和参考资料**
-[官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [一些报错的解决办法（来自 B 站 up：**羽毛布団**）](https://www.bilibili.com/read/cv22206231) | [本文档配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)
+</div>
 
-**文档的持续完善**：若遇到本文档内未提到的报错，您可以在 issues 中提问；若遇到项目 bug，请给原项目提 issues；想要更加完善这份教程，欢迎来给教程提 pr！
+✨ **我写的一个 so-vits-svc 一键配置环境，启动 webUI 的脚本：[so-vits-svc-webUI-QuickStart-bat](https://github.com/SUC-DriverOld/so-vits-svc-webUI-QuickStart-bat) 欢迎使用！**
 
----
+✨ **点击前往：[配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5 人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)（注意：配套视频可能较老，仅供参考，一切以最新教程文档为准！）**
 
-## 最后更新时间：2024.3.5。本次更新结束，文档和教程视频进入【暂停维护】状态。
+✨ **相关资料：[官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [一些报错的解决办法](https://www.bilibili.com/read/cv22206231) | [羽毛布団大佬的整合包](https://space.bilibili.com/3493141443250876) (B 站主页)**
 
-✨ 我写的一个 so-vits-svc 一键配置环境，启动 webUI 的脚本：[so-vits-svc-webUI-QuickStart-bat](https://github.com/SUC-DriverOld/so-vits-svc-webUI-QuickStart-bat) 欢迎使用！
+> [!NOTE]
+>
+> **关于旧版本教程**：如需 so-vits-svc3.0 版本的教程，请切换至 [3.0 分支](https://github.com/SUC-DriverOld/so-vits-svc-Chinese-Detaild-Documents/tree/3.0)。此分支教程已停止更新！
+>
+> **文档的持续完善**：若遇到本文档内未提到的报错，您可以在 issues 中提问；若遇到项目 bug，请给原项目提 issues；想要更加完善这份教程，欢迎来给提 pr！
 
-✨ 点击前往：[本文档配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 注意：配套视频可能较老，仅供参考，一切以最新教程文档为准。
+# 教程目录
 
-# ✅SoftVC VITS Singing Voice Conversion 教程目录
+# 0. 用前须知
 
-- [✅0. 用前须知](#0-用前须知)
-  - [0.0 任何国家，地区，组织和个人使用此项目必须遵守以下法律](#00-任何国家地区组织和个人使用此项目必须遵守以下法律)
-  - [0.1 硬件需求](#01-硬件需求)
-  - [0.2 提前准备](#02-提前准备)
-  - [0.3 训练周期](#03-训练周期)
-- [✅1. 环境依赖](#1-环境依赖)
-  - [1.1 Cuda](#11-cuda)
-  - [1.2 Python](#12-python)
-  - [1.3 Pytorch](#13-pytorch)
-  - [1.4 安装依赖](#14-安装依赖)
-  - [1.5 FFmpeg](#15-ffmpeg)
-- [✅2. 配置及训练（参考官方文档）](#2-配置及训练参考官方文档)
-  - [2.0 关于兼容 4.0 模型的问题](#20-关于兼容-40-模型的问题)
-  - [2.1 关于 Python 版本问题](#21-关于-python-版本问题)
-  - [2.2 预先下载的模型文件](#22-预先下载的模型文件)
-    - [必须项](#必须项)
-    - [可选项(强烈建议使用)](#可选项强烈建议使用)
-    - [可选项(根据情况选择)](#可选项根据情况选择)
-  - [2.3 数据集准备](#23-数据集准备)
-  - [2.4 数据预处理](#24-数据预处理)
-    - [2.4.0 音频切片](#240-音频切片)
-    - [2.4.1 重采样至 44100Hz 单声道](#241-重采样至-44100hz-单声道)
-    - [2.4.2 自动划分训练集、验证集，以及自动生成配置文件](#242-自动划分训练集-验证集以及自动生成配置文件)
-    - [2.4.3 生成 hubert 与 f0](#243-生成-hubert-与-f0)
-  - [2.5 训练](#25-训练)
-    - [2.5.1 扩散模型（可选）](#251-扩散模型可选)
-    - [2.5.2 主模型训练](#252-主模型训练)
-- [✅3. 推理（参考官方文档）](#3-推理参考官方文档)
-  - [3.1 命令行推理](#31-命令行推理)
-  - [3.2 WebUI 推理](#32-webui-推理)
-- [✅4. 增强效果的可选项](#4-增强效果的可选项)
-  - [自动 f0 预测](#自动-f0-预测)
-  - [聚类音色泄漏控制](#聚类音色泄漏控制)
-  - [特征检索](#特征检索)
-- [✅5.其他可选项](#5其他可选项)
-  - [5.1 模型压缩](#51-模型压缩)
-  - [5.2 声线混合](#52-声线混合)
-    - [5.2.1 静态声线混合](#521-静态声线混合)
-    - [5.2.2 动态声线混合](#522-动态声线混合)
-  - [5.3 Onnx 导出](#53-onnx-导出)
-- [✅6. 简单混音处理及成品导出](#6-简单混音处理及成品导出)
-- [✅ 附录：常见报错的解决办法](#-附录常见报错的解决办法)
-- [✅感谢名单](#感谢名单)
+### 任何国家，地区，组织和个人使用此项目必须遵守以下法律
 
-# SoftVC VITS Singing Voice Conversion 教程
-
-# ✅0. 用前须知
-
-## 0.0 任何国家，地区，组织和个人使用此项目必须遵守以下法律
-
-### 《民法典》
+#### 《民法典》
 
 #### 第一千零一十九条
 
@@ -83,128 +43,105 @@
 
 【作品侵害名誉权】行为人发表的文学、艺术作品以真人真事或者特定人为描述对象，含有侮辱、诽谤内容，侵害他人名誉权的，受害人有权依法请求该行为人承担民事责任。行为人发表的文学、艺术作品不以特定人为描述对象，仅其中的情节与该特定人的情况相似的，不承担民事责任。
 
-#### 《[中华人民共和国宪法](http://www.gov.cn/guoqing/2018-03/22/content_5276318.htm)》
+#### 《[中华人民共和国宪法](http://www.gov.cn/guoqing/2018-03/22/content_5276318.htm)》|《[中华人民共和国刑法](http://gongbao.court.gov.cn/Details/f8e30d0689b23f57bfc782d21035c3.html?sw=中华人民共和国刑法)》|《[中华人民共和国民法典](http://gongbao.court.gov.cn/Details/51eb6750b8361f79be8f90d09bc202.html)》|《[中华人民共和国合同法](http://www.npc.gov.cn/zgrdw/npc/lfzt/rlyw/2016-07/01/content_1992739.htm)》
 
-#### 《[中华人民共和国刑法](http://gongbao.court.gov.cn/Details/f8e30d0689b23f57bfc782d21035c3.html?sw=中华人民共和国刑法)》
+## 0.1 使用规约
 
-#### 《[中华人民共和国民法典](http://gongbao.court.gov.cn/Details/51eb6750b8361f79be8f90d09bc202.html)》
+> [!WARNING]
+>
+> 1. **本教程仅供交流与学习使用，请勿用于违法违规或违反公序良德等不良用途。出于对音源提供者的尊重请勿用于鬼畜用途**
+> 2. **继续使用视为已同意本教程所述相关条例，本教程已进行劝导义务，不对后续可能存在问题负责**
+> 3. **请自行解决数据集授权问题，禁止使用非授权数据集进行训练！任何由于使用非授权数据集进行训练造成的问题，需自行承担全部责任和后果！与仓库、仓库维护者、svc develop team、教程发布者无关！**
 
-#### 本教程仅供交流与学习使用，请勿用于违法违规或违反公序良德等不良用途
+具体使用规约如下：
 
-#### 出于对音源提供者的尊重请勿用于鬼畜用途
+- 本教程内容仅代表个人，均不代表 so-vits-svc 团队及原作者观点
+- 本教程默认使用由 so-vits-svc 团队维护的仓库，涉及到的开源代码请自行遵守其开源协议
+- 任何发布到视频平台的基于 sovits 制作的视频，都必须要在简介明确指明用于变声器转换的输入源歌声、音频，例如：使用他人发布的视频或音频，通过分离的人声作为输入源进行转换的，必须要给出明确的原视频、音乐链接；若使用是自己的人声，或是使用其他歌声合成引擎合成的声音作为输入源进行转换的，也必须在简介加以说明。
+- 请确保你制作数据集的数据来源合法合规，且数据提供者明确你在制作什么以及可能造成的后果。由输入源造成的侵权问题需自行承担全部责任和一切后果。使用其他商用歌声合成软件作为输入源时，请确保遵守该软件的使用条例。注意，许多歌声合成引擎使用条例中明确指明不可用于输入源进行转换！
+- 云端训练和推理部分可能涉及资金使用，如果你是未成年人，请在获得监护人的许可与理解后进行，未经许可引起的后续问题，本教程概不负责
+- 本地训练（尤其是在硬件较差的情况下）可能需要设备长时间高负荷运行，请做好设备养护和散热措施
+- 出于设备原因，本教程仅在 Windows 系统下进行过测试，Mac 和 Linux 请确保自己有一定解决问题能力
+- 继续使用视为已同意本仓库 README 所述相关条例，本仓库 README 已进行劝导义务，不对后续可能存在问题负责。
 
-### 0.0.1. 继续使用视为已同意本教程所述相关条例，本教程已进行劝导义务，不对后续可能存在问题负责。
+## 0.2 硬件需求
 
-1. 本教程内容**仅代表个人**，均不代表 so-vits-svc 团队及原作者观点
-2. 本教程涉及到的开源代码请自行**遵守其开源协议**
-3. 本教程默认使用由**so-vits-svc 团队维护**的仓库
-4. 若制作视频发布，**推荐注明**使用项目的**Github**链接，tag**推荐**使用**so-vits-svc**以便和其他基于技术进行区分
-5. 云端训练和推理部分可能涉及资金使用，如果你是**未成年人**，请在**获得监护人的许可与理解后**进行，未经许可引起的后续问题，本教程**概不负责**
-6. 本地训练（尤其是在硬件较差的情况下）可能需要设备长时间**高负荷**运行，请做好设备养护和散热措施
-7. 请确保你制作数据集的数据来源**合法合规**，且数据提供者明确你在制作什么以及可能造成的后果
-8. 出于设备原因，本教程仅在**Windows**系统下进行过测试，Mac 和 Linux 请确保自己有一定解决问题能力
-9. 该项目为**歌声合成**项目，**无法**进行其他用途，请知悉
+1. 训练**必须使用** GPU 进行训练！推理目前分为**命令行推理**和**WebUI 推理**，对速度要求不高的话 CPU 和 GPU 均可使用。
+2. 如需自己训练，请准备至少 **6G 以上专用显存的 NVIDIA 显卡**。
+3. **云端训练建议使用 [AutoDL](https://www.autodl.com/home) 平台**。常见的显卡有： V100（16G）、V100（32G）、A100（40G）、A100（80G）、RTX3090、RTX4080、RTX4090 等显卡。
 
-### 0.0.2. 声明
+## 0.3 提前准备
 
-本项目为开源、离线的项目，SvcDevelopTeam 的所有成员与本项目的所有开发者以及维护者（以下简称贡献者）对本项目没有控制力。本项目的贡献者从未向任何组织或个人提供包括但不限于数据集提取、数据集加工、算力支持、训练支持、推理等一切形式的帮助；本项目的贡献者不知晓也无法知晓使用者使用该项目的用途。故一切基于本项目训练的 AI 模型和合成的音频都与本项目贡献者无关。一切由此造成的问题由使用者自行承担。
+1. **至少**准备约 150 条 8s（约 30 分钟**持续说话**时长，即约 1.0 小时**正常说话**）左右时长的**干净**人声（**无底噪，无混响**）作为训练集。并且最好保持说话者**情绪起伏波动较小**，人声**响度合适**，并且做好**响度匹配**。
+2. 请提前下载训练需要用到的**底模**（**挺重要的**）
+3. 推理：需准备**底噪<30dB**，尽量**不要带过多混响和和声**的**干音**进行推理
 
-此项目完全离线运行，不能收集任何用户信息或获取用户输入数据。因此，这个项目的贡献者不知道所有的用户输入和模型，因此不负责任何用户输入。
+> [!NOTE]
+>
+> **须知 1**：歌声和语音都可以作为训练集，但语音作为训练集可能使**高音和低音推理出现问题（俗称音域问题/哑音）**（即缺少高低音训练样本），你可以尝试在训练集中**掺杂歌声和语音**，效果会略有提升，但最好的方法是**补充高音训练数据**。
+>
+> **须知 2**：推理女声歌曲时，建议用女声训练模型，同理男声也类似（否则你可能根本唱不上去或唱不下来，此时只能升调或降调推理）。
+>
+> **✨ 2024.3.8 最新建议 ✨**：目前 [GPT-SoVITS](https://github.com/RVC-Boss/GPT-SoVITS) 项目的 TTS 与 so-vits-svc 的文字转语音相比，训练集需求量更小，训练速度更快，效果更好，所以此处建议若想使用语音生成功能，请移步 [GPT-SoVITS](https://github.com/RVC-Boss/GPT-SoVITS)。也因此，建议大家使用歌声素材作为训练集来训练本项目。
 
-本项目只是一个框架项目，本身并没有语音合成的功能，所有的功能都需要用户自己训练模型。同时，这个项目没有任何模型，任何二次分发的项目都与这个项目的贡献者无关。
+# 1. 环境依赖
 
-### 0.0.3. 使用规约
+✨ **本项目需要的环境**：[NVIDIA-CUDA](https://developer.nvidia.com/cuda-toolkit) | [Python](https://www.python.org/) = 3.8.9（项目建议此版本） | [Pytorch](https://pytorch.org/get-started/locally/) | [FFmpeg](https://ffmpeg.org/)
 
-### Warning：请自行解决数据集授权问题，禁止使用非授权数据集进行训练！任何由于使用非授权数据集进行训练造成的问题，需自行承担全部责任和后果！与仓库、仓库维护者、svc develop team、教程发布者 无关
+✨ **提醒：现已添加 conda 环境配置文件 Sovits.yaml，会使用 conda 的可以通过该配置文件一件配置环境**（环境使用 torch：2.0.1+cu117），**请从 code 处下载**。
 
-1. 本项目是基于学术交流目的建立，仅供交流与学习使用，并非为生产环境准备。
-2. 任何发布到视频平台的基于 sovits 制作的视频，都必须要在简介明确指明用于变声器转换的输入源歌声、音频，例如：使用他人发布的视频 / 音频，通过分离的人声作为输入源进行转换的，必须要给出明确的原视频、音乐链接；若使用是自己的人声，或是使用其他歌声合成引擎合成的声音作为输入源进行转换的，也必须在简介加以说明。
-3. 由输入源造成的侵权问题需自行承担全部责任和一切后果。使用其他商用歌声合成软件作为输入源时，请确保遵守该软件的使用条例，注意，许多歌声合成引擎使用条例中明确指明不可用于输入源进行转换！
-4. 禁止使用该项目从事违法行为与宗教、政治等活动，该项目维护者坚决抵制上述行为，不同意此条则禁止使用该项目。
-5. 继续使用视为已同意本仓库 README 所述相关条例，本仓库 README 已进行劝导义务，不对后续可能存在问题负责。
-6. 如果将此项目用于任何其他企划，请提前联系并告知本仓库作者，十分感谢。
-
-## 0.1 硬件需求
-
-1. 推理目前分为**命令行推理**和**WebUI 推理**，对速度要求不高的话 CPU 和 GPU 均可使用
-2. 至少需要**6G 以上**显存的**NVIDIA 显卡**（如 RTX3060）
-3. 云端一般常见的为 V100（16G）、V100（32G）、A100（40G）、A100（80G）等显卡，部分云端提供 RTX3090 等显卡
-
-## 0.2 提前准备
-
-1. **至少**准备 200 条 8s（约 30 分钟**持续说话**时长，即约 1.5 小时**正常说话**采样）左右时长的**干净**人声（**无底噪，无混响**）作为训练集。并且最好保持说话者**情绪起伏波动较小**，人声**响度合适**，并且做好**响度匹配**
-2. 请提前准备训练需要用到的**底模**（**挺重要的**）
-3. **须知**：歌声作为训练集**只能**用来推理歌声，但语音作为训练集即可以推理歌声，也可以用来生成 TTS。但用语音作为训练集可能使**高音和低音推理出现问题**（即缺少高低音训练样本），有一种可行的解决方法是模型融合。
-4. 推理：需准备**底噪<30dB**，尽量**不要带过多混响和和声**的**干音**进行推理
-5. **须知**：推理女声歌曲时，建议用女声训练模型，同理男声也类似
-
-## 0.3 训练周期
-
-在**有底模**的前提下，选取**500 条音频**作为训练集，经多次测试（RTX3060 Laptop,专用显存6G， `batch_size = 3`）得到以下结论：
-
-1. 模型训练步数 10w+（若每晚训练约 8 小时，需要约 3 晚+）
-2. 模型训练步数 2w-3w（若每晚训练约 8 小时，需要约 1 晚）
-3. 模型训练步数 5w-8w（若每晚训练约 8 小时，需要约 2-3 晚）
-
-**模型怎样才算训练好了**？
-
-1. 这是一个非常无聊且没有意义的问题。就好比上来就问老师我家孩子怎么才能学习好，除了你自己，没有人能回答这个问题。
-2. 模型的训练关联于你的数据集质量、时长，所选的编码器、f0 算法，甚至一些超自然的玄学因素，即便你有一个成品模型，最终的转换效果也要取决于你的输入源以及推理参数。这不是一个线性的的过程，之间的变量实在是太多，所以你非得问“为什么我的模型出来不像啊”、“模型怎样才算训练好了”这样的问题，我只能说 WHO F**KING KNOWS?
-3. 但也不是一点办法没有，只能烧香拜佛了。我不否认烧香拜佛当然是一个有效的手段，但你也可以借助一些科学的工具，例如 Tensorboard 等，下一段就将教你怎么通过看 Tensorboard 来辅助了解训练状态，当然，最强的辅助工具其实长在你自己身上，一个声学模型怎样才算训练好了? 塞上耳机，让你的耳朵告诉你吧
-
-# ✅1. 环境依赖
-
-**本项目需要的环境**：NVIDIA-CUDA | Python = 3.8.9 | Pytorch | FFmpeg
-**注意：现已添加conda环境配置文件Sovits.yaml，会使用conda的可以通过该配置文件一件配置环境**（环境使用torch：2.0.1+cu117），**请从code处下载**。
+✨ **我写的一个 so-vits-svc 一键配置环境，启动 webUI 的脚本：[so-vits-svc-webUI-QuickStart-bat](https://github.com/SUC-DriverOld/so-vits-svc-webUI-QuickStart-bat) 也可以尝试使用！**
 
 ## 1.1 Cuda
 
-- 在 cmd 控制台里输入`nvidia-smi.exe`以查看显卡驱动版本和对应的 cuda 版本
+- 在 cmd 控制台里输入 `nvidia-smi.exe` 以查看显卡驱动版本和对应的 cuda 版本
 
-- 前往 [NVIDIA-Developer](https://developer.nvidia.com/) 官网下载与系统**对应**的 Cuda 版本
-- **此处强烈建议CUDA版本选择11.7，测试下来最稳定**
-
-  以`Cuda-11.7`版本为例（**注：本文下述所有配置均在`Cuda-11.7`下演示**）[Cuda11.7 下载地址](https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local) 根据自己的系统和需求选择安装（一般本地 Windows 用户请依次选择`Windows`, `x86_64`, `系统版本`, `exe(local)`）
-
+- 前往 [NVIDIA-CUDA](https://developer.nvidia.com/cuda-toolkit) 官网下载与系统**对应**的 Cuda 版本
+- 以`Cuda-11.7`版本为例（本文下述所有配置均使用`Cuda-11.7`）[点击此处下载 cuda11.7](https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local) 根据自己的系统和需求选择安装（一般本地 Windows 用户请依次选择`Windows`, `x86_64`, `系统版本`, `exe(local)`）
 
 - 安装成功之后在 cmd 控制台中输入`nvcc -V`, 出现类似以下内容则安装成功：
 
 ```shell
-    nvcc: NVIDIA (R) Cuda compiler driver
-    Copyright (c) 2005-2022 NVIDIA Corporation
-    Built on Tue_May__3_19:00:59_Pacific_Daylight_Time_2022
-    Cuda compilation tools, release 11.7, V11.7.64
-    Build cuda_11.7.r11.7/compiler.31294372_0
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2022 NVIDIA Corporation
+Built on Tue_May__3_19:00:59_Pacific_Daylight_Time_2022
+Cuda compilation tools, release 11.7, V11.7.64
+Build cuda_11.7.r11.7/compiler.31294372_0
 ```
 
-#### **特别注意！**
-
-- Cuda需要与下方 1.3 Pytorch版本相匹配
-- 卸载方法：打开控制面板-程序-卸载程序，将带有`NVIDIA CUDA`的程序全部卸载即可（一共 5 个）
+> [!NOTE]
+>
+> 1. `nvidia-smi.exe` 中显示的 CUDA 版本号具有向下兼容性。例如我显示的是 12.4，但我可以安装 <=12.4 的任意版本 CUDA 版本进行安装。**但此处测试下来，需要选择 >=11.7 的版本进行安装**。
+> 2. CUDA 需要与下方 1.3 Pytorch 版本相匹配（其实不适配也问题不大，**只要能被调用到就行**）
+> 3. CUDA 卸载方法：打开控制面板-程序-卸载程序，将带有 `NVIDIA CUDA` 的程序全部卸载即可（一共 5 个）
 
 ## 1.2 Python
 
-- 前往 [Python 官网](https://www.python.org/) 下载 Python3.8.9（若使用conda配置python遇到没有3.8.9版本也可以直接输入3.8）详细安装方法以及添加 Path 此处省略，网上随便一查都有）
+- 前往 [Python 官网](https://www.python.org/) 下载 Python3.8.9 安装并添加系统环境变量。（若使用 conda 配置 python 遇到没有 3.8.9 版本也可以直接选择 3.8）详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述。
+
+```shell
+# conda配置方法, 将YOUR_ENV_NAME替换成你想要创建的虚拟环境名字。
+conda create -n YOUR_ENV_NAME python=3.8 -y
+conda activate YOUR_ENV_NAME
+```
+
 - 安装完成后在 cmd 控制台中输入`python`出现类似以下内容则安装成功：
 
 ```shell
-    Python 3.8.9（tags/v3.8.9:9d38120, Mar 23 2022, 23:13:41) [MSC v.1929 64 bit (AMD64)] on win32
-    Type "help", "copyright", "credits" or "license" for more information.
-    >>>
+Python 3.8.9 (tags/v3.8.9:9d38120, Mar 23 2022, 23:13:41) [MSC v.1929 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
 ```
 
-**注：关于 Python 版本问题**
-
-在进行测试后，我们认为Python 3.8.9能够稳定地运行该项目
-(但不排除高版本也可以运行)
+**关于 Python 版本问题**：在进行测试后，我们认为 Python 3.8.9 能够稳定地运行该项目(但不排除高版本也可以运行)。
 
 - 配置 python 下载镜像源（有国外网络条件可跳过）
-  在 cmd 控制台依次执行
+  在 cmd 控制台执行
 
 ```shell
-    # 设置清华大学下载镜像
-    pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-    pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn
+# 设置清华大学下载镜像
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn
 ```
 
 - 如果想要还原为默认源，类似的，你仅需要在控制台执行
@@ -213,73 +150,78 @@
 pip config set global.index-url https://pypi.python.org/simple
 ```
 
-- 以下是一些国内常用的镜像源
+**python 国内常用镜像源**：
 
-**python国内镜像源**
-- 清华: https://pypi.tuna.tsinghua.edu.cn/simple
-- 阿里云: https://mirrors.aliyun.com/pypi/simple/
-- 中国科技大学: https://pypi.mirrors.ustc.edu.cn/simple/
-- 华中科技大学: http://pypi.hustunique.com/
-- 山东理工大学: http://pypi.sdutlinux.org/
+- 清华: <https://pypi.tuna.tsinghua.edu.cn/simple>
+- 阿里云: <https://mirrors.aliyun.com/pypi/simple/>
 
 ```shell
 # 临时更换
-pip install package -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install PACKAGE_NAME -i https://pypi.tuna.tsinghua.edu.cn/simple
 # 永久更换
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ## 1.3 Pytorch
 
-- 经过多次实验测得，pytorch2.0.1+cu117为稳定版本，所以此处**强烈建议安装CUDA11.7的Pytorch**
+- 经过多次实验测得，pytorch2.0.1+cu117 为稳定版本，高版本请自己尝试。
 
-- 首先我们需要**单独安装**`torch`, `torchaudio`, `torchvision`这三个库，直接前往 [Pytorch 官网](https://pytorch.org/get-started/locally/) 选择所需版本然后复制 Run this Command 栏显示的命令至 cmd 安装
-- 如需手动指定`torch`的版本在其后面添加版本号即可，例如`…… torch==2.1.0 ……`
-- 由于版本更新，11.7的Pytorch可能复制不到下载链接，此时可以复制下方的安装命令进行安装。
+- 首先我们需要 **单独安装** `torch`, `torchaudio`, `torchvision` 这三个库，直接前往 [Pytorch 官网](https://pytorch.org/get-started/locally/) 选择所需版本然后复制 Run this Command 栏显示的命令至控制台安装即可。
 
-```shell
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
-```
-
-- 安装完`torch`, `torchaudio`, `torchvision`这三个库之后，在 cmd 控制台运用以下命令检测 cuda 与 torch 版本是否匹配
+- 安装完 `torch`, `torchaudio`, `torchvision` 这三个库之后，在 cmd 控制台运用以下命令检测 torch 能否成功调用 CUDA。最后一行出现 `True` 则成功，出现`False` 则失败，需要重新安装正确的版本。
 
 ```shell
-    python
-    # 回车运行
-    import torch
-    # 回车运行
-    print(torch.cuda.is_available())
-    # 回车运行
+python
+# 回车运行
+import torch
+# 回车运行
+print(torch.cuda.is_available())
+# 回车运行
 ```
 
-- 最后一行出现`True`则成功，出现`False`则失败，需要重新安装
-
-## 1.4 安装依赖
-
-- 在项目文件夹内右击空白处选择 **在终端中打开** 并执行下面命令以安装库（若出现报错请尝试用`pip install [库名称]`重新单独安装直至成功）
-- **注意，项目文件夹内含有三个 requirements 的 txt 分别对应不同系统和需求，请根据需求选择其中一个**（没什么特殊需求并且是 windows 系统的话选 requirements_win.txt）
+> [!NOTE]
+>
+> 1. 如需手动指定 `torch` 的版本在其后面添加版本号即可，例如 `pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu117`
+> 2. 安装 CUDA=11.7 的 Pytorch 时，可能会遇到报错 `ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9`。此时，请先 `pip install networkx==3.0` 之后再进行 Pytorch 的安装。
+> 3. 由于版本更新，11.7 的 Pytorch 可能复制不到下载链接，此时你可以直接复制下方的安装命令进行安装。
 
 ```shell
-    pip install -r requirements_win.txt
+pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu117
 ```
 
-确保安装正确无误后请更新以下三个依赖：
+## 1.4 其他依赖项安装
+
+- 在项目文件夹内右击空白处选择 **在终端中打开** 。
+- 使用下面的命令先更新一下 `pip`, `wheel`, `setuptools` 这三个包。
+
+```shell
+pip install --upgrade pip wheel setuptools
+```
+
+- 执行下面命令以安装库（**若出现报错请多次尝试直到没有报错，依赖全部安装完成**）。注意，项目文件夹内含有三个 requirements 的 txt ，此处选择 `requirements_win.txt`）
+
+```shell
+pip install -r requirements_win.txt
+```
+
+- 确保安装 **正确无误** 后请使用下方命令更新 `fastapi`, `gradio`, `pydantic` 这三个依赖：
 
 ```shell
 pip install --upgrade fastapi==0.84.0
-pip install --upgrade gradio==3.41.2
 pip install --upgrade pydantic==1.10.12
+pip install --upgrade gradio==3.41.2
 ```
 
-### 关于 fairseq 安装不了的问题，windows 的解决方案如下
-
-- 第一步：更新 pip 到最新版
-- 第二步：安装 visual studio 2022，社区版就行，然后组件里装“使用 c++的桌面开发”。全部安装完成之后再重新 pip install farseq 即可完成安装
+> [!NOTE]
+>
+> 关于 fairseq 安装不了的问题，windows 的解决方案如下：
+>
+> 第一步：更新 pip 到最新版。第二步：安装 visual studio 2022，社区版就行，然后组件里装“使用 c++的桌面开发”。全部安装完成之后再重新 `pip install farseq` 即可完成安装。
 
 ## 1.5 FFmpeg
 
-- 前往 [FFmpeg 官网](https://ffmpeg.org/) 下载。解压至任意位置并在高级系统设置-环境变量中添加 Path 定位至`.\ffmpeg\bin`（详细安装方法以及添加 Path 此处省略，网上随便一查都有）
-- 安装完成后在 cmd 控制台中输入`ffmpeg -version`出现类似以下内容则安装成功
+- 前往 [FFmpeg 官网](https://ffmpeg.org/) 下载。解压至任意位置并在高级系统设置-环境变量中添加 Path 。定位至 `.\ffmpeg\bin`（详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述）
+- 安装完成后在 cmd 控制台中输入 `ffmpeg -version` 出现类似以下内容则安装成功：
 
 ```shell
 ffmpeg version git-2020-08-12-bb59bdb Copyright (c) 2000-2020 the FFmpeg developers
@@ -287,30 +229,31 @@ built with gcc 10.2.1 (GCC) 20200805
 configuration: [此处省略一大堆内容]
 libavutil      56. 58.100 / 56. 58.100
 libavcodec     58.100.100 / 58.100.100
-...
+...[此处省略一大堆内容]
 ```
 
-# ✅2. 配置及训练（参考官方文档）
+# 2. 配置及训练
 
-## 2.0 关于兼容 4.0 模型的问题
+## 2.1 关于兼容 4.0 模型的问题
 
-- 可通过修改 4.0 模型的 config.json 对 4.0 的模型进行支持，需要在 config.json 的 model 字段中添加 speech_encoder 字段，具体见下
+- 你可以通过修改 4.0 模型的 config.json 对 4.0 的模型进行支持。需要在 config.json 的 model 字段中添加 speech_encoder 字段，具体如下：
 
-```
-  "model": {
-    .........
+```shell
+  "model":
+  {
+    # 省略其他内容
+
+    # "ssl_dim"，填256或者768，需要和下面"speech_encoder"匹配
     "ssl_dim": 256,
+    # 说话人个数
     "n_speakers": 200,
+    # 或者"vec768l12"，但请注意此项的值要和上面的"ssl_dim"相互匹配。即256对应vec256l9，768对应vec768l12。
     "speech_encoder":"vec256l9"
+    # 如果不知道自己的模型是vec768l12还是vec256l9，可以看"gin_channels"字段的值来确认。
+
+    # 省略其他内容
   }
 ```
-
-## 2.1 关于 Python 版本问题
-
-在进行测试后，我们认为`Python 3.8.9`能够稳定地运行该项目
-(但不排除高版本也可以运行)
-
-配置及训练
 
 ## 2.2 预先下载的模型文件
 
@@ -329,12 +272,6 @@ libavcodec     58.100.100 / 58.100.100
 
 - contentvec ：[hubert_base.pt](https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt)
   - 将文件名改为`checkpoint_best_legacy_500.pt`后，放在`pretrain`目录下
-
-```shell
-# contentvec
-wget -P pretrain/ http://obs.cstcloud.cn/share/obs/sankagenkeshi/checkpoint_best_legacy_500.pt
-# 也可手动下载放在pretrain目录
-```
 
 ##### **2. 若使用 hubertsoft 作为声音编码器**
 
@@ -391,11 +328,13 @@ wget -P pretrain/ http://obs.cstcloud.cn/share/obs/sankagenkeshi/checkpoint_best
 虽然底模一般不会引起什么版权问题，但还是请注意一下，比如事先询问作者，又或者作者在模型描述中明确写明了可行的用途
 
 **提供 4.1 训练底模，需自行下载（需具备外网条件）**:
-- 下载地址1：官方Huggingface下载 [D_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_D_320000.pth) [G_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_G_320000.pth) [model_0.pt](https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/resolve/main/fix_pitch_add_vctk_600k/model_0.pt)
-- 下载地址2：[点击跳转下载](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model) 包含扩散模型训练底模
-- 下载地址3：[百度网盘转存](https://pan.baidu.com/s/17IlNuphFHAntLklkMNtagg?pwd=dkp9) 此处不更新，随时可能落后
+
+- 下载地址 1：官方 Huggingface 下载 [D_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_D_320000.pth) [G_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_G_320000.pth) [model_0.pt](https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/resolve/main/fix_pitch_add_vctk_600k/model_0.pt)
+- 下载地址 2：[点击跳转下载](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model) 包含扩散模型训练底模
+- 下载地址 3：[百度网盘转存](https://pan.baidu.com/s/17IlNuphFHAntLklkMNtagg?pwd=dkp9) 此处不更新，随时可能落后
 
 **提供 3.0 训练底模，需自行下载**
+
 - 下载地址：[百度网盘转存](https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo)
 
 #### **可选项(根据情况选择)**
@@ -406,23 +345,22 @@ wget -P pretrain/ http://obs.cstcloud.cn/share/obs/sankagenkeshi/checkpoint_best
 
 - 预训练的 NSF-HIFIGAN 声码器 ：[nsf_hifigan_20221211.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip)
   - 解压后，将四个文件放在`pretrain/nsf_hifigan`目录下
- 
+
 ##### RMVPE
 
-如果使用`rmvpe`F0预测器的话，需要下载预训练的 RMVPE 模型
+如果使用`rmvpe`F0 预测器的话，需要下载预训练的 RMVPE 模型
 
 - 下载模型[rmvpe.zip](https://github.com/yxlllc/RMVPE/releases/download/230917/rmvpe.zip)，目前首推该权重。
   - 解压缩`rmvpe.zip`，并将其中的`model.pt`文件改名为`rmvpe.pt`并放在`pretrain`目录下
 
 ##### FCPE(预览版)
 
-- [FCPE(Fast Context-base Pitch Estimator)](https://github.com/CNChTu/MelPE)是由svc-develop-team自主研发的一款全新的F0预测器，是一个为实时语音转换所设计的专用F0预测器，他将在未来成为Sovits实时语音转换的首选F0预测器.（论文未来会有的）
+- [FCPE(Fast Context-base Pitch Estimator)](https://github.com/CNChTu/MelPE)是由 svc-develop-team 自主研发的一款全新的 F0 预测器，是一个为实时语音转换所设计的专用 F0 预测器，他将在未来成为 Sovits 实时语音转换的首选 F0 预测器.（论文未来会有的）
 
-如果使用 `fcpe` F0预测器的话，需要下载预训练的 FCPE 模型
+如果使用 `fcpe` F0 预测器的话，需要下载预训练的 FCPE 模型
 
 - 下载模型 [fcpe.pt](https://huggingface.co/datasets/ylzz1997/rmvpe_pretrain_model/resolve/main/fcpe.pt)
   - 放在`pretrain`目录下
-
 
 ## 2.3 数据集准备
 
@@ -512,25 +450,25 @@ python preprocess_flist_config.py --speech_encoder vec768l12 --vol_aug
 
 ##### config.json
 
-* `keep_ckpts`：训练时保留最后几个模型，`0`为保留所有，默认只保留最后`3`个
+- `keep_ckpts`：训练时保留最后几个模型，`0`为保留所有，默认只保留最后`3`个
 
-* `all_in_mem`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
+- `all_in_mem`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
 
-* `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
+- `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
 
-* `vocoder_name` : 选择一种声码器，默认为`nsf-hifigan`.
+- `vocoder_name` : 选择一种声码器，默认为`nsf-hifigan`.
 
 ##### diffusion.yaml
 
-* `cache_all_data`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
+- `cache_all_data`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
 
-* `duration`：训练时音频切片时长，可根据显存大小调整，**注意，该值必须小于训练集内音频的最短时间！**
+- `duration`：训练时音频切片时长，可根据显存大小调整，**注意，该值必须小于训练集内音频的最短时间！**
 
-* `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
+- `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
 
-* `timesteps` : 扩散模型总步数，默认为 1000.
+- `timesteps` : 扩散模型总步数，默认为 1000.
 
-* `k_step_max` : 训练时可仅训练`k_step_max`步扩散以节约训练时间，注意，该值必须小于`timesteps`，0 为训练整个扩散模型，**注意，如果不训练整个扩散模型将无法使用仅扩散模型推理！**
+- `k_step_max` : 训练时可仅训练`k_step_max`步扩散以节约训练时间，注意，该值必须小于`timesteps`，0 为训练整个扩散模型，**注意，如果不训练整个扩散模型将无法使用仅扩散模型推理！**
 
 ##### **声码器列表**
 
@@ -584,7 +522,15 @@ python train_diff.py -c configs/diffusion.yaml
 python train.py -c configs/config.json -m 44k
 ```
 
-模型训练结束后，模型文件保存在`logs/44k`目录下，扩散模型在`logs/44k/diffusion`下
+模型训练结束后，模型文件保存在`logs/44k`目录下，扩散模型在`logs/44k/diffusion`下。
+
+> [!NOTE]
+>
+> **模型怎样才算训练好了**？
+>
+> 1. 这是一个非常无聊且没有意义的问题。就好比上来就问老师我家孩子怎么才能学习好，除了你自己，没有人能回答这个问题。
+> 2. 模型的训练关联于你的数据集质量、时长，所选的编码器、f0 算法，甚至一些超自然的玄学因素，即便你有一个成品模型，最终的转换效果也要取决于你的输入源以及推理参数。这不是一个线性的的过程，之间的变量实在是太多，所以你非得问“为什么我的模型出来不像啊”、“模型怎样才算训练好了”这样的问题，我只能说 WHO F\*\*KING KNOWS?
+> 3. 但也不是一点办法没有，只能烧香拜佛了。我不否认烧香拜佛当然是一个有效的手段，但你也可以借助一些科学的工具，例如 Tensorboard 等，下一段就将教你怎么通过看 Tensorboard 来辅助了解训练状态，当然，最强的辅助工具其实长在你自己身上，一个声学模型怎样才算训练好了? 塞上耳机，让你的耳朵告诉你吧。
 
 # ✅3. 推理（参考官方文档）
 
@@ -659,7 +605,7 @@ python webUI.py
   - 使用 cpu 性能较好的机器训练
   - 执行`python cluster/train_cluster.py`，模型的输出会在`logs/44k/kmeans_10000.pt`
   - 聚类模型目前可以使用 gpu 进行训练，执行`python cluster/train_cluster.py --gpu`
- 
+
 ```shell
 # CPU
 python cluster/train_cluster.py
@@ -751,11 +697,11 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 # ✅6. 简单混音处理及成品导出
 
-### 使用音频宿主软件处理推理后音频，具体流程比较麻烦，请参考 [配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 或其他更专业的混音教程。
+### 使用音频宿主软件处理推理后音频，具体流程比较麻烦，请参考 [配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5 人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 或其他更专业的混音教程
 
 # ✅ 附录：常见报错的解决办法
 
-**部分报错及解决方法，来自羽毛布団大佬https://www.bilibili.com/read/cv22206231**
+**部分报错及解决方法，来自羽毛布団大佬<https://www.bilibili.com/read/cv22206231>**
 
 ## 关于爆显存
 
@@ -765,22 +711,22 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 OutOfMemoryError: CUDA out of memory.Tried to allocate XX GiB (GPU O: XX GiB total capacity; XX GiB already allocated; XX MiB Free: XX GiB reserved in total by PyTorch)
 ```
 
-不要怀疑，你的显卡显存或虚拟内存不够用了。以下是100%解决问题的解决方法，照着做必能解决。请不要再在各种地方提问这个问题了
+不要怀疑，你的显卡显存或虚拟内存不够用了。以下是 100%解决问题的解决方法，照着做必能解决。请不要再在各种地方提问这个问题了
 
-1. 在报错中找到 XX GiB already allocated 之后，是否显示 0 bytes free，如果是 0 bytes free 那么看第2，3，4步，如果显示 XX MiB free 或者 XX GiB free，看第 5 步
+1. 在报错中找到 XX GiB already allocated 之后，是否显示 0 bytes free，如果是 0 bytes free 那么看第 2，3，4 步，如果显示 XX MiB free 或者 XX GiB free，看第 5 步
 2. 如果是预处理的时候爆显存:
-  a. 换用对显存占用友好的 f0 预测器 (友好度从高到低: pm >= harvest >= rmvpe ≈ fcpe >> crepe)，建议首选 rmvpe 或fcpe
-  b. 多进程预处理改为1
+   a. 换用对显存占用友好的 f0 预测器 (友好度从高到低: pm >= harvest >= rmvpe ≈ fcpe >> crepe)，建议首选 rmvpe 或 fcpe
+   b. 多进程预处理改为 1
 3. 如果是训练的时候爆显存
-  a. 检查数据集有没有过长的切片 (20秒以上）
-  b. 调小批量大小 (batch size)
-  c. 更换一个占用低的项目
-  d. 去 AutoDL 等云算力平台上面租一张大显存的显卡跑
+   a. 检查数据集有没有过长的切片 (20 秒以上）
+   b. 调小批量大小 (batch size)
+   c. 更换一个占用低的项目
+   d. 去 AutoDL 等云算力平台上面租一张大显存的显卡跑
 4. 如果是推理的时候爆显存:
-  a. 推理源 (千声) 不干净 (有残留的混响，伴奏，和声)，导致自动切片切不开。提取干声最佳实践请参考[UVR5歌曲人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)
-  b. 调大切片闽值 (比如-40调成-30，再大就不建议了，你也不想唱一半就被切一刀吧)
-  c. 设置强制切片，从60秒开始尝试，每次减小10秒，直到能成功推理
-  d. 使用 cpu 推理，速度会很慢但是不会爆显存
+   a. 推理源 (千声) 不干净 (有残留的混响，伴奏，和声)，导致自动切片切不开。提取干声最佳实践请参考[UVR5 歌曲人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)
+   b. 调大切片闽值 (比如-40 调成-30，再大就不建议了，你也不想唱一半就被切一刀吧)
+   c. 设置强制切片，从 60 秒开始尝试，每次减小 10 秒，直到能成功推理
+   d. 使用 cpu 推理，速度会很慢但是不会爆显存
 5. 如果显示仍然有空余显存却还是爆显存了，是你的虚拟内存不够大，调整到至少 50G 以上
 
 ## 安装依赖时出现的相关报错
@@ -799,8 +745,8 @@ Could not find a version that satisfies the requirement xxxx
 
 具体解决方法为：更换安装源。手动安装这一依赖时添加下载源，以下是两个常用的镜像源地址
 
-- 清华大学：https://pypi.tuna.tsinghua.edu.cn/simple
-- 阿里云：http://mirrors.aliyun.com/pypi/simple
+- 清华大学：<https://pypi.tuna.tsinghua.edu.cn/simple>
+- 阿里云：<http://mirrors.aliyun.com/pypi/simple>
 
 使用`pip install [包名称] -i [下载源地址]`，例如我想在阿里源下载 librosa 这个依赖，并且要求依赖版本是 0.9.1，那么应该在 cmd 中输入以下命令：
 
@@ -808,12 +754,12 @@ Could not find a version that satisfies the requirement xxxx
 pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 ```
 
-**2. 报错ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9**
+**2. 报错 ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9**
 
-此报错的原因是因为torch官方更新，使得当前的torch版本太新导致的，解决方法两个：
+此报错的原因是因为 torch 官方更新，使得当前的 torch 版本太新导致的，解决方法两个：
 
-1. 升级python至3.9（但可能造成不稳定）
-2. 降低torch版本（建议）也可理解为降低CUDA版本，比如我目前使用的是2.0.1+cu117。
+1. 升级 python 至 3.9（但可能造成不稳定）
+2. 降低 torch 版本（建议）也可理解为降低 CUDA 版本，比如我目前使用的是 2.0.1+cu117。
 
 注意：**如果你在之前已经配置好了环境并且能用了，请忽略此条提醒**
 
@@ -824,7 +770,6 @@ pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 
 **2. 报错：`The expand size of the tensor (768) must match the existing size (256) at non-singleton dimension 0.`**
 答：把 dataset/44k 下的内容全部删了，重新走一遍预处理流程
-
 
 ## 主模型训练时出现的相关报错
 
@@ -838,7 +783,7 @@ RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 解决方法：调小 batchsize 值，调大虚拟内存，重启电脑清理显存，直到 batchsize 值和虚拟内存合适不报错为止
 
 **2. 报错：`torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with exit code 3221225477`**
-解决方法：调大虚拟内存，管理员运行cmd
+解决方法：调大虚拟内存，管理员运行 cmd
 
 **3. 报错：`AssertionError: CPU training is not allowed.`**
 没有解决方法：非 N 卡跑不了。（也不是完全跑不了，但如果你是纯萌新的话，那我的回答确实就是：跑不了）
@@ -846,7 +791,7 @@ RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 **4. 报错：页面文件太小，无法完成操作。**
 解决方法：调大虚拟内存大小，具体的方法各种地方一搜就能搜到，不展开了。
 
-## 使用WebUI时相关报错
+## 使用 WebUI 时相关报错
 
 **1. 出现以下报错时**：
 
@@ -865,14 +810,14 @@ pip install --upgrade pydantic==1.10.12
 
 **2. 报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**
 或**报错: 配置文件中的编码器与模型维度不匹配**
-解决方法：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。检查配置文件中的”ssl_dim”一项，如果这项是256，那你的speech encoder应当修改为“vec256|9”，如果是768，则是"vec768|12"
+解决方法：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。检查配置文件中的”ssl_dim”一项，如果这项是 256，那你的 speech encoder 应当修改为“vec256|9”，如果是 768，则是"vec768|12"
 
 **3. 报错：`'HParams' object has no attribute 'xxx'`**
 解决方法：无法找到音色，一般是配置文件和模型没对应，打开配置文件拉到最下面看看有没有你训练的音色
 
-----
+---
 
-# 感谢名单：
+# 感谢名单
 
 - so-vits-svc [官方源代码和帮助文档](https://github.com/svc-develop-team/so-vits-svc)
 - B 站 up 主 inifnite_loop [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) [相关专栏](https://www.bilibili.com/read/cv21425662)
