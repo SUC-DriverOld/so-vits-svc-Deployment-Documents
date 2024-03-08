@@ -2,7 +2,7 @@
 
 # SoftVC VITS Singing Voice Conversion 本地部署教程
 
-**最后更新时间：2024.3.5，本次更新重构教程，文档和教程视频进入【暂停维护】状态**
+**最后更新时间：2024.3.9，本次更新重构教程，文档和教程视频进入【暂停维护】状态**
 
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 
@@ -16,15 +16,67 @@
 
 ✨ **点击前往：[配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5 人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)（注意：配套视频可能较老，仅供参考，一切以最新教程文档为准！）**
 
-✨ **相关资料：[官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [一些报错的解决办法](https://www.bilibili.com/read/cv22206231) | [羽毛布団大佬的整合包](https://space.bilibili.com/3493141443250876) (B 站主页)**
+✨ **相关资料：[官方 README 文档](https://github.com/svc-develop-team/so-vits-svc) | [羽毛布団：一些报错的解决办法](https://www.bilibili.com/read/cv22206231) | [羽毛布団：常见报错解决方法](https://www.yuque.com/umoubuton/ueupp5/ieinf8qmpzswpsvr) | [羽毛布団](https://space.bilibili.com/3493141443250876)大佬的整合包**
 
 > [!NOTE]
+>
+> **【写在开头】** 不想手动配置环境/伸手党/寻找整合包的，请使用 [羽毛布団](https://space.bilibili.com/3493141443250876) 大佬的整合包
 >
 > **关于旧版本教程**：如需 so-vits-svc3.0 版本的教程，请切换至 [3.0 分支](https://github.com/SUC-DriverOld/so-vits-svc-Chinese-Detaild-Documents/tree/3.0)。此分支教程已停止更新！
 >
 > **文档的持续完善**：若遇到本文档内未提到的报错，您可以在 issues 中提问；若遇到项目 bug，请给原项目提 issues；想要更加完善这份教程，欢迎来给提 pr！
 
 # 教程目录
+
+- [0. 用前须知](#0-用前须知)
+  - [0.1 使用规约](#01-使用规约)
+  - [0.2 硬件需求](#02-硬件需求)
+  - [0.3 提前准备](#03-提前准备)
+- [1. 环境依赖](#1-环境依赖)
+  - [1.1 Cuda](#11-cuda)
+  - [1.2 Python](#12-python)
+  - [1.3 Pytorch](#13-pytorch)
+  - [1.4 其他依赖项安装](#14-其他依赖项安装)
+  - [1.5 FFmpeg](#15-ffmpeg)
+- [2. 配置及训练](#2-配置及训练)
+  - [2.1 关于兼容 4.0 模型的问题](#21-关于兼容-40-模型的问题)
+  - [2.2 预先下载的模型文件](#22-预先下载的模型文件)
+    - [2.2.1 必须项](#221-必须项)
+    - [2.2.2 预训练底模 (强烈建议使用)](#222-预训练底模-强烈建议使用)
+    - [2.2.3 可选项 (根据情况选择)](#223-可选项-根据情况选择)
+  - [2.3 数据集准备](#23-数据集准备)
+  - [2.4 数据预处理](#24-数据预处理)
+    - [2.4.0 音频切片](#240-音频切片)
+    - [2.4.1 重采样至 44100Hz 单声道](#241-重采样至-44100hz-单声道)
+    - [2.4.2 自动划分训练集、验证集，以及自动生成配置文件](#242-自动划分训练集验证集以及自动生成配置文件)
+    - [2.4.3 配置文件按需求修改](#243-配置文件按需求修改)
+    - [2.4.3 生成 hubert 与 f0](#243-生成-hubert-与-f0)
+  - [2.5 训练](#25-训练)
+    - [2.5.1 扩散模型（可选）](#251-扩散模型可选)
+    - [2.5.2 主模型训练（必须）](#252-主模型训练必须)
+    - [2.5.3 Tensorboard](#253-tensorboard)
+- [3. 推理](#3-推理)
+  - [3.1 命令行推理](#31-命令行推理)
+  - [3.2 webUI 推理](#32-webui-推理)
+- [4. 增强效果的可选项](#4-增强效果的可选项)
+  - [4.1 自动 f0 预测](#41-自动-f0-预测)
+  - [4.2 聚类音色泄漏控制](#42-聚类音色泄漏控制)
+  - [4.3 特征检索](#43-特征检索)
+  - [4.4 声码器微调](#44-声码器微调)
+  - [4.5 各模型保存的目录](#45-各模型保存的目录)
+- [5.其他可选功能](#5其他可选功能)
+  - [5.1 模型压缩](#51-模型压缩)
+  - [5.2 声线混合](#52-声线混合)
+    - [5.2.1 静态声线混合](#521-静态声线混合)
+    - [5.2.2 动态声线混合](#522-动态声线混合)
+  - [5.3 Onnx 导出](#53-onnx-导出)
+- [6. 简单混音处理及成品导出](#6-简单混音处理及成品导出)
+- [附录：常见报错的解决办法](#附录常见报错的解决办法)
+  - [关于爆显存](#关于爆显存)
+  - [安装依赖时出现的相关报错](#安装依赖时出现的相关报错)
+  - [数据集预处理和模型训练时的相关报错](#数据集预处理和模型训练时的相关报错)
+  - [使用 WebUI 时相关报错](#使用-webui-时相关报错)
+- [感谢名单](#感谢名单)
 
 # 0. 用前须知
 
@@ -70,7 +122,8 @@
 
 1. 训练**必须使用** GPU 进行训练！推理目前分为**命令行推理**和**WebUI 推理**，对速度要求不高的话 CPU 和 GPU 均可使用。
 2. 如需自己训练，请准备至少 **6G 以上专用显存的 NVIDIA 显卡**。
-3. **云端训练建议使用 [AutoDL](https://www.autodl.com/home) 平台**。常见的显卡有： V100（16G）、V100（32G）、A100（40G）、A100（80G）、RTX3090、RTX4080、RTX4090 等显卡。
+3. 请确保电脑的虚拟内存设置到**30G 以上**，并且最好设置在固态硬盘，不然会很慢。
+4. **云端训练建议使用 [AutoDL](https://www.autodl.com/home) 平台**。常见的显卡有： V100（16G）、V100（32G）、A100（40G）、A100（80G）、RTX3090、RTX4080、RTX4090 等显卡。
 
 ## 0.3 提前准备
 
@@ -238,6 +291,8 @@ libavcodec     58.100.100 / 58.100.100
 
 ✨ 此部分内容是整个教程文档中最重要的部分，本教程参考了 [官方文档](https://github.com/svc-develop-team/so-vits-svc#readme)，并适当添加了一些解释和说明，便于理解。
 
+✨ 在开始第二部分内容前，请确保电脑的虚拟内存设置到**30G 以上**，并且最好设置在固态硬盘。具体设置方法请自行上网搜索。
+
 ## 2.1 关于兼容 4.0 模型的问题
 
 - 你可以通过修改 4.0 模型的 config.json 对 4.0 的模型进行支持。需要在 config.json 的 model 字段中添加 speech_encoder 字段，具体如下：
@@ -261,7 +316,7 @@ libavcodec     58.100.100 / 58.100.100
 
 ## 2.2 预先下载的模型文件
 
-### **2.2.1 必须项**
+### 2.2.1 必须项
 
 > [!WARNING]
 >
@@ -501,7 +556,7 @@ rmvpe
 fcpe
 ```
 
-#### 各个 f0 预测器的优缺点：
+#### 各个 f0 预测器的优缺点
 
 | 预测器  | 优点                                                      | 缺点                                         |
 | ------- | --------------------------------------------------------- | -------------------------------------------- |
@@ -688,14 +743,14 @@ webUI 中还内置了 **文本转语音** 功能：
 
 ✨ 如果前面的效果已经满意，或者没看明白下面在讲啥，那后面的内容都可以忽略，不影响模型使用(这些可选项影响比较小，可能在某些特定数据上有点效果，但大部分情况似乎都感知不太明显)
 
-## 自动 f0 预测
+## 4.1 自动 f0 预测
 
 模型训练过程会训练一个 f0 预测器，是一个自动变调的功能，可以将模型音高匹配到推理源音高，用于说话声音转换时可以打开，能够更好匹配音调。**但转换歌声时请不要启用此功能！！！会严重跑调！！**
 
 - 命令行推理：在 `inference_main` 中设置 `auto_predict_f0` 为 `true` 即可
 - webUI 推理：勾选相应选项即可
 
-## 聚类音色泄漏控制
+## 4.2 聚类音色泄漏控制
 
 聚类方案可以减小音色泄漏，使得模型训练出来更像目标的音色（但其实不是特别明显），但是单纯的聚类方案会降低模型的咬字（会口齿不清）（这个很明显），本模型采用了融合的方式，可以线性控制聚类方案与非聚类方案的占比，也就是可以手动在"像目标音色" 和 "咬字清晰" 之间调整比例，找到合适的折中点。
 
@@ -719,7 +774,7 @@ python cluster/train_cluster.py --gpu
   - 上传并加载聚类模型
   - 设置聚类模型/特征检索混合比例，0-1 之间，0 即不启用聚类/特征检索。使用聚类/特征检索能提升音色相似度，但会导致咬字下降（如果使用建议 0.5 左右）
 
-## 特征检索
+## 4.3 特征检索
 
 跟聚类方案一样可以减小音色泄漏，咬字比聚类稍好，但会降低推理速度，采用了融合的方式，可以线性控制特征检索与非特征检索的占比。
 
@@ -739,7 +794,7 @@ python train_index.py -c configs/config.json
   - 上传并加载聚类模型
   - 设置聚类模型/特征检索混合比例，0-1 之间，0 即不启用聚类/特征检索。使用聚类/特征检索能提升音色相似度，但会导致咬字下降（如果使用建议 0.5 左右）
 
-## 声码器微调
+## 4.4 声码器微调
 
 在 So-VITS 中使用扩散模型时，经过扩散模型增强的 Mel 谱图会经过声码器（Vocoder）输出为最终音频。声码器在其中对输出音频的音质起到了决定性的作用。So-VITS-SVC 目前使用的是 [NSF-HiFiGAN 社区声码器](https://openvpi.github.io/vocoders/)，**实际上，你也可以用你自己的数据集对该声码器模型进行微调训练，在 So-VITS 的扩散流程中使用微调后的声码器，使其更符合你的模型任务。**
 
@@ -753,28 +808,51 @@ python train_index.py -c configs/config.json
 >
 > **目前仅支持微调的 NSF-HiFiGAN 声码器**
 
-# ✅5.其他可选功能
+## 4.5 各模型保存的目录
+
+截止上文，一共能够训练的 4 种模型都已经讲完了，使用下表总结一下这四种模型和配置文件。
+
+webUI 中除了能够上传模型进行加载以外，也可以读取本地模型文件。你只需将下表这些模型先放入到一个文件夹内，再将该文件夹放到 trained 文件夹内，点击“刷新本地模型列表”，即可被 webUI 识别到。然后手动选择需要加载的模型进行加载即可。
+
+**注意**：本地模型自动加载可能无法正常加载下表中的（可选）模型。
+
+| 文件                     | 后缀    | 存放位置             |
+| ------------------------ | ------- | -------------------- |
+| So-VITS 模型             | `.pth`  | `logs/44k`           |
+| So-VITS 模型配置文件     | `.json` | `configs`            |
+| 扩散模型（可选）         | `.pt`   | `logs/44k/diffusion` |
+| 扩散模型配置文件（可选） | `.yaml` | `configs`            |
+| Kmeans 聚类模型（可选）  | `.pt`   | `logs/44k`           |
+| 特征索引模型（可选）     | `.pkl`  | `logs/44k`           |
+
+# 5.其他可选功能
 
 ✨ 此部分相较于前面的其他部分，重要性更低。除了 [5.1 模型压缩](#32-webui-推理) 是一个较为方便的功能以外，其余可选功能用到的概率较低，故此处仅参考官方文档并加以简单描述。
 
 ## 5.1 模型压缩
 
-生成的模型含有继续训练所需的信息。如果确认不再训练，可以移除模型中此部分信息，得到约 1/3 大小的最终模型。
+生成的模型含有继续训练所需的信息。如果**确认不再训练**，可以移除模型中此部分信息，得到约 1/3 大小的最终模型。
 
 使用 compress_model.py
 
 ```bash
-# 例
+# 例如，我想压缩一个在logs/44k/目录下名字为G_30400.pth的模型，并且配置文件为configs/config.json，可以运行如下命令
 python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="logs/44k/release.pth"
+# 压缩后的模型保存在logs/44k/release.pth
 ```
+
+> [!WARNING]
+>
+> **注意：压缩后的模型无法继续训练！**
 
 ## 5.2 声线混合
 
 ### 5.2.1 静态声线混合
 
-**参考`webUI.py`文件中，小工具/实验室特性的静态声线融合。**
+**参考 `webUI.py` 文件中，小工具/实验室特性的静态声线融合。**
 
-介绍:该功能可以将多个声音模型合成为一个声音模型(多个模型参数的凸组合或线性组合)，从而制造出现实中不存在的声线
+该功能可以将多个声音模型合成为一个声音模型(多个模型参数的凸组合或线性组合)，从而制造出现实中不存在的声线。
+
 **注意：**
 
 1. 该功能仅支持单说话人的模型
@@ -788,40 +866,37 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 ### 5.2.2 动态声线混合
 
-**参考`spkmix.py`文件中关于动态声线混合的介绍**
+**参考 `spkmix.py` 文件中关于动态声线混合的介绍**
 
-角色混合轨道 编写规则：
+角色混合轨道编写规则：
 
-角色 ID : \[\[起始时间 1, 终止时间 1, 起始数值 1, 起始数值 1], [起始时间 2, 终止时间 2, 起始数值 2, 起始数值 2]]
+- 角色 ID : \[\[起始时间 1, 终止时间 1, 起始数值 1, 起始数值 1], [起始时间 2, 终止时间 2, 起始数值 2, 起始数值 2]]
+- 起始时间和前一个的终止时间必须相同，第一个起始时间必须为 0，最后一个终止时间必须为 1 （时间的范围为 0-1）
+- 全部角色必须填写，不使用的角色填\[\[0., 1., 0., 0.]]即可
+- 融合数值可以随便填，在指定的时间段内从起始数值线性变化为终止数值，内部会自动确保线性组合为 1（凸组合条件），可以放心使用
 
-起始时间和前一个的终止时间必须相同，第一个起始时间必须为 0，最后一个终止时间必须为 1 （时间的范围为 0-1）
-
-全部角色必须填写，不使用的角色填\[\[0., 1., 0., 0.]]即可
-
-融合数值可以随便填，在指定的时间段内从起始数值线性变化为终止数值，内部会自动确保线性组合为 1（凸组合条件），可以放心使用
-
-推理的时候使用`--use_spk_mix`参数即可启用动态声线混合
+命令行推理的时候使用 `--use_spk_mix` 参数即可启用动态声线混合。webUI 推理时勾选“动态声线融合”选项框即可。
 
 ## 5.3 Onnx 导出
 
-使用 onnx_export.py
+使用 onnx_export.py。目前 onnx 模型只有 [MoeVoiceStudio](https://github.com/NaruseMioShirakana/MoeVoiceStudio) 需要使用到。更详细的操作和使用方法请移步 [MoeVoiceStudio](https://github.com/NaruseMioShirakana/MoeVoiceStudio) 仓库说明。
 
 - 新建文件夹：`checkpoints` 并打开
 - 在`checkpoints`文件夹中新建一个文件夹作为项目文件夹，文件夹名为你的项目名称，比如`aziplayer`
 - 将你的模型更名为`model.pth`，配置文件更名为`config.json`，并放置到刚才创建的`aziplayer`文件夹下
 - 将 onnx_export.py 中`path = "NyaruTaffy"` 的 `"NyaruTaffy"` 修改为你的项目名称，`path = "aziplayer" (onnx_export_speaker_mix，为支持角色混合的onnx导出)`
-- 运行 onnx_export.py
+- 运行 `python onnx_export.py`
 - 等待执行完毕，在你的项目文件夹下会生成一个`model.onnx`，即为导出的模型
 
-注意：Hubert Onnx 模型请使用 MoeSS 提供的模型，目前无法自行导出（fairseq 中 Hubert 有不少 onnx 不支持的算子和涉及到常量的东西，在导出时会报错或者导出的模型输入输出 shape 和结果都有问题）
+注意：Hubert Onnx 模型请使用 [MoeVoiceStudio](https://github.com/NaruseMioShirakana/MoeVoiceStudio) 提供的模型，目前无法自行导出（fairseq 中 Hubert 有不少 onnx 不支持的算子和涉及到常量的东西，在导出时会报错或者导出的模型输入输出 shape 和结果都有问题）
 
-# ✅6. 简单混音处理及成品导出
+# 6. 简单混音处理及成品导出
 
 ### 使用音频宿主软件处理推理后音频，具体流程比较麻烦，请参考 [配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5 人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/) 或其他更专业的混音教程
 
-# ✅ 附录：常见报错的解决办法
+# 附录：常见报错的解决办法
 
-**部分报错及解决方法，来自羽毛布団大佬<https://www.bilibili.com/read/cv22206231>**
+✨ **部分报错及解决方法，来自 [羽毛布団](https://space.bilibili.com/3493141443250876)大佬的 [相关专栏](https://www.bilibili.com/read/cv22206231) | [相关文档](https://www.yuque.com/umoubuton/ueupp5/ieinf8qmpzswpsvr)**
 
 ## 关于爆显存
 
@@ -835,30 +910,41 @@ OutOfMemoryError: CUDA out of memory.Tried to allocate XX GiB (GPU O: XX GiB tot
 
 1. 在报错中找到 XX GiB already allocated 之后，是否显示 0 bytes free，如果是 0 bytes free 那么看第 2，3，4 步，如果显示 XX MiB free 或者 XX GiB free，看第 5 步
 2. 如果是预处理的时候爆显存:
-   a. 换用对显存占用友好的 f0 预测器 (友好度从高到低: pm >= harvest >= rmvpe ≈ fcpe >> crepe)，建议首选 rmvpe 或 fcpe
-   b. 多进程预处理改为 1
+   - 换用对显存占用友好的 f0 预测器 (友好度从高到低: pm >= harvest >= rmvpe ≈ fcpe >> crepe)，建议首选 rmvpe 或 fcpe
+   - 多进程预处理改为 1
 3. 如果是训练的时候爆显存
-   a. 检查数据集有没有过长的切片 (20 秒以上）
-   b. 调小批量大小 (batch size)
-   c. 更换一个占用低的项目
-   d. 去 AutoDL 等云算力平台上面租一张大显存的显卡跑
+   - 检查数据集有没有过长的切片（20 秒以上）
+   - 调小批量大小 (batch size)
+   - 更换一个占用低的项目
+   - 去 AutoDL 等云算力平台上面租一张大显存的显卡跑
 4. 如果是推理的时候爆显存:
-   a. 推理源 (千声) 不干净 (有残留的混响，伴奏，和声)，导致自动切片切不开。提取干声最佳实践请参考[UVR5 歌曲人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)
-   b. 调大切片闽值 (比如-40 调成-30，再大就不建议了，你也不想唱一半就被切一刀吧)
-   c. 设置强制切片，从 60 秒开始尝试，每次减小 10 秒，直到能成功推理
-   d. 使用 cpu 推理，速度会很慢但是不会爆显存
+   - 推理源 (千声) 不干净 (有残留的混响，伴奏，和声)，导致自动切片切不开。提取干声最佳实践请参考 [UVR5 歌曲人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)
+   - 调大切片闽值 (比如-40 调成-30，再大就不建议了，你也不想唱一半就被切一刀吧)
+   - 设置强制切片，从 60 秒开始尝试，每次减小 10 秒，直到能成功推理
+   - 使用 cpu 推理，速度会很慢但是不会爆显存
 5. 如果显示仍然有空余显存却还是爆显存了，是你的虚拟内存不够大，调整到至少 50G 以上
 
 ## 安装依赖时出现的相关报错
 
-**1. 依赖找不到导致的无法安装**
+**1. 安装 CUDA=11.7 的 Pytorch 时报错**
+
+```
+ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9
+```
+
+解决方法有两种：
+
+- 升级 python 至 3.9（但可能造成不稳定）
+- 保持 python 版本不变，先 `pip install networkx==3.0` 之后再进行 Pytorch 的安装。
+
+**2. 依赖找不到导致的无法安装**
 
 出现**类似**以下报错时：
 
 ```bash
 ERROR: Could not find a version that satisfies the requirement librosa==0.9.1 (from versions: none)
 ERROR: No matching distribution found for librosa==0.9.1
-# 主要特征是
+# 报错的主要特征是
 No matching distribution found for xxxxx
 Could not find a version that satisfies the requirement xxxx
 ```
@@ -868,59 +954,54 @@ Could not find a version that satisfies the requirement xxxx
 - 清华大学：<https://pypi.tuna.tsinghua.edu.cn/simple>
 - 阿里云：<http://mirrors.aliyun.com/pypi/simple>
 
-使用`pip install [包名称] -i [下载源地址]`，例如我想在阿里源下载 librosa 这个依赖，并且要求依赖版本是 0.9.1，那么应该在 cmd 中输入以下命令：
+使用 `pip install [包名称] -i [下载源地址]` ，例如我想在阿里源下载 librosa 这个依赖，并且要求依赖版本是 0.9.1，那么应该在 cmd 中输入以下命令：
 
 ```bash
 pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 ```
 
-**2. 报错 ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9**
-
-此报错的原因是因为 torch 官方更新，使得当前的 torch 版本太新导致的，解决方法两个：
-
-1. 升级 python 至 3.9（但可能造成不稳定）
-2. 降低 torch 版本（建议）也可理解为降低 CUDA 版本，比如我目前使用的是 2.0.1+cu117。
-
-注意：**如果你在之前已经配置好了环境并且能用了，请忽略此条提醒**
-
 ## 数据集预处理和模型训练时的相关报错
 
 **1. 报错：`UnicodeDecodeError: 'utf-8' codec can't decode byte 0xd0 in position xx`**
-答：数据集文件名中不要包含中文或日文等非西文字符，特别注意**中文**括号，逗号，冒号，分号，引号等等都是不行的。改完名字**一定要**重新预处理，然后再进行训练！！！
+
+- 数据集文件名中不要包含中文或日文等非西文字符，特别注意**中文**括号，逗号，冒号，分号，引号等等都是不行的。改完名字**一定要**重新预处理，然后再进行训练！！！
 
 **2. 报错：`The expand size of the tensor (768) must match the existing size (256) at non-singleton dimension 0.`**
-答：把 dataset/44k 下的内容全部删了，重新走一遍预处理流程
 
-## 主模型训练时出现的相关报错
+- 把 dataset/44k 下的内容全部删了，重新走一遍预处理流程
 
-**1. 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly**
+**3. 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly**
 
 ```bash
 raise RuntimeError(f'DataLoader worker (pid(s) {pids_str}) exited unexpectedly') from e
 RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 ```
 
-解决方法：调小 batchsize 值，调大虚拟内存，重启电脑清理显存，直到 batchsize 值和虚拟内存合适不报错为止
+- 调小 batchsize 值，调大虚拟内存，重启电脑清理显存，直到 batchsize 值和虚拟内存合适不报错为止
 
-**2. 报错：`torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with exit code 3221225477`**
-解决方法：调大虚拟内存，管理员运行 cmd
+**4. 报错：`torch.multiprocessing.spawn.ProcessExitedException: process 0 terminated with exit code 3221225477`**
 
-**3. 报错：`AssertionError: CPU training is not allowed.`**
-没有解决方法：非 N 卡跑不了。（也不是完全跑不了，但如果你是纯萌新的话，那我的回答确实就是：跑不了）
+- 调大虚拟内存，调小 batchsize 值，直到 batchsize 值和虚拟内存合适不报错为止
+
+**5. 报错：`AssertionError: CPU training is not allowed.`**
+
+- 没有解决方法：非 N 卡跑不了。（也不是完全跑不了，但如果你是纯萌新的话，那我的回答确实就是：跑不了）
 
 **4. 报错：页面文件太小，无法完成操作。**
-解决方法：调大虚拟内存大小，具体的方法各种地方一搜就能搜到，不展开了。
+
+- 调大虚拟内存，具体的方法各种地方一搜就能搜到，不展开了
 
 ## 使用 WebUI 时相关报错
 
-**1. 出现以下报错时**：
+**1. webUI 启动或加载模型时**：
 
 - 启动 webUI 时报错：`ImportError: cannot import name 'Schema' from 'pydantic'`
 - webUI 加载模型时报错：`AttributeError("'Dropdown' object has no attribute 'update'")`
 - **凡是报错中涉及到 fastapi, gradio, pydantic 这三个依赖的报错**
 
-**解决方法如下**：
-需限制部分依赖版本，在安装完`requirements_win.txt`后，在 cmd 中依次输入以下命令以更新依赖包：
+**解决方法**：
+
+- 需限制部分依赖版本，在安装完 `requirements_win.txt` 后，在 cmd 中依次输入以下命令以更新依赖包：
 
 ```bash
 pip install --upgrade fastapi==0.84.0
@@ -929,17 +1010,21 @@ pip install --upgrade pydantic==1.10.12
 ```
 
 **2. 报错：`Given groups=1, weight of size [xxx, 256, xxx], expected input[xxx, 768, xxx] to have 256 channels, but got 768 channels instead`**
-或**报错: 配置文件中的编码器与模型维度不匹配**
-解决方法：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。检查配置文件中的”ssl_dim”一项，如果这项是 256，那你的 speech encoder 应当修改为“vec256|9”，如果是 768，则是"vec768|12"
+或 **报错: 配置文件中的编码器与模型维度不匹配**
+
+- 原因：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。
+- 解决方法：检查配置文件中的 `ssl_dim` 一项，如果这项是 256，那你的 `speech_encoder` 应当修改为 `vec256|9`，如果是 768，则是 `vec768|12`
 
 **3. 报错：`'HParams' object has no attribute 'xxx'`**
-解决方法：无法找到音色，一般是配置文件和模型没对应，打开配置文件拉到最下面看看有没有你训练的音色
 
----
+- 无法找到音色，一般是配置文件和模型没对应，打开配置文件拉到最下面看看有没有你训练的音色
 
 # 感谢名单
 
-- so-vits-svc [官方源代码和帮助文档](https://github.com/svc-develop-team/so-vits-svc)
-- B 站 up 主 inifnite_loop [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) [相关专栏](https://www.bilibili.com/read/cv21425662)
-- 一些报错的解决办法[（B 站 up 主：**羽毛布団** 相关专栏）](https://www.bilibili.com/read/cv22206231)
+- so-vits-svc | [官方源代码和帮助文档](https://github.com/svc-develop-team/so-vits-svc)
+- SingingVocoders | [SingingVocoders](https://github.com/openvpi/SingingVocoders)
+- MoeVoiceStudio | [MoeVoiceStudio](https://github.com/NaruseMioShirakana/MoeVoiceStudio)
+- B 站 up 主 inifnite_loop | [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) | [相关专栏](https://www.bilibili.com/read/cv21425662)
+- 一些报错的解决办法 | B 站 up 主：[羽毛布団](https://space.bilibili.com/3493141443250876) | [一些报错的解决办法](https://www.bilibili.com/read/cv22206231) | [常见报错解决方法](https://www.yuque.com/umoubuton/ueupp5/ieinf8qmpzswpsvr)
 - 所有提供训练音频样本的人员
+- 您
