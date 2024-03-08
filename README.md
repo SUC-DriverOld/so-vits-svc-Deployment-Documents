@@ -2,13 +2,15 @@
 
 # SoftVC VITS Singing Voice Conversion 本地部署教程
 
-**最后更新时间：2024.3.8，本次更新结束，文档和教程视频进入【暂停维护】状态**
+**最后更新时间：2024.3.5，本次更新重构教程，文档和教程视频进入【暂停维护】状态**
 
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细中文安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 
 撰写：Sucial | 点击跳转 [Bilibili 主页](https://space.bilibili.com/445022409)
 
 </div>
+
+---
 
 ✨ **我写的一个 so-vits-svc 一键配置环境，启动 webUI 的脚本：[so-vits-svc-webUI-QuickStart-bat](https://github.com/SUC-DriverOld/so-vits-svc-webUI-QuickStart-bat) 欢迎使用！**
 
@@ -101,7 +103,7 @@
 
 - 安装成功之后在 cmd 控制台中输入`nvcc -V`, 出现类似以下内容则安装成功：
 
-```shell
+```bash
 nvcc: NVIDIA (R) Cuda compiler driver
 Copyright (c) 2005-2022 NVIDIA Corporation
 Built on Tue_May__3_19:00:59_Pacific_Daylight_Time_2022
@@ -119,7 +121,7 @@ Build cuda_11.7.r11.7/compiler.31294372_0
 
 - 前往 [Python 官网](https://www.python.org/) 下载 Python3.8.9 安装并添加系统环境变量。（若使用 conda 配置 python 遇到没有 3.8.9 版本也可以直接选择 3.8）详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述。
 
-```shell
+```bash
 # conda配置方法, 将YOUR_ENV_NAME替换成你想要创建的虚拟环境名字。
 conda create -n YOUR_ENV_NAME python=3.8 -y
 conda activate YOUR_ENV_NAME
@@ -127,7 +129,7 @@ conda activate YOUR_ENV_NAME
 
 - 安装完成后在 cmd 控制台中输入`python`出现类似以下内容则安装成功：
 
-```shell
+```bash
 Python 3.8.9 (tags/v3.8.9:9d38120, Mar 23 2022, 23:13:41) [MSC v.1929 64 bit (AMD64)] on win32
 Type "help", "copyright", "credits" or "license" for more information.
 >>>
@@ -138,7 +140,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 - 配置 python 下载镜像源（有国外网络条件可跳过）
   在 cmd 控制台执行
 
-```shell
+```bash
 # 设置清华大学下载镜像
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn
@@ -146,7 +148,7 @@ pip config set global.trusted-host pypi.tuna.tsinghua.edu.cn
 
 - 如果想要还原为默认源，类似的，你仅需要在控制台执行
 
-```shell
+```bash
 pip config set global.index-url https://pypi.python.org/simple
 ```
 
@@ -155,7 +157,7 @@ pip config set global.index-url https://pypi.python.org/simple
 - 清华: <https://pypi.tuna.tsinghua.edu.cn/simple>
 - 阿里云: <https://mirrors.aliyun.com/pypi/simple/>
 
-```shell
+```bash
 # 临时更换
 pip install PACKAGE_NAME -i https://pypi.tuna.tsinghua.edu.cn/simple
 # 永久更换
@@ -170,7 +172,7 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 - 安装完 `torch`, `torchaudio`, `torchvision` 这三个库之后，在 cmd 控制台运用以下命令检测 torch 能否成功调用 CUDA。最后一行出现 `True` 则成功，出现`False` 则失败，需要重新安装正确的版本。
 
-```shell
+```bash
 python
 # 回车运行
 import torch
@@ -185,7 +187,7 @@ print(torch.cuda.is_available())
 > 2. 安装 CUDA=11.7 的 Pytorch 时，可能会遇到报错 `ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9`。此时，请先 `pip install networkx==3.0` 之后再进行 Pytorch 的安装。
 > 3. 由于版本更新，11.7 的 Pytorch 可能复制不到下载链接，此时你可以直接复制下方的安装命令进行安装。
 
-```shell
+```bash
 pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu117
 ```
 
@@ -194,19 +196,19 @@ pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https
 - 在项目文件夹内右击空白处选择 **在终端中打开** 。
 - 使用下面的命令先更新一下 `pip`, `wheel`, `setuptools` 这三个包。
 
-```shell
+```bash
 pip install --upgrade pip wheel setuptools
 ```
 
 - 执行下面命令以安装库（**若出现报错请多次尝试直到没有报错，依赖全部安装完成**）。注意，项目文件夹内含有三个 requirements 的 txt ，此处选择 `requirements_win.txt`）
 
-```shell
+```bash
 pip install -r requirements_win.txt
 ```
 
 - 确保安装 **正确无误** 后请使用下方命令更新 `fastapi`, `gradio`, `pydantic` 这三个依赖：
 
-```shell
+```bash
 pip install --upgrade fastapi==0.84.0
 pip install --upgrade pydantic==1.10.12
 pip install --upgrade gradio==3.41.2
@@ -223,7 +225,7 @@ pip install --upgrade gradio==3.41.2
 - 前往 [FFmpeg 官网](https://ffmpeg.org/) 下载。解压至任意位置并在高级系统设置-环境变量中添加 Path 。定位至 `.\ffmpeg\bin`（详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述）
 - 安装完成后在 cmd 控制台中输入 `ffmpeg -version` 出现类似以下内容则安装成功：
 
-```shell
+```bash
 ffmpeg version git-2020-08-12-bb59bdb Copyright (c) 2000-2020 the FFmpeg developers
 built with gcc 10.2.1 (GCC) 20200805
 configuration: [此处省略一大堆内容]
@@ -238,7 +240,7 @@ libavcodec     58.100.100 / 58.100.100
 
 - 你可以通过修改 4.0 模型的 config.json 对 4.0 的模型进行支持。需要在 config.json 的 model 字段中添加 speech_encoder 字段，具体如下：
 
-```shell
+```bash
   "model":
   {
     # 省略其他内容
@@ -257,114 +259,116 @@ libavcodec     58.100.100 / 58.100.100
 
 ## 2.2 预先下载的模型文件
 
-#### **必须项**
+### **2.2.1 必须项**
 
-**以下编码器需要选择一个使用**
+> [!WARNING]
+>
+> **以下编码器必须需选择一个使用：**
+>
+> - "vec768l12"
+> - "vec256l9"
+> - "vec256l9-onnx"
+> - "vec256l12-onnx"
+> - "vec768l9-onnx"
+> - "vec768l12-onnx"
+> - "hubertsoft-onnx"
+> - "hubertsoft"
+> - "whisper-ppg"
+> - "cnhubertlarge"
+> - "dphubert"
+> - "whisper-ppg-large"
 
-##### **1. 若使用 contentvec 作为声音编码器（推荐）**
+**1. 若使用 contentvec 作为声音编码器（推荐）**
 
 `vec768l12`与`vec256l9` 需要该编码器
 
-- contentvec ：[checkpoint_best_legacy_500.pt](https://ibm.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr)
-  - 放在`pretrain`目录下
+- 下载 contentvec ：[checkpoint_best_legacy_500.pt](https://ibm.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr)。放在`pretrain`目录下。
 
-或者下载下面的 ContentVec，大小只有 199MB，但效果相同:
+或者下载下面的 ContentVec，大小只有 199MB，但效果相同
 
-- contentvec ：[hubert_base.pt](https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt)
-  - 将文件名改为`checkpoint_best_legacy_500.pt`后，放在`pretrain`目录下
+- contentvec ：[hubert_base.pt](https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt)。**将文件名改为`checkpoint_best_legacy_500.pt`后**，放在`pretrain`目录下。
 
-##### **2. 若使用 hubertsoft 作为声音编码器**
+**2. 若使用 hubertsoft 作为声音编码器**
 
-- soft vc hubert：[hubert-soft-0d54a1f4.pt](https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt)
-  - 放在`pretrain`目录下
+- soft vc hubert：[hubert-soft-0d54a1f4.pt](https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt)。放在`pretrain`目录下。
 
-##### **3. 若使用 Whisper-ppg 作为声音编码器**
+**3. 若使用 Whisper-ppg 作为声音编码器**
 
 - 下载模型 [medium.pt](https://openaipublic.azureedge.net/main/whisper/models/345ae4da62f9b3d59415adc60127b97c714f32e89e936602e85993674d08dcb1/medium.pt), 该模型适配`whisper-ppg`
 - 下载模型 [large-v2.pt](https://openaipublic.azureedge.net/main/whisper/models/81f7c96c852ee8fc832187b0132e569d6c3065a3252ed18e56effd0b6a73e524/large-v2.pt), 该模型适配`whisper-ppg-large`
-  - 放在`pretrain`目录下
+- 放在`pretrain`目录下。
 
-##### **4. 若使用 cnhubertlarge 作为声音编码器**
+**4. 若使用 cnhubertlarge 作为声音编码器**
 
-- 下载模型 [chinese-hubert-large-fairseq-ckpt.pt](https://huggingface.co/TencentGameMate/chinese-hubert-large/resolve/main/chinese-hubert-large-fairseq-ckpt.pt)
-  - 放在`pretrain`目录下
+- 下载模型 [chinese-hubert-large-fairseq-ckpt.pt](https://huggingface.co/TencentGameMate/chinese-hubert-large/resolve/main/chinese-hubert-large-fairseq-ckpt.pt)。放在`pretrain`目录下。
 
-##### **5. 若使用 dphubert 作为声音编码器**
+**5. 若使用 dphubert 作为声音编码器**
 
-- 下载模型 [DPHuBERT-sp0.75.pth](https://huggingface.co/pyf98/DPHuBERT/resolve/main/DPHuBERT-sp0.75.pth)
-  - 放在`pretrain`目录下
+- 下载模型 [DPHuBERT-sp0.75.pth](https://huggingface.co/pyf98/DPHuBERT/resolve/main/DPHuBERT-sp0.75.pth)。放在`pretrain`目录下。
 
-##### **6. 若使用 OnnxHubert/ContentVec 作为声音编码器**
+**6. 若使用 OnnxHubert/ContentVec 作为声音编码器**
 
-- 下载模型 [MoeSS-SUBModel](https://huggingface.co/NaruseMioShirakana/MoeSS-SUBModel/tree/main)
-  - 放在`pretrain`目录下
+- 下载模型 [MoeSS-SUBModel](https://huggingface.co/NaruseMioShirakana/MoeSS-SUBModel/tree/main)。放在`pretrain`目录下。
 
-#### **编码器列表**
+#### 各编码器的详解
 
-- "vec768l12"
-- "vec256l9"
-- "vec256l9-onnx"
-- "vec256l12-onnx"
-- "vec768l9-onnx"
-- "vec768l12-onnx"
-- "hubertsoft-onnx"
-- "hubertsoft"
-- "whisper-ppg"
-- "cnhubertlarge"
-- "dphubert"
-- "whisper-ppg-large"
+| 编码器名称            | 优点                                 | 缺点                 |
+| --------------------- | ------------------------------------ | -------------------- |
+| `vec768l12`（最推荐） | 最还原音色、有大型底模、支持响度嵌入 | 咬字能力较弱         |
+| `vec256l9`            | 貌似举不出特别的优点                 | 不支持扩散模型       |
+| `hubertsoft`          | 咬字能力较强                         | 音色泄露             |
+| `whisper-ppg`         | 咬字最强                             | 音色泄露、显存占用高 |
 
-#### **可选项(强烈建议使用)**
+### 2.2.2 预训练底模 (强烈建议使用)
 
-- 预训练底模文件： `G_0.pth` `D_0.pth`
+- 预训练底模文件： `G_0.pth` `D_0.pth`。放在`logs/44k`目录下。
 
-  - 放在`logs/44k`目录下
+- 扩散模型预训练底模文件： `model_0.pt`。放在`logs/44k/diffusion`目录下。
 
-- 扩散模型预训练底模文件： `model_0.pt`
-  - 放在`logs/44k/diffusion`目录下
+扩散模型引用了[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的 Diffusion Model，底模与[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的扩散模型底模通用，可以去[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)获取扩散模型的底模。
 
-扩散模型引用了[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的 Diffusion Model，底模与[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的扩散模型底模通用，可以去[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)获取扩散模型的底模
+虽然底模一般不会引起什么版权问题，但还是请注意一下，比如事先询问作者，又或者作者在模型描述中明确写明了可行的用途。
 
-虽然底模一般不会引起什么版权问题，但还是请注意一下，比如事先询问作者，又或者作者在模型描述中明确写明了可行的用途
+> [!NOTE]
+>
+> **提供 4.1 训练底模，需自行下载（需具备外网条件）**
+>
+> - 下载地址 1：官方 Huggingface 下载 | [D_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_D_320000.pth) | [G_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_G_320000.pth) | [model_0.pt](https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/resolve/main/fix_pitch_add_vctk_600k/model_0.pt) | 下载完成后请对应并重命名为`G_0.pth` `D_0.pth`和`model_0.pt`。
+> - 下载地址 2：Huggingface 转存 [【点击跳转下载】](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model) 此处包含扩散模型训练底模。
+> - 下载地址 3：[【百度网盘转存】](https://pan.baidu.com/s/17IlNuphFHAntLklkMNtagg?pwd=dkp9) 此处不更新，已经落后。
+>
+> **提供 3.0 训练底模，需自行下载**
+>
+> - 下载地址：[【百度网盘转存】](https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo)
 
-**提供 4.1 训练底模，需自行下载（需具备外网条件）**:
+### 2.2.3 可选项 (根据情况选择)
 
-- 下载地址 1：官方 Huggingface 下载 [D_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_D_320000.pth) [G_0.pth](https://huggingface.co/datasets/ms903/sovits4.0-768vec-layer12/resolve/main/sovits_768l12_pre_large_320k/clean_G_320000.pth) [model_0.pt](https://huggingface.co/datasets/ms903/Diff-SVC-refactor-pre-trained-model/resolve/main/fix_pitch_add_vctk_600k/model_0.pt)
-- 下载地址 2：[点击跳转下载](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model) 包含扩散模型训练底模
-- 下载地址 3：[百度网盘转存](https://pan.baidu.com/s/17IlNuphFHAntLklkMNtagg?pwd=dkp9) 此处不更新，随时可能落后
+**1. NSF-HIFIGAN**
 
-**提供 3.0 训练底模，需自行下载**
-
-- 下载地址：[百度网盘转存](https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo)
-
-#### **可选项(根据情况选择)**
-
-##### NSF-HIFIGAN
-
-如果使用`NSF-HIFIGAN增强器`或`浅层扩散`的话，需要下载预训练的 NSF-HIFIGAN 模型，如果不需要可以不下载
+如果使用`NSF-HIFIGAN增强器`或`浅层扩散`的话，需要下载预训练的 NSF-HIFIGAN 模型，如果不需要可以不下载。
 
 - 预训练的 NSF-HIFIGAN 声码器 ：[nsf_hifigan_20221211.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip)
-  - 解压后，将四个文件放在`pretrain/nsf_hifigan`目录下
+- 解压后，将四个文件放在`pretrain/nsf_hifigan`目录下。
 
-##### RMVPE
+**2. RMVPE**
 
-如果使用`rmvpe`F0 预测器的话，需要下载预训练的 RMVPE 模型
+如果使用`rmvpe`F0 预测器的话，需要下载预训练的 RMVPE 模型。
 
 - 下载模型[rmvpe.zip](https://github.com/yxlllc/RMVPE/releases/download/230917/rmvpe.zip)，目前首推该权重。
-  - 解压缩`rmvpe.zip`，并将其中的`model.pt`文件改名为`rmvpe.pt`并放在`pretrain`目录下
+- 解压缩`rmvpe.zip`，并将其中的`model.pt`文件改名为`rmvpe.pt`并放在`pretrain`目录下。
 
-##### FCPE(预览版)
+**3. FCPE(预览版)**
 
-- [FCPE(Fast Context-base Pitch Estimator)](https://github.com/CNChTu/MelPE)是由 svc-develop-team 自主研发的一款全新的 F0 预测器，是一个为实时语音转换所设计的专用 F0 预测器，他将在未来成为 Sovits 实时语音转换的首选 F0 预测器.（论文未来会有的）
+[FCPE(Fast Context-base Pitch Estimator)](https://github.com/CNChTu/MelPE)是由 svc-develop-team 自主研发的一款全新的 F0 预测器，是一个为实时语音转换所设计的专用 F0 预测器，他将在未来成为 Sovits 实时语音转换的首选 F0 预测器。
 
-如果使用 `fcpe` F0 预测器的话，需要下载预训练的 FCPE 模型
+如果使用 `fcpe` F0 预测器的话，需要下载预训练的 FCPE 模型。
 
 - 下载模型 [fcpe.pt](https://huggingface.co/datasets/ylzz1997/rmvpe_pretrain_model/resolve/main/fcpe.pt)
-  - 放在`pretrain`目录下
+- 放在`pretrain`目录下。
 
 ## 2.3 数据集准备
 
-仅需要以以下文件结构将数据集放入 dataset_raw 目录即可
+1. 按照以下文件结构将数据集放入 dataset_raw 目录。
 
 ```
 dataset_raw
@@ -378,7 +382,7 @@ dataset_raw
     └───xxx7-xxx007.wav
 ```
 
-可以自定义说话人名称
+2. 可以自定义说话人名称。
 
 ```
 dataset_raw
@@ -392,37 +396,41 @@ dataset_raw
 
 ### 2.4.0 音频切片
 
-将音频切片至`5s - 15s`, 稍微长点也无伤大雅，实在太长可能会导致训练中途甚至预处理就爆显存
+- 将音频切片至`5s - 15s`, 稍微长点也无伤大雅，实在太长可能会导致训练中途甚至预处理就爆显存。
 
-可以使用[audio-slicer-GUI](https://github.com/flutydeer/audio-slicer)、[audio-slicer-CLI](https://github.com/openvpi/audio-slicer)
+- 可以使用 [audio-slicer-GUI](https://github.com/flutydeer/audio-slicer) | [audio-slicer-CLI](https://github.com/openvpi/audio-slicer) 进行辅助切片。一般情况下只需调整其中的 `Minimum Interval`，普通说话素材通常保持默认即可，歌唱素材可以调整至 `100` 甚至 `50`。
 
-一般情况下只需调整其中的`Minimum Interval`，普通陈述素材通常保持默认即可，歌唱素材可以调整至`100`甚至`50`
+- 切完之后请手动删除过长或过短的音频。
 
-切完之后手动删除过长过短的音频
-
-**如果你使用 Whisper-ppg 声音编码器进行训练，所有的切片长度必须小于 30s**
+> [!WARNING]
+>
+> **如果你使用 Whisper-ppg 声音编码器进行训练，所有的切片长度必须小于 30s**
 
 ### 2.4.1 重采样至 44100Hz 单声道
 
-```shell
+使用下面的命令（若已经经过响度匹配，请跳过该行看下面的 NOTE）：
+
+```bash
 python resample.py
 ```
 
-#### 注意
+> [!NOTE]
+>
+> 虽然本项目拥有重采样、转换单声道与响度匹配的脚本 `resample.py`，但是默认的响度匹配是匹配到 0db。这可能会造成音质的受损。而 `python` 的响度匹配包 `pyloudnorm` 无法对电平进行压限，这会导致爆音。所以建议可以考虑使用专业声音处理软件如 `adobe audition` 等软件做响度匹配处理。若已经使用其他软件做响度匹配，可以在运行上述命令时添加 `--skip_loudnorm` 跳过响度匹配步骤。如：
 
-虽然本项目拥有重采样、转换单声道与响度匹配的脚本 resample.py，但是默认的响度匹配是匹配到 0db。这可能会造成音质的受损。而 python 的响度匹配包 pyloudnorm 无法对电平进行压限，这会导致爆音。所以建议可以考虑使用专业声音处理软件如`adobe audition`等软件做响度匹配处理。若已经使用其他软件做响度匹配，可以在运行上述命令时添加`--skip_loudnorm`跳过响度匹配步骤。如：
-
-```shell
+```bash
 python resample.py --skip_loudnorm
 ```
 
 ### 2.4.2 自动划分训练集、验证集，以及自动生成配置文件
 
-```shell
+使用下面的命令（若需要响度嵌入，请跳过该行看下面的使用响度嵌入）：
+
+```bash
 python preprocess_flist_config.py --speech_encoder vec768l12
 ```
 
-speech_encoder 拥有七个选择
+speech_encoder 拥有以下七个选择，具体讲解请看 **[2.2.1 必须项及各编码器的详解](#221-必须项)**。如果省略 speech_encoder 参数，默认值为 vec768l12。
 
 ```
 vec768l12
@@ -434,56 +442,53 @@ cnhubertlarge
 dphubert
 ```
 
-如果省略 speech_encoder 参数，默认值为 vec768l12
+#### 使用响度嵌入
 
-**使用响度嵌入**
+- 若使用响度嵌入，需要增加`--vol_aug`参数，比如：
 
-若使用响度嵌入，需要增加`--vol_aug`参数，比如：
-
-```shell
+```bash
 python preprocess_flist_config.py --speech_encoder vec768l12 --vol_aug
 ```
 
-使用后训练出的模型将匹配到输入源响度，否则为训练集响度。
+- 使用后训练出的模型将匹配到输入源响度，否则为训练集响度。
 
-#### 此时可以在生成的 config.json 与 diffusion.yaml 修改部分参数
+### 2.4.3 配置文件按需求修改
 
-##### config.json
+#### config.json
 
+- `vocoder_name`: 选择一种声码器，默认为`nsf-hifigan`
+- `log_interval`：多少步输出一次日志，默认为 `200`
+- `eval_interval`：多少步进行一次验证并保存一次模型，默认为 `800`
+- `epochs`：训练总轮数，默认为 `10000`，达到此轮数后将自动停止训练
+- `learning_rate`：学习率，建议保持默认值不要改
+- `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
+- `all_in_mem`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
 - `keep_ckpts`：训练时保留最后几个模型，`0`为保留所有，默认只保留最后`3`个
 
-- `all_in_mem`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
-
-- `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
-
-- `vocoder_name` : 选择一种声码器，默认为`nsf-hifigan`.
-
-##### diffusion.yaml
-
-- `cache_all_data`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
-
-- `duration`：训练时音频切片时长，可根据显存大小调整，**注意，该值必须小于训练集内音频的最短时间！**
-
-- `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
-
-- `timesteps` : 扩散模型总步数，默认为 1000.
-
-- `k_step_max` : 训练时可仅训练`k_step_max`步扩散以节约训练时间，注意，该值必须小于`timesteps`，0 为训练整个扩散模型，**注意，如果不训练整个扩散模型将无法使用仅扩散模型推理！**
-
-##### **声码器列表**
+**声码器列表**
 
 ```
 nsf-hifigan
 nsf-snake-hifigan
 ```
 
+#### diffusion.yaml
+
+- `cache_all_data`：加载所有数据集到内存中，某些平台的硬盘 IO 过于低下、同时内存容量 **远大于** 数据集体积时可以启用
+- `duration`：训练时音频切片时长，可根据显存大小调整，**注意，该值必须小于训练集内音频的最短时间！**
+- `batch_size`：单次训练加载到 GPU 的数据量，调整到低于显存容量的大小即可
+- `timesteps` : 扩散模型总步数，默认为 1000。完整的高斯扩散一共 1000 步
+- `k_step_max` : 训练时可仅训练 `k_step_max` 步扩散以节约训练时间，注意，该值必须小于`timesteps`，0 为训练整个扩散模型，**注意，如果不训练整个扩散模型将无法使用仅扩散模型推理！**
+
 ### 2.4.3 生成 hubert 与 f0
 
-```shell
+使用下面的命令（若需要训练浅扩散，请跳过该行看下面的浅扩散）：
+
+```bash
 python preprocess_hubert_f0.py --f0_predictor dio
 ```
 
-f0_predictor 拥有四个选择
+f0_predictor 拥有四个选择，部分 f0 预测器需要额外下载预处理模型，具体请参考 **[2.2.3 可选项 (根据情况选择)](#223-可选项-根据情况选择)**
 
 ```
 crepe
@@ -494,31 +499,48 @@ rmvpe
 fcpe
 ```
 
-如果训练集过于嘈杂，请使用 crepe 处理 f0
+#### 各个 f0 预测器的优缺点：
 
-如果省略 f0_predictor 参数，默认值为 rmvpe
+| 预测器  | 优点                                                      | 缺点                                         |
+| ------- | --------------------------------------------------------- | -------------------------------------------- |
+| pm      | 速度快，占用低                                            | 容易出现哑音                                 |
+| crepe   | 基本不会出现哑音                                          | 显存占用高，自带均值滤波，因此可能会出现跑调 |
+| dio     | -                                                         | 可能跑调                                     |
+| harvest | 低音部分有更好表现                                        | 其他音域就不如别的算法了                     |
+| rmvpe   | 六边形战士，目前最完美的预测器                            | 几乎没有缺点（极端长低音可能会出错）         |
+| fcpe    | SVC 开发组自研，目前最快的预测器，且有不输 crepe 的准确度 | -                                            |
 
-尚若需要浅扩散功能（可选），需要增加--use_diff 参数，比如
+> [!NOTE]
+>
+> 1. 如果训练集过于嘈杂，请使用 crepe 处理 f0
+>
+> 2. 如果省略 f0_predictor 参数，默认值为 rmvpe
 
-```shell
+**若需要浅扩散功能（可选），需要增加--use_diff 参数，比如:**
+
+```bash
 python preprocess_hubert_f0.py --f0_predictor dio --use_diff
 ```
 
-执行完以上步骤后 dataset 目录便是预处理完成的数据，可以删除 dataset_raw 文件夹了
+执行完以上步骤后生成的 dataset 目录便是预处理完成的数据，此时你可以按需删除 dataset_raw 文件夹了。
 
 ## 2.5 训练
 
 ### 2.5.1 扩散模型（可选）
 
-尚若需要浅扩散功能，需要训练扩散模型，扩散模型训练方法为:
+So-VITS-SVC 4.1 的一个重大更新就是引入了浅扩散 (Shallow Diffusion) 机制，将 SoVITS 的原始输出音频转换为 Mel 谱图，加入噪声并进行浅扩散处理后经过声码器输出音频。经过测试，**原始输出音频在经过浅扩散处理后可以显著改善电音、底噪等问题，输出质量得到大幅增强**。
 
-```shell
+尚若需要浅扩散功能，需要训练扩散模型，训练前请确保你已经下载并正确放置好了 `NSF-HIFIGAN` （**参考 [2.2.3](#223-可选项-根据情况选择)**）,并且预处理生成 hubert 与 f0 时添加了 `--use_diff` 参数（**参考 [2.4.3](#243-生成-hubert-与-f0)**）
+
+扩散模型训练方法为:
+
+```bash
 python train_diff.py -c configs/diffusion.yaml
 ```
 
-### 2.5.2 主模型训练
+### 2.5.2 主模型训练（必须）
 
-```shell
+```bash
 python train.py -c configs/config.json -m 44k
 ```
 
@@ -530,42 +552,91 @@ python train.py -c configs/config.json -m 44k
 >
 > 1. 这是一个非常无聊且没有意义的问题。就好比上来就问老师我家孩子怎么才能学习好，除了你自己，没有人能回答这个问题。
 > 2. 模型的训练关联于你的数据集质量、时长，所选的编码器、f0 算法，甚至一些超自然的玄学因素，即便你有一个成品模型，最终的转换效果也要取决于你的输入源以及推理参数。这不是一个线性的的过程，之间的变量实在是太多，所以你非得问“为什么我的模型出来不像啊”、“模型怎样才算训练好了”这样的问题，我只能说 WHO F\*\*KING KNOWS?
-> 3. 但也不是一点办法没有，只能烧香拜佛了。我不否认烧香拜佛当然是一个有效的手段，但你也可以借助一些科学的工具，例如 Tensorboard 等，下一段就将教你怎么通过看 Tensorboard 来辅助了解训练状态，当然，最强的辅助工具其实长在你自己身上，一个声学模型怎样才算训练好了? 塞上耳机，让你的耳朵告诉你吧。
+> 3. 但也不是一点办法没有，只能烧香拜佛了。我不否认烧香拜佛当然是一个有效的手段，但你也可以借助一些科学的工具，例如 Tensorboard 等，下方 2.5.3 就将教你怎么通过看 Tensorboard 来辅助了解训练状态，**当然，最强的辅助工具其实长在你自己身上，一个声学模型怎样才算训练好了? 塞上耳机，让你的耳朵告诉你吧**。
+>
+> **Epoch 和 Step 的关系**：
+>
+> 训练过程中会根据你在 `config.json` 中设置的保存步数（默认为 800 步，与 `eval_interval` 的值对应）保存一次模型。
+> 请严格区分轮数 (Epoch) 和步数 (Step)：1 个 Epoch 代表训练集中的所有样本都参与了一次学习，1 Step 代表进行了一步学习，由于 batch_size 的存在，每步学习可以含有数条样本，因此，Epoch 和 Step 的换算如下：
+> $$Epoch = \frac{Step}{(\text{数据集条数}{\div}batch\_size)}$$
+> 训练默认 10000 轮后结束，但正常训练通常只需要数百轮即可有较好的效果。当你觉得训练差不多完成了，可以在训练终端按 Ctrl + C 中断训练。中断后只要没有重新预处理训练集，就可以**从最近一次保存点继续训练**。
 
-# ✅3. 推理（参考官方文档）
+### 2.5.3 Tensorboard
+
+你可以用 Tensorboard 来查看训练过程中的损失函数值 (loss) 趋势，试听音频，从而辅助判断模型训练状态。**但是，就 So-VITS-SVC 这个项目而言，损失函数值(loss)并没有什么实际参考意义（你不用刻意对比研究这个值的高低），真正有参考意义的还是推理后靠你的耳朵来听！**
+
+- 使用下面的命令打开 Tensorboard：
+
+```bash
+tensorboard --logdir=logs/44k
+```
+
+Tensorboard 是根据训练时默认每 200 步的评估生成日志的，如果训练未满 200 步，则 Tensorboard 中不会出现任何图像。200 这个数值可以通过修改 `config.json` 中的 `log_interval` 值来修改。
+
+- Losses 详解
+
+你不需要理解每一个 loss 的具体含义，大致来说：
+
+- loss/g/f0、loss/g/mel 和 loss/g/total 应当是震荡下降的，并最终收敛在某个值
+- loss/g/kl 应当是低位震荡的
+- loss/g/fm 应当在训练的中期持续上升，并在后期放缓上升趋势甚至开始下降
+
+观察 losses 曲线的趋势可以帮助你判断模型的训练状态。但 losses 并不能作为判断模型训练状态的唯一参考，**甚至它的参考价值其实并不大，你仍需要通过自己的耳朵来判断模型是否训练好了**。
+
+> [!WARNING]
+>
+> 1. 对于小数据集（30 分钟甚至更小），在加载底模的情况下，不建议训练过久，这样是为了尽可能利用底模的优势。数千步甚至数百步就能有最好的结果。
+> 2. Tensorboard 中的试听音频是根据你的验证集生成的，**无法代表模型最终的表现**。
+
+# 3. 推理
+
+✨ 推理时请先准备好需要推理的干声，确保干声无底噪/无混响/质量较好。你可以使用 [UVR5](https://github.com/Anjok07/ultimatevocalremovergui/releases/tag/v5.6) 进行处理,得到干声。此外，我也制作了一个 [UVR5 人声分离教程](https://www.bilibili.com/video/BV1F4421c7qU/)
 
 ## 3.1 命令行推理
 
-使用 inference_main.py
+使用 inference_main.py 进行推理
 
-```shell
+```bash
 # 例
-python inference_main.py -m "logs/44k/G_30400.pth" -c "configs/config.json" -n "君の知らない物語-src.wav" -t 0 -s "nen"
+python inference_main.py -m "logs/44k/G_30400.pth" -c "configs/config.json" -n "你的推理音频.wav" -t 0 -s "speaker"
 ```
 
-必填项部分：
+**必填项部分：**
 
 - `-m` | `--model_path`：模型路径
 - `-c` | `--config_path`：配置文件路径
 - `-n` | `--clean_names`：wav 文件名列表，放在 raw 文件夹下
 - `-t` | `--trans`：音高调整，支持正负（半音）
 - `-s` | `--spk_list`：合成目标说话人名称
-- `-cl` | `--clip`：音频强制切片，默认 0 为自动切片，单位为秒/s
+- `-cl` | `--clip`：音频强制切片，默认 0 为自动切片，单位为秒/s。
 
-可选项部分：部分具体见下一节
+> [!NOTE]
+>
+> **音频切片**
+>
+> - 推理时，切片工具会将上传的音频根据静音段切分为数个小段，分别推理后合并为完整音频。这样做的好处是**小段音频推理显存占用低，因而可以将长音频切分推理以免爆显存**。切片阈值参数控制的是最小满刻度分贝值，低于这个值将被切片工具视为静音并去除。因此，当上传的音频比较嘈杂时，可以将该参数设置得高一些（如 -30），反之，可以将该值设置得小一些（如 -50）避免切除呼吸声和细小人声。
+>
+> - 开发团队近期的一项测试表明，较小的切片阈值（如-50）会改善输出的咬字，至于原理暂不清楚。
+>
+> **强制切片** `-cl` | `--clip`
+>
+> - 推理时，切片工具会将上传的音频根据静音段切分为数个小段，分别推理后合并为完整音频。但有时当人声过于连续，长时间不存在静音段时，切片工具也会相应切出来过长的音频，容易导致爆显存。自动音频切片功能则是设定了一个最长音频切片时长，初次切片后，如果存在长于该时长的音频切片，将会被按照该时长二次强制切分，避免了爆显存的问题。
+> - 强制切片可能会导致音频从一个字的中间切开，分别推理再合并时可能会存在人声不连贯。你需要在高级设置中设置强制切片的交叉淡入长度来避免这一问题。
+
+**可选项部分：部分具体见下一节**
 
 - `-lg` | `--linear_gradient`：两段音频切片的交叉淡入长度，如果强制切片后出现人声不连贯可调整该数值，如果连贯建议采用默认值 0，单位为秒
-- `-f0p` | `--f0_predictor`：选择 F0 预测器,可选择 crepe,pm,dio,harvest,默认为 pm(注意：crepe 为原 F0 使用均值滤波器)
+- `-f0p` | `--f0_predictor`：选择 F0 预测器，可选择 crepe,pm,dio,harvest,rmvpe,fcpe, 默认为 pm（注意：crepe 为原 F0 使用均值滤波器），不同 F0 预测器的优缺点请 **参考 [2.4.3 中的 F0 预测器的优缺点](#243-生成-hubert-与-f0)**
 - `-a` | `--auto_predict_f0`：语音转换自动预测音高，转换歌声时不要打开这个会严重跑调
-- `-cm` | `--cluster_model_path`：聚类模型或特征检索索引路径，如果没有训练聚类或特征检索则随便填
+- `-cm` | `--cluster_model_path`：聚类模型或特征检索索引路径，留空则自动设为各方案模型的默认路径，如果没有训练聚类或特征检索则随便填
 - `-cr` | `--cluster_infer_ratio`：聚类方案或特征检索占比，范围 0-1，若没有训练聚类模型或特征检索则默认 0 即可
-- `-eh` | `--enhance`：是否使用 NSF_HIFIGAN 增强器,该选项对部分训练集少的模型有一定的音质增强效果，但是对训练好的模型有反面效果，默认关闭
+- `-eh` | `--enhance`：是否使用 NSF_HIFIGAN 增强器，该选项对部分训练集少的模型有一定的音质增强效果，但是对训练好的模型有反面效果，默认关闭
 - `-shd` | `--shallow_diffusion`：是否使用浅层扩散，使用后可解决一部分电音问题，默认关闭，该选项打开时，NSF_HIFIGAN 增强器将会被禁止
 - `-usm` | `--use_spk_mix`：是否使用角色融合/动态声线融合
 - `-lea` | `--loudness_envelope_adjustment`：输入源响度包络替换输出响度包络融合比例，越靠近 1 越使用输出响度包络
 - `-fr` | `--feature_retrieval`：是否使用特征检索，如果使用聚类模型将被禁用，且 cm 与 cr 参数将会变成特征检索的索引路径与混合比例
 
-浅扩散设置：
+**浅扩散设置：**
 
 - `-dm` | `--diffusion_model_path`：扩散模型路径
 - `-dc` | `--diffusion_config_path`：扩散模型配置文件路径
@@ -573,19 +644,25 @@ python inference_main.py -m "logs/44k/G_30400.pth" -c "configs/config.json" -n "
 - `-od` | `--only_diffusion`：纯扩散模式，该模式不会加载 sovits 模型，以扩散模型推理
 - `-se` | `--second_encoding`：二次编码，浅扩散前会对原始音频进行二次编码，玄学选项，有时候效果好，有时候效果差
 
-### 注意
+> [!NOTE]
+>
+> **关于浅扩散步数** `-ks` | `--k_step`
+>
+> 完整的高斯扩散为 1000 步，当浅扩散步数达到 1000 步时，此时的输出结果完全是扩散模型的输出结果，So-VITS 模型将被抑制。浅扩散步数越高，越接近扩散模型输出的结果。**如果你只是想用浅扩散去除电音底噪，尽可能保留 So-VITS 模型的音色，浅扩散步数可以设定为 30-50**
 
-如果使用`whisper-ppg` 声音编码器进行推理，需要将`--clip`设置为 25，`-lg`设置为 1。否则将无法正常推理。
+> [!WARNING]
+>
+> 如果使用 `whisper-ppg` 声音编码器进行推理，需要将 `--clip` 设置为 25，`-lg` 设置为 1。否则将无法正常推理。
 
-## 3.2 WebUI 推理
+## 3.2 webUI 推理
 
-使用以下命令打开 webui 界面，推理参数参考 3.1
+使用以下命令打开 webui 界面，具体的推理参数和上面的推理参数一致，只不过搬到了交互式界面上去，这里不再赘述。
 
-```shell
+```bash
 python webUI.py
 ```
 
-# ✅4. 增强效果的可选项
+# 4. 增强效果的可选项
 
 如果前面的效果已经满意，或者没看明白下面在讲啥，那后面的内容都可以忽略，不影响模型使用(这些可选项影响比较小，可能在某些特定数据上有点效果，但大部分情况似乎都感知不太明显)
 
@@ -593,7 +670,8 @@ python webUI.py
 
 4.0 模型训练过程会训练一个 f0 预测器，对于语音转换可以开启自动音高预测，如果效果不好也可以使用手动的，但转换歌声时请不要启用此功能！！！会严重跑调！！
 
-- 在 inference_main 中设置 auto_predict_f0 为 true 即可
+- 命令行推理：在 `inference_main` 中设置 `auto_predict_f0` 为 `true` 即可
+- webUI 推理：勾选相应选项即可
 
 ### 聚类音色泄漏控制
 
@@ -606,7 +684,7 @@ python webUI.py
   - 执行`python cluster/train_cluster.py`，模型的输出会在`logs/44k/kmeans_10000.pt`
   - 聚类模型目前可以使用 gpu 进行训练，执行`python cluster/train_cluster.py --gpu`
 
-```shell
+```bash
 # CPU
 python cluster/train_cluster.py
 # GPU
@@ -624,7 +702,7 @@ python cluster/train_cluster.py --gpu
 - 训练过程：
   首先需要在生成 hubert 与 f0 后执行：
 
-```shell
+```bash
 python train_index.py -c configs/config.json
 ```
 
@@ -643,7 +721,7 @@ python train_index.py -c configs/config.json
 
 使用 compress_model.py
 
-```shell
+```bash
 # 例
 python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="logs/44k/release.pth"
 ```
@@ -707,7 +785,7 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 如果你在终端或 WebUI 界面的报错中出现了这样的报错:
 
-```shell
+```bash
 OutOfMemoryError: CUDA out of memory.Tried to allocate XX GiB (GPU O: XX GiB total capacity; XX GiB already allocated; XX MiB Free: XX GiB reserved in total by PyTorch)
 ```
 
@@ -735,7 +813,7 @@ OutOfMemoryError: CUDA out of memory.Tried to allocate XX GiB (GPU O: XX GiB tot
 
 出现**类似**以下报错时：
 
-```shell
+```bash
 ERROR: Could not find a version that satisfies the requirement librosa==0.9.1 (from versions: none)
 ERROR: No matching distribution found for librosa==0.9.1
 # 主要特征是
@@ -750,7 +828,7 @@ Could not find a version that satisfies the requirement xxxx
 
 使用`pip install [包名称] -i [下载源地址]`，例如我想在阿里源下载 librosa 这个依赖，并且要求依赖版本是 0.9.1，那么应该在 cmd 中输入以下命令：
 
-```shell
+```bash
 pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 ```
 
@@ -775,7 +853,7 @@ pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 
 **1. 报错：RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly**
 
-```shell
+```bash
 raise RuntimeError(f'DataLoader worker (pid(s) {pids_str}) exited unexpectedly') from e
 RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 ```
@@ -802,7 +880,7 @@ RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 **解决方法如下**：
 需限制部分依赖版本，在安装完`requirements_win.txt`后，在 cmd 中依次输入以下命令以更新依赖包：
 
-```shell
+```bash
 pip install --upgrade fastapi==0.84.0
 pip install --upgrade gradio==3.41.2
 pip install --upgrade pydantic==1.10.12
