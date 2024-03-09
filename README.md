@@ -1021,10 +1021,11 @@ pip install --upgrade pydantic==1.10.12
 
 # 感谢名单
 
-- so-vits-svc | [官方源代码和帮助文档](https://github.com/svc-develop-team/so-vits-svc)
+- so-vits-svc | [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc)
+- GPT-SoVITS | [GPT-SoVITS](https://github.com/RVC-Boss/GPT-SoVITS)
 - SingingVocoders | [SingingVocoders](https://github.com/openvpi/SingingVocoders)
 - MoeVoiceStudio | [MoeVoiceStudio](https://github.com/NaruseMioShirakana/MoeVoiceStudio)
-- B 站 up 主 inifnite_loop | [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) | [相关专栏](https://www.bilibili.com/read/cv21425662)
-- 一些报错的解决办法 | B 站 up 主：[羽毛布団](https://space.bilibili.com/3493141443250876) | [一些报错的解决办法](https://www.bilibili.com/read/cv22206231) | [常见报错解决方法](https://www.yuque.com/umoubuton/ueupp5/ieinf8qmpzswpsvr)
+- up 主 [inifnite_loop](https://space.bilibili.com/286311429) | [相关视频](https://www.bilibili.com/video/BV1Bd4y1W7BN) | [相关专栏](https://www.bilibili.com/read/cv21425662)
+- up 主 [羽毛布団](https://space.bilibili.com/3493141443250876) | [一些报错的解决办法](https://www.bilibili.com/read/cv22206231) | [常见报错解决方法](https://www.yuque.com/umoubuton/ueupp5/ieinf8qmpzswpsvr)
 - 所有提供训练音频样本的人员
 - 您
