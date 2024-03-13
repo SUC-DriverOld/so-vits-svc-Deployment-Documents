@@ -246,8 +246,9 @@ pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https
 
 ## 1.4 其他依赖项安装
 
-- 在项目文件夹内右击空白处选择 **在终端中打开** 。
-- 使用下面的命令先更新一下 `pip`, `wheel`, `setuptools` 这三个包。
+✨ 在开始其他依赖项安装之前，**请务必下载并安装** [Visual Studio 2022](https://visualstudio.microsoft.com/) 或者 [Microsoft C++ 生成工具](https://visualstudio.microsoft.com/zh-hans/visual-cpp-build-tools/)（体积较前者更小）。**勾选并安装组件包：“使用 C++的桌面开发”**，执行修改并等待其安装完成。
+
+- 在项目文件夹内右击空白处选择 **在终端中打开** 。使用下面的命令先更新一下 `pip`, `wheel`, `setuptools` 这三个包。
 
 ```bash
 pip install --upgrade pip wheel setuptools
@@ -266,12 +267,6 @@ pip install --upgrade fastapi==0.84.0
 pip install --upgrade pydantic==1.10.12
 pip install --upgrade gradio==3.41.2
 ```
-
-> [!NOTE]
->
-> 关于 fairseq 安装不了的问题，windows 的解决方案如下：
->
-> 第一步：更新 pip 到最新版。第二步：安装 visual studio 2022，社区版就行，然后组件里装“使用 c++的桌面开发”。全部安装完成之后再重新 `pip install farseq` 即可完成安装。
 
 ## 1.5 FFmpeg
 
