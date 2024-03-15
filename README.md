@@ -610,7 +610,7 @@ python train.py -c configs/config.json -m 44k
 >
 > 训练过程中会根据你在 `config.json` 中设置的保存步数（默认为 800 步，与 `eval_interval` 的值对应）保存一次模型。
 > 请严格区分轮数 (Epoch) 和步数 (Step)：1 个 Epoch 代表训练集中的所有样本都参与了一次学习，1 Step 代表进行了一步学习，由于 batch_size 的存在，每步学习可以含有数条样本，因此，Epoch 和 Step 的换算如下：
-> $$Epoch = \frac{Step}{(\text{数据集条数}{\div}batch\_size)}$$
+> $Epoch = \frac{Step}{(\text{数据集条数}{\div}batch\_size)}$
 > 训练默认 10000 轮后结束，但正常训练通常只需要数百轮即可有较好的效果。当你觉得训练差不多完成了，可以在训练终端按 Ctrl + C 中断训练。中断后只要没有重新预处理训练集，就可以**从最近一次保存点继续训练**。
 
 ### 2.5.3 Tensorboard
