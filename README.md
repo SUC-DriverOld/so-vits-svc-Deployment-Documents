@@ -4,9 +4,9 @@
 
 [English](README.md) | [简体中文](README_zh_CN.md)
 
-**Last Updated: March 22, 2024.**
+**Last Updated: April 28, 2024.**
 
-This help document provides detailed Chinese installation, debugging, and inference tutorials for the project [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc). You can also directly refer to the official [README](https://github.com/svc-develop-team/so-vits-svc#readme) documentation.
+This help document provides detailed installation, debugging, and inference tutorials for the project [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc). You can also directly refer to the official [README](https://github.com/svc-develop-team/so-vits-svc#readme) documentation.
 
 English document written by: [elianli](https://github.com/elianli)
 
