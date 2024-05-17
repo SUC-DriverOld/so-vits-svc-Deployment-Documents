@@ -2,9 +2,9 @@
 
 # SoftVC VITS Singing Voice Conversion 本地部署教程
 
-[English](README.md) | [简体中文](README_zh_CN.md)
+[English](README.md) | 简体中文
 
-**最后更新时间：2024.4.28**
+**最后更新时间：2024.5.18**
 
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 
@@ -493,7 +493,7 @@ python resample.py
 
 > [!NOTE]
 >
-> 虽然本项目拥有重采样、转换单声道与响度匹配的脚本 `resample.py`，但是默认的响度匹配是匹配到 0db。这可能会造成音质的受损。而 `python` 的响度匹配包 `pyloudnorm` 无法对电平进行压限，这会导致爆音。所以建议可以考虑使用专业声音处理软件如 `Adobe Audition` 等软件做响度匹配处理。若已经使用其他软件做响度匹配，可以在运行上述命令时添加 `--skip_loudnorm` 跳过响度匹配步骤。如：
+> 虽然本项目拥有重采样、转换单声道与响度匹配的脚本 `resample.py`，但是默认的响度匹配是匹配到 0db。这可能会造成音质的受损。而 `python` 的响度匹配包 `pyloudnorm` 无法对电平进行压限，这会导致爆音。所以建议可以考虑使用专业声音处理软件如 `Adobe Audition` 等软件做响度匹配处理。此处也可以使用我写的一个响度匹配工具 [Loudness Matching Tool](https://github.com/AI-Hobbyist/Loudness-Matching-Tool) 进行处理。若已经使用其他软件做响度匹配，可以在运行上述命令时添加 `--skip_loudnorm` 跳过响度匹配步骤。如：
 
 ```bash
 python resample.py --skip_loudnorm
@@ -590,7 +590,6 @@ fcpe
 > [!NOTE]
 >
 > 1. 如果训练集过于嘈杂，请使用 crepe 处理 f0
->
 > 2. 如果省略 f0_predictor 参数，默认值为 rmvpe
 
 **若需要浅扩散功能（可选），需要增加--use_diff 参数，比如:**
@@ -1021,7 +1020,12 @@ RuntimeError: DataLoader worker (pid(s) 13920) exited unexpectedly
 
 - 没有解决方法：非 N 卡跑不了。（也不是完全跑不了，但如果你是纯萌新的话，那我的回答确实就是：跑不了）
 
-**4. 报错：页面文件太小，无法完成操作。**
+**6. 报错：`FileNotFoundError: No such file or directory: 'pretrain/rmvpe.pt'`**
+
+- 运行`python preprocess_hubert_f0.py --f0_predictor rmvpe --use_diff` 后出现 `FileNotFoundError: No such file or directory: 'pretrain/rmvpe.pt'`
+- 因为官方更新了 rmvpe 预处理器来处理 f0，请参考教程文档 [#2.2.3](#223-可选项-根据情况选择) 下载预处理模型`rmvpe.pt`并放到对应位置。
+
+**7. 报错：页面文件太小，无法完成操作。**
 
 - 调大虚拟内存，具体的方法各种地方一搜就能搜到，不展开了
 
@@ -1048,6 +1052,7 @@ pip install --upgrade pydantic==1.10.12
 
 - 原因：v1 分支的模型用了 vec768 的配置文件，如果上面报错的 256 的 768 位置反过来了那就是 vec768 的模型用了 v1 的配置文件。
 - 解决方法：检查配置文件中的 `ssl_dim` 一项，如果这项是 256，那你的 `speech_encoder` 应当修改为 `vec256|9`，如果是 768，则是 `vec768|12`
+- 详细修改方法请参考 [#2.1](#21-关于兼容-40-模型的问题)
 
 **3. 报错：`'HParams' object has no attribute 'xxx'`**
 
