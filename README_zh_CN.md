@@ -599,6 +599,14 @@ fcpe
 python preprocess_hubert_f0.py --f0_predictor rmvpe --use_diff
 ```
 
+**如果处理速度较为缓慢，或者你的数据集较大，可以加上`--num_processes`参数：**
+```bash
+# 下面的命令使用了rmvpe作为f0预测器，你可以手动进行修改
+python preprocess_hubert_f0.py --f0_predictor rmvpe --num_processes 8
+# 所有的Workers会被自动分配到多个线程上
+```
+
+
 执行完以上步骤后生成的 `dataset` 目录便是预处理完成的数据，此时你可以按需删除 `dataset_raw` 文件夹了。
 
 ## 2.5 训练
