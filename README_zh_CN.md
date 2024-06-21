@@ -4,7 +4,7 @@
 
 [English](README.md) | 简体中文
 
-**最后更新时间：2024.5.18**
+**最后更新时间：2024.6.21**
 
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 
