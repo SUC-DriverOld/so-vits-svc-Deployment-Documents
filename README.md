@@ -448,14 +448,17 @@ dataset_raw
 
 ```json
 {
-  "n_speakers": 10, // The number represents the number of speakers, starting from 1, and needs to correspond to the number below
+  "n_speakers": 10,
 
   "spk": {
-    "speaker0": 0, // "speaker0" refers to the speaker's name, which can be changed
-    "speaker1": 1 // The numbers 0, 1, 2... represent the speaker count, starting from 0
+    "speaker0": 0,
+    "speaker1": 1
   }
 }
 ```
+
+- `"n_speakers": 10`: The number represents the number of speakers, starting from 1, and needs to correspond to the number below
+- `"speaker0": 0`: "speaker0" refers to the speaker's name, which can be changed. The numbers 0, 1, 2... represent the speaker count, starting from 0.
 
 ## 2.4 Data Preprocessing
 
