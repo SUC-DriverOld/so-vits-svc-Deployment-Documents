@@ -52,7 +52,7 @@ Written by Sucial. [Bilibili](https://space.bilibili.com/445022409) | [Github](h
   - [2.2 Pre-downloaded Model Files](#22-pre-downloaded-model-files)
     - [2.2.1 Mandatory Items](#221-mandatory-items)
       - [Detailed Explanation of Each Encoder](#detailed-explanation-of-each-encoder)
-    - [2.2.2 Pre-trained Baseline Models (Highly Recommended)](#222-pre-trained-baseline-models-highly-recommended)
+    - [2.2.2 Pre-trained Base Model (Strongly Recommended)](#222-pre-trained-base-model-strongly-recommended)
     - [2.2.3 Optional Items (Choose as Needed)](#223-optional-items-choose-as-needed)
   - [2.3 Data Preparation](#23-data-preparation)
   - [2.4 Data Preprocessing](#24-data-preprocessing)
@@ -333,61 +333,62 @@ libavcodec     58.100.100 / 58.100.100
 > - "cnhubertlarge"
 > - "dphubert"
 > - "whisper-ppg-large"
+> - "wavlmbase+"
 
-**1. If Using ContentVec as the Sound Encoder (Recommended)**
-
-Requires either `vec768l12` or `vec256l9`.
-
-- Download ContentVec: [checkpoint_best_legacy_500.pt](https://ibm.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr). Place it in the `pretrain` directory.
-
-Alternatively, download the following ContentVec, which is only 199MB in size but produces the same effects:
-
-- ContentVec: [hubert_base.pt](https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt). **Rename the file to `checkpoint_best_legacy_500.pt`** and place it in the `pretrain` directory.
-
-**2. If Using Hubertsoft as the Sound Encoder**
-
-- Soft VC Hubert: [hubert-soft-0d54a1f4.pt](https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt). Place it in the `pretrain` directory.
-
-**3. If Using Whisper-ppg as the Sound Encoder**
-
-- Download the model [medium.pt](https://openaipublic.azureedge.net/main/whisper/models/345ae4da62f9b3d59415adc60127b97c714f32e89e936602e85993674d08dcb1/medium.pt), which is compatible with `whisper-ppg`.
-- Download the model [large-v2.pt](https://openaipublic.azureedge.net/main/whisper/models/81f7c96c852ee8fc832187b0132e569d6c3065a3252ed18e56effd0b6a73e524/large-v2.pt), which is compatible with `whisper-ppg-large`.
-- Place them in the `pretrain` directory.
-
-**4. If Using Cnhubertlarge as the Sound Encoder**
-
-- Download the model [chinese-hubert-large-fairseq-ckpt.pt](https://huggingface.co/TencentGameMate/chinese-hubert-large/resolve/main/chinese-hubert-large-fairseq-ckpt.pt). Place it in the `pretrain` directory.
-
-**5. If Using Dphubert as the Sound Encoder**
-
-- Download the model [DPHuBERT-sp0.75.pth](https://huggingface.co/pyf98/DPHuBERT/resolve/main/DPHuBERT-sp0.75.pth). Place it in the `pretrain` directory.
-
-**6. If Using OnnxHubert/ContentVec as the Sound Encoder**
-
-- Download the model [MoeSS-SUBModel](https://huggingface.co/NaruseMioShirakana/MoeSS-SUBModel/tree/main). Place it in the `pretrain` directory.
+| Encoder                  | Download Link                                                                                                                                                                                                        | Location                                                                    | Description                                                             |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| contentvec (Recommended) | [checkpoint_best_legacy_500.pt](https://ibm.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr)                                                                                                                              | Place in `pretrain` directory                                               | `vec768l12` and `vec256l9` require this encoder                         |
+|                          | [hubert_base.pt](https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt)                                                                                                                     | Rename to checkpoint_best_legacy_500.pt, then place in `pretrain` directory | Same effect as the above `checkpoint_best_legacy_500.pt` but only 199MB |
+| hubertsoft               | [hubert-soft-0d54a1f4.pt](https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt)                                                                                                           | Place in `pretrain` directory                                               | Used by so-vits-svc3.0                                                  |
+| Whisper-ppg              | [medium.pt](https://openaipublic.azureedge.net/main/whisper/models/345ae4da62f9b3d59415adc60127b97c714f32e89e936602e85993674d08dcb1/medium.pt)                                                                       | Place in `pretrain` directory                                               | Compatible with `whisper-ppg`                                           |
+| whisper-ppg-large        | [large-v2.pt](https://openaipublic.azureedge.net/main/whisper/models/81f7c96c852ee8fc832187b0132e569d6c3065a3252ed18e56effd0b6a73e524/large-v2.pt)                                                                   | Place in `pretrain` directory                                               | Compatible with `whisper-ppg-large`                                     |
+| cnhubertlarge            | [chinese-hubert-large-fairseq-ckpt.pt](https://huggingface.co/TencentGameMate/chinese-hubert-large/resolve/main/chinese-hubert-large-fairseq-ckpt.pt)                                                                | Place in `pretrain` directory                                               | -                                                                       |
+| dphubert                 | [DPHuBERT-sp0.75.pth](https://huggingface.co/pyf98/DPHuBERT/resolve/main/DPHuBERT-sp0.75.pth)                                                                                                                        | Place in `pretrain` directory                                               | -                                                                       |
+| WavLM                    | [WavLM-Base+.pt](https://valle.blob.core.windows.net/share/wavlm/WavLM-Base+.pt?sv=2020-08-04&st=2023-03-01T07%3A51%3A05Z&se=2033-03-02T07%3A51%3A00Z&sr=c&sp=rl&sig=QJXmSJG9DbMKf48UDIU1MfzIro8HQOf3sqlNXiflY1I%3D) | Place in `pretrain` directory                                               | Download link might be problematic, unable to download                  |
+| OnnxHubert/ContentVec    | [MoeSS-SUBModel](https://huggingface.co/NaruseMioShirakana/MoeSS-SUBModel/tree/main)                                                                                                                                 | Place in `pretrain` directory                                               | -                                                                       |
 
 #### Detailed Explanation of Each Encoder
 
-| Encoder Name            | Advantages                                                                | Disadvantages                        |
-| ----------------------- | ------------------------------------------------------------------------- | ------------------------------------ |
-| `vec768l12` (Preferred) | Best sound restoration, large baseline model, supports loudness embedding | Weak articulation ability            |
-| `vec256l9`              | No apparent specific advantages                                           | Does not support diffusion model     |
-| `hubertsoft`            | Strong articulation ability                                               | Sound leakage                        |
-| `whisper-ppg`           | Strongest articulation ability                                            | Sound leakage, high GPU memory usage |
+| Encoder Name                   | Advantages                                                         | Disadvantages                     |
+| ------------------------------ | ------------------------------------------------------------------ | --------------------------------- |
+| `vec768l12` (Most Recommended) | Best voice fidelity, large base model, supports loudness embedding | Weak articulation                 |
+| `vec256l9`                     | No particular advantages                                           | Does not support diffusion models |
+| `hubertsoft`                   | Strong articulation                                                | Voice leakage                     |
+| `whisper-ppg`                  | Strongest articulation                                             | Voice leakage, high VRAM usage    |
 
-### 2.2.2 Pre-trained Baseline Models (Highly Recommended)
+### 2.2.2 Pre-trained Base Model (Strongly Recommended)
 
-- Pre-trained baseline model files: `G_0.pth` `D_0.pth`. Place them in the `logs/44k` directory.
+- Pre-trained base model files: `G_0.pth`, `D_0.pth`. Place in the `logs/44k` directory.
 
-- Pre-trained diffusion model baseline file: `model_0.pt`. Place it in the `logs/44k/diffusion` directory.
+- Diffusion model pre-trained base model file: `model_0.pt`. Place in the `logs/44k/diffusion` directory.
 
-The diffusion model references the Diffusion Model from [DDSP-SVC](https://github.com/yxlllc/DDSP-SVC), and the baseline model is compatible with the diffusion model of [DDSP-SVC](https://github.com/yxlllc/DDSP-SVC).
+The diffusion model references the Diffusion Model from [DDSP-SVC](https://github.com/yxlllc/DDSP-SVC), and the base model is compatible with the diffusion model from [DDSP-SVC](https://github.com/yxlllc/DDSP-SVC). Some of the provided base model files are from the integration package of “[羽毛布団](https://space.bilibili.com/3493141443250876)”, to whom we express our gratitude.
 
-> [!NOTE]
+**Provide 4.1 training base models, please download them yourself (requires external network conditions)**
+
+| Encoder Type                        | Main Model Base                                                                                                                                                                                                                  | Diffusion Model Base                                                                                                 | Description                                                                                                                                                                                                            |
+| ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| vec768l12                           | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec768l12/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec768l12/D_0.pth)                           | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/768l12/model_0.pt)      | If only training for 100 steps diffusion, i.e., `k_step_max = 100`, use [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/768l12/max100/model_0.pt) for the diffusion model |
+| vec768l12 (with loudness embedding) | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec768l12/vol_emb/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec768l12/vol_emb/D_0.pth)           | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/768l12/model_0.pt)      | If only training for 100 steps diffusion, i.e., `k_step_max = 100`, use [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/768l12/max100/model_0.pt) for the diffusion model |
+| vec256l9                            | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec256l9/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec256l9/D_0.pth)                             | Not supported                                                                                                        | -                                                                                                                                                                                                                      |
+| hubertsoft                          | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/hubertsoft/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/hubertsoft/D_0.pth)                         | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/hubertsoft/model_0.pt)  | -                                                                                                                                                                                                                      |
+| whisper-ppg                         | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/whisper-ppg/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/whisper-ppg/D_0.pth)                       | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/whisper-ppg/model_0.pt) | -                                                                                                                                                                                                                      |
+| tiny (vec768l12_vol_emb)            | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/tiny/vec768l12_vol_emb/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/tiny/vec768l12_vol_emb/D_0.pth) | -                                                                                                                    | TINY is based on the original So-VITS model with reduced network parameters, using Depthwise Separable Convolution and FLOW                                                                                            |
+
+shared parameter technology, significantly reducing model size and improving inference speed. TINY is designed for real-time conversion; reduced parameters mean its conversion effect is theoretically inferior to the original model. Real-time conversion GUI for So-VITS is under development. Until then, if there's no special need, training TINY model is not recommended. |
+
+> [!WARNING]
 >
-> **Pre-trained baseline models for 4.1 are provided. You need to download them yourself (requires internet access).**
->
-> - Huggingface Download | [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/D_0.pth) | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/G_0.pth) | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/model_0.pt). After downloading, rename them to `G_0.pth`, `D_0.pth`, and `model_0.pt`, respectively.
+> Pre-trained models for other encoders not mentioned are not provided. Please train without base models, which may significantly increase training difficulty!
+
+**Base Model and Support**
+
+| Standard Base | Loudness Embedding | Loudness Embedding + TINY | Full Diffusion | 100-Step Shallow Diffusion |
+| ------------- | ------------------ | ------------------------- | -------------- | -------------------------- |
+| Vec768L12     | Supported          | Supported                 | Supported      | Supported                  |
+| Vec256L9      | Supported          | Not Supported             | Not Supported  | Not Supported              |
+| hubertsoft    | Supported          | Not Supported             | Supported      | Not Supported              |
+| whisper-ppg   | Supported          | Not Supported             | Supported      | Not Supported              |
 
 ### 2.2.3 Optional Items (Choose as Needed)
 
@@ -395,7 +396,9 @@ The diffusion model references the Diffusion Model from [DDSP-SVC](https://githu
 
 If using the `NSF-HIFIGAN enhancer` or `shallow diffusion`, you need to download the pre-trained NSF-HIFIGAN model provided by [OpenVPI]. If not needed, you can skip this.
 
-- Pre-trained NSF-HIFIGAN vocoder: Version 2022.12: [nsf_hifigan_20221211.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip); Version 2024.02: [nsf_hifigan_44.1k_hop512_128bin_2024.02.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-44.1k-hop512-128bin-2024.02/nsf_hifigan_44.1k_hop512_128bin_2024.02.zip)
+- Pre-trained NSF-HIFIGAN vocoder:
+  - Version 2022.12: [nsf_hifigan_20221211.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip);
+  - Version 2024.02: [nsf_hifigan_44.1k_hop512_128bin_2024.02.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-44.1k-hop512-128bin-2024.02/nsf_hifigan_44.1k_hop512_128bin_2024.02.zip)
 - After extracting, place the four files in the `pretrain/nsf_hifigan` directory.
 - If you download version 2024.02 of the vocoder, rename `model.ckpt` to `model`, i.e., remove the file extension.
 
@@ -439,6 +442,19 @@ dataset_raw
     ├───1.wav
     ├───...
     └───25788785-20221210-200143-856_01_(Vocals)_0_0.wav
+```
+
+3. Additionally, you need to create and edit `config.json` in `dataset_raw`
+
+```json
+{
+  "n_speakers": 10, // The number represents the number of speakers, starting from 1, and needs to correspond to the number below
+
+  "spk": {
+    "speaker0": 0, // "speaker0" refers to the speaker's name, which can be changed
+    "speaker1": 1 // The numbers 0, 1, 2... represent the speaker count, starting from 0
+  }
+}
 ```
 
 ## 2.4 Data Preprocessing
@@ -569,6 +585,14 @@ fcpe
 ```bash
 # The following command uses rmvpe as the f0 predictor, you can manually modify it
 python preprocess_hubert_f0.py --f0_predictor rmvpe --use_diff
+```
+
+**If the processing speed is slow, or if your dataset is large, you can add the `--num_processes` parameter:**
+
+```bash
+# The following command uses rmvpe as the f0 predictor, you can manually change it
+python preprocess_hubert_f0.py --f0_predictor rmvpe --num_processes 8
+# All workers will be automatically assigned to multiple threads
 ```
 
 After completing the above steps, the `dataset` directory generated is the preprocessed data, and you can delete the `dataset_raw` folder as needed.

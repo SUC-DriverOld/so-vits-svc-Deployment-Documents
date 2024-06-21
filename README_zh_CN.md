@@ -85,7 +85,6 @@
     - [5.2.2 动态声线混合](#522-动态声线混合)
   - [5.3 Onnx 导出](#53-onnx-导出)
 - [6. 简单混音处理及成品导出](#6-简单混音处理及成品导出)
-  - [使用音频宿主软件处理推理后音频，请参考 配套视频教程 或其他更专业的混音教程。](#使用音频宿主软件处理推理后音频请参考-配套视频教程-或其他更专业的混音教程)
 - [附录：常见报错的解决办法](#附录常见报错的解决办法)
   - [关于爆显存](#关于爆显存)
   - [安装依赖时出现的相关报错](#安装依赖时出现的相关报错)
@@ -356,45 +355,26 @@ libavcodec     58.100.100 / 58.100.100
 > - "cnhubertlarge"
 > - "dphubert"
 > - "whisper-ppg-large"
+> - "wavlmbase+"
 
-**1. 若使用 contentvec 作为声音编码器（推荐）**
-
-`vec768l12`与`vec256l9` 需要该编码器
-
-- 下载 contentvec ：[checkpoint_best_legacy_500.pt](https://ibm.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr)。放在`pretrain`目录下。
-
-或者下载下面的 ContentVec，大小只有 199MB，但效果相同
-
-- contentvec ：[hubert_base.pt](https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt)。**将文件名改为`checkpoint_best_legacy_500.pt`后**，放在`pretrain`目录下。
-
-**2. 若使用 hubertsoft 作为声音编码器**
-
-- soft vc hubert：[hubert-soft-0d54a1f4.pt](https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt)。放在`pretrain`目录下。
-
-**3. 若使用 Whisper-ppg 作为声音编码器**
-
-- 下载模型 [medium.pt](https://openaipublic.azureedge.net/main/whisper/models/345ae4da62f9b3d59415adc60127b97c714f32e89e936602e85993674d08dcb1/medium.pt), 该模型适配`whisper-ppg`
-- 下载模型 [large-v2.pt](https://openaipublic.azureedge.net/main/whisper/models/81f7c96c852ee8fc832187b0132e569d6c3065a3252ed18e56effd0b6a73e524/large-v2.pt), 该模型适配`whisper-ppg-large`
-- 放在`pretrain`目录下。
-
-**4. 若使用 cnhubertlarge 作为声音编码器**
-
-- 下载模型 [chinese-hubert-large-fairseq-ckpt.pt](https://huggingface.co/TencentGameMate/chinese-hubert-large/resolve/main/chinese-hubert-large-fairseq-ckpt.pt)。放在`pretrain`目录下。
-
-**5. 若使用 dphubert 作为声音编码器**
-
-- 下载模型 [DPHuBERT-sp0.75.pth](https://huggingface.co/pyf98/DPHuBERT/resolve/main/DPHuBERT-sp0.75.pth)。放在`pretrain`目录下。
-
-**6. 若使用 OnnxHubert/ContentVec 作为声音编码器**
-
-- 下载模型 [MoeSS-SUBModel](https://huggingface.co/NaruseMioShirakana/MoeSS-SUBModel/tree/main)。放在`pretrain`目录下。
+| 编码器                | 下载地址                                                                                                                                                                                                             | 放置位置                                                            | 说明                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| contentvec（推荐）    | [checkpoint_best_legacy_500.pt](https://ibm.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr)                                                                                                                              | 放在`pretrain`目录下                                                | `vec768l12`与`vec256l9` 需要该编码器                              |
+|                       | [hubert_base.pt](https://huggingface.co/lj1995/VoiceConversionWebUI/resolve/main/hubert_base.pt)                                                                                                                     | 将文件名改为 checkpoint_best_legacy_500.pt 后，放在`pretrain`目录下 | 与上面的`checkpoint_best_legacy_500.pt`效果相同，但大小只有 199MB |
+| hubertsoft            | [hubert-soft-0d54a1f4.pt](https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt)                                                                                                           | 放在`pretrain`目录下                                                | so-vits-svc3.0 使用的是该编码器                                   |
+| Whisper-ppg           | [medium.pt](https://openaipublic.azureedge.net/main/whisper/models/345ae4da62f9b3d59415adc60127b97c714f32e89e936602e85993674d08dcb1/medium.pt)                                                                       | 放在`pretrain`目录下                                                | 该模型适配`whisper-ppg`                                           |
+| whisper-ppg-large     | [large-v2.pt](https://openaipublic.azureedge.net/main/whisper/models/81f7c96c852ee8fc832187b0132e569d6c3065a3252ed18e56effd0b6a73e524/large-v2.pt)                                                                   | 放在`pretrain`目录下                                                | 该模型适配`whisper-ppg-large`                                     |
+| cnhubertlarge         | [chinese-hubert-large-fairseq-ckpt.pt](https://huggingface.co/TencentGameMate/chinese-hubert-large/resolve/main/chinese-hubert-large-fairseq-ckpt.pt)                                                                | 放在`pretrain`目录下                                                | -                                                                 |
+| dphubert              | [DPHuBERT-sp0.75.pth](https://huggingface.co/pyf98/DPHuBERT/resolve/main/DPHuBERT-sp0.75.pth)                                                                                                                        | 放在`pretrain`目录下                                                | -                                                                 |
+| WavLM                 | [WavLM-Base+.pt](https://valle.blob.core.windows.net/share/wavlm/WavLM-Base+.pt?sv=2020-08-04&st=2023-03-01T07%3A51%3A05Z&se=2033-03-02T07%3A51%3A00Z&sr=c&sp=rl&sig=QJXmSJG9DbMKf48UDIU1MfzIro8HQOf3sqlNXiflY1I%3D) | 放在`pretrain`目录下                                                | 下载链接可能存在问题，无法下载                                    |
+| OnnxHubert/ContentVec | [MoeSS-SUBModel](https://huggingface.co/NaruseMioShirakana/MoeSS-SUBModel/tree/main)                                                                                                                                 | 放在`pretrain`目录下                                                | -                                                                 |
 
 #### 各编码器的详解
 
 | 编码器名称            | 优点                                 | 缺点                 |
 | --------------------- | ------------------------------------ | -------------------- |
 | `vec768l12`（最推荐） | 最还原音色、有大型底模、支持响度嵌入 | 咬字能力较弱         |
-| `vec256l9`            | 貌似举不出特别的优点                 | 不支持扩散模型       |
+| `vec256l9`            | 无特别的优点                         | 不支持扩散模型       |
 | `hubertsoft`          | 咬字能力较强                         | 音色泄露             |
 | `whisper-ppg`         | 咬字最强                             | 音色泄露、显存占用高 |
 
@@ -404,18 +384,31 @@ libavcodec     58.100.100 / 58.100.100
 
 - 扩散模型预训练底模文件： `model_0.pt`。放在`logs/44k/diffusion`目录下。
 
-扩散模型引用了[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的 Diffusion Model，底模与[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的扩散模型底模通用。
+扩散模型引用了[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的 Diffusion Model，底模与[DDSP-SVC](https://github.com/yxlllc/DDSP-SVC)的扩散模型底模通用。以下提供的底模文件部分来自“[羽毛布団](https://space.bilibili.com/3493141443250876)”的整合包，在此表示感谢。
 
-> [!NOTE]
+**提供 4.1 训练底模，请自行下载（需具备外网条件）**
+
+| 编码器类型                | 主模型底模                                                                                                                                                                                                                       | 扩散模型底模                                                                                                         | 说明                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| vec768l12                 | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec768l12/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec768l12/D_0.pth)                           | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/768l12/model_0.pt)      | 若仅训练 100 步扩散，即`k_step_max = 100`，扩散模型请使用[model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/768l12/max100/model_0.pt)                                                                                                                                                                                        |
+| vec768l12（开启响度嵌入） | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec768l12/vol_emb/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec768l12/vol_emb/D_0.pth)           | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/768l12/model_0.pt)      | 若仅训练 100 步扩散，即`k_step_max = 100`，扩散模型请使用[model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/768l12/max100/model_0.pt)                                                                                                                                                                                        |
+| vec256l9                  | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec256l9/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/vec256l9/D_0.pth)                             | 不支持扩散                                                                                                           | -                                                                                                                                                                                                                                                                                                                                                                      |
+| hubertsoft                | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/hubertsoft/G_0.pth), [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/hubertsoft/G_0.pth)                         | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/hubertsoft/model_0.pt)  | -                                                                                                                                                                                                                                                                                                                                                                      |
+| whisper-ppg               | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/whisper-ppg/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/whisper-ppg/D_0.pth)                       | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/diffusion/whisper-ppg/model_0.pt) | -                                                                                                                                                                                                                                                                                                                                                                      |
+| tiny(vec768l12_vol_emb)   | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/tiny/vec768l12_vol_emb/G_0.pth), [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/tiny/vec768l12_vol_emb/D_0.pth) | -                                                                                                                    | TINY 是在原版 So-VITS 模型的基础上减少了网络参数，并采用了深度可分离卷积（Depthwise Separable Convolution）和 FLOW 共享参数技术，使得模型的大小明显减小，并且提升了推理速度。TINY 模型是专门设计以用来实时转换的，模型的参数减少意味着其转换效果理论上不如原版模型。目前适用于 So-VITS 的实时转换 GUI 还在开发中，在此之前，如果没有特殊需求，不建议训练 TINY 模型。 - |
+
+> [!WARNING]
 >
-> **提供 4.1 训练底模，需自行下载（需具备外网条件）**
->
-> - 下载地址 1：Huggingface 下载 | [D_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/D_0.pth) | [G_0.pth](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/G_0.pth) | [model_0.pt](https://huggingface.co/Sucial/so-vits-svc4.1-pretrain_model/blob/main/model_0.pt) | 下载完成后请对应并重命名为`G_0.pth` `D_0.pth`和`model_0.pt`。
-> - 下载地址 2：[【百度网盘转存】](https://pan.baidu.com/s/17IlNuphFHAntLklkMNtagg?pwd=dkp9) 此处不更新，已经落后。
->
-> **提供 3.0 训练底模，需自行下载**
->
-> - 下载地址：[【百度网盘转存】](https://pan.baidu.com/s/1uw6W3gOBvMbVey1qt_AzhA?pwd=80eo)
+> 其他未提及的编码器不提供预训练模型，请无底模训练，训练难度可能会大幅提升！
+
+**底模及支持性**
+
+| 标准底模    | 响度嵌入 | 响度嵌入+TINY | 完整扩散 | 100 步浅扩散 |
+| ----------- | -------- | ------------- | -------- | ------------ |
+| Vec768L12   | 支持     | 支持          | 支持     | 支持         |
+| Vec256L9    | 支持     | 不支持        | 不支持   | 不支持       |
+| hubertsoft  | 支持     | 不支持        | 支持     | 不支持       |
+| whisper-ppg | 支持     | 不支持        | 支持     | 不支持       |
 
 ### 2.2.3 可选项 (根据情况选择)
 
@@ -423,7 +416,9 @@ libavcodec     58.100.100 / 58.100.100
 
 如果使用`NSF-HIFIGAN增强器`或`浅层扩散`的话，需要下载预训练的 NSF-HIFIGAN 模型（由[OpenVPI](https://github.com/openvpi)提供），如果不需要可以不下载。
 
-- 预训练的 NSF-HIFIGAN 声码器 ：2022.12 版：[nsf_hifigan_20221211.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip)；2024.02 版：[nsf_hifigan_44.1k_hop512_128bin_2024.02.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-44.1k-hop512-128bin-2024.02/nsf_hifigan_44.1k_hop512_128bin_2024.02.zip)
+- 预训练的 NSF-HIFIGAN 声码器 ：
+  - 2022.12 版：[nsf_hifigan_20221211.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip)；
+  - 2024.02 版：[nsf_hifigan_44.1k_hop512_128bin_2024.02.zip](https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-44.1k-hop512-128bin-2024.02/nsf_hifigan_44.1k_hop512_128bin_2024.02.zip)
 - 解压后，将四个文件放在`pretrain/nsf_hifigan`目录下。
 - 若下载 2024.02 版的声码器，需要将`model.ckpt`重命名为`model`，即去掉后缀。
 
@@ -445,7 +440,7 @@ libavcodec     58.100.100 / 58.100.100
 
 ## 2.3 数据集准备
 
-1. 按照以下文件结构将数据集放入 dataset_raw 目录。
+1. 按照以下文件结构将数据集放入 `dataset_raw` 目录。
 
 ```
 dataset_raw
@@ -467,6 +462,17 @@ dataset_raw
     ├───1.wav
     ├───...
     └───25788785-20221210-200143-856_01_(Vocals)_0_0.wav
+```
+
+3. 此外还需要在`dataset_raw`新建并编辑`config.json`
+
+```json
+"n_speakers": 10 //数字代表说话人人数，从1开始计数，需要和下面的人数对应
+
+"spk":{
+    "speaker0": 0, //speaker0指的是说话人名字，可以更改
+    "speaker1": 1, //后面的数字0，1，2...代表说话人计数，从0开始计数
+}
 ```
 
 ## 2.4 数据预处理
@@ -592,7 +598,7 @@ fcpe
 > 1. 如果训练集过于嘈杂，请使用 crepe 处理 f0
 > 2. 如果省略 f0_predictor 参数，默认值为 rmvpe
 
-**若需要浅扩散功能（可选），需要增加--use_diff 参数，比如:**
+**若需要浅扩散功能（可选），需要增加 `--use_diff` 参数，比如:**
 
 ```bash
 # 下面的命令使用了rmvpe作为f0预测器，你可以手动进行修改
@@ -600,12 +606,12 @@ python preprocess_hubert_f0.py --f0_predictor rmvpe --use_diff
 ```
 
 **如果处理速度较为缓慢，或者你的数据集较大，可以加上`--num_processes`参数：**
+
 ```bash
 # 下面的命令使用了rmvpe作为f0预测器，你可以手动进行修改
 python preprocess_hubert_f0.py --f0_predictor rmvpe --num_processes 8
 # 所有的Workers会被自动分配到多个线程上
 ```
-
 
 执行完以上步骤后生成的 `dataset` 目录便是预处理完成的数据，此时你可以按需删除 `dataset_raw` 文件夹了。
 
@@ -933,7 +939,7 @@ python compress_model.py -c="configs/config.json" -i="logs/44k/G_30400.pth" -o="
 
 # 6. 简单混音处理及成品导出
 
-### 使用音频宿主软件处理推理后音频，请参考 [配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/) 或其他更专业的混音教程。
+使用音频宿主软件处理推理后音频，请参考[配套视频教程](https://www.bilibili.com/video/BV1Hr4y197Cy/)或其他更专业的混音教程。
 
 # 附录：常见报错的解决办法
 
