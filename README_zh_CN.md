@@ -4,7 +4,7 @@
 
 [English](README.md) | 简体中文
 
-**最后更新时间：2024.6.21**
+**最后更新时间：2024.6.22**
 
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 
@@ -277,7 +277,7 @@ pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https
 - 在 [1.1](#11-so-vits-svc41-源码) 解压得到的项目文件夹内右击空白处选择 **在终端中打开** 。使用下面的命令先更新一下 `pip`, `wheel`, `setuptools` 这三个包。
 
 ```bash
-pip install --upgrade pip wheel setuptools
+pip install --upgrade pip==23.3.2 wheel setuptools
 ```
 
 - 执行下面命令以安装库（**若出现报错请多次尝试直到没有报错，依赖全部安装完成**）。注意，项目文件夹内含有三个 requirements 的 txt ，此处选择 `requirements_win.txt`）
@@ -1009,6 +1009,32 @@ Could not find a version that satisfies the requirement xxxx
 ```bash
 pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 ```
+
+**3. pip 版本过高导致部分依赖无法安装**
+
+2024.6.21 日，pip 更新到了 24.1 版本，仅仅使用`pip install --upgrade pip`会使得 pip 的版本更新到 24.1，而部分依赖需要使用 pip 23.0 才能安装，因此需要手动降级 pip 版本。目前已知：hydra-core，omegaconf，fastapi 会受到此影响，具体表现为安装时出现下面的错误：
+
+```bash
+Please use pip<24.1 if you need to use this version.
+INFO: pip is looking at multiple versions of hydra-core to determine which version is compatible with other requirements. This could take a while.
+ERROR: Cannot install -r requirements.txt (line 20) and fairseq because these package versions have conflicting dependencies.
+
+The conflict is caused by:
+    fairseq 0.12.2 depends on omegaconf<2.1
+    hydra-core 1.0.7 depends on omegaconf<2.1 and >=2.0.5
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip to attempt to solve the dependency conflict
+```
+
+解决方法为：在[1.5 其他依赖项安装](#15-其他依赖项安装)时，先限制 pip 版本再进行依赖的安装，使用下面的命令限制
+
+```bash
+pip install --upgrade pip==23.3.2 wheel setuptools
+```
+
+运行完成后，再进行其他依赖项的安装。
 
 ## 数据集预处理和模型训练时的相关报错
 

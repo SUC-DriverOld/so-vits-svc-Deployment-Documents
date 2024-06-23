@@ -4,7 +4,7 @@
 
 English | [简体中文](README_zh_CN.md)
 
-**Last Updated: June 21, 2024.**
+**Last Updated: June 22, 2024.**
 
 This help document provides detailed installation, debugging, and inference tutorials for the project [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc). You can also directly refer to the official [README](https://github.com/svc-develop-team/so-vits-svc#readme) documentation.
 
@@ -254,7 +254,7 @@ pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https
 - Right-click in the folder obtained from [1.1](#11-so-vits-svc41-source-code) and select **Open in Terminal**. Use the following command to first update `pip`, `wheel`, and `setuptools`.
 
 ```bash
-pip install --upgrade pip wheel setuptools
+pip install --upgrade pip==23.3.2 wheel setuptools
 ```
 
 - Execute the following command to install libraries (**if errors occur, please try multiple times until there are no errors, and all dependencies are installed**). Note that there are three `requirements` txt files in the project folder; here, select `requirements_win.txt`.
@@ -997,6 +997,32 @@ Use the command `pip install [package_name] -i [source_url]`. For example, to do
 ```bash
 pip install librosa==0.9.1 -i http://mirrors.aliyun.com/pypi/simple
 ```
+
+**3. Certain dependencies cannot be installed due to a high pip version**
+
+On June 21, 2024, pip was updated to version 24.1. Simply using `pip install --upgrade pip` will update pip to version 24.1. However, some dependencies require pip 23.0 to be installed, necessitating a manual downgrade of the pip version. It is currently known that hydra-core, omegaconf, and fastapi are affected by this. The specific error encountered during installation is as follows:
+
+```bash
+Please use pip<24.1 if you need to use this version.
+INFO: pip is looking at multiple versions of hydra-core to determine which version is compatible with other requirements. This could take a while.
+ERROR: Cannot install -r requirements.txt (line 20) and fairseq because these package versions have conflicting dependencies.
+
+The conflict is caused by:
+    fairseq 0.12.2 depends on omegaconf<2.1
+    hydra-core 1.0.7 depends on omegaconf<2.1 and >=2.0.5
+
+To fix this you could try to:
+1. loosen the range of package versions you've specified
+2. remove package versions to allow pip to attempt to solve the dependency conflict
+```
+
+The solution is to limit the pip version before installing dependencies as described in [1.5 Installation of Other Dependencies](#15-installation-of-other-dependencies). Use the following command to limit the pip version:
+
+```bash
+pip install --upgrade pip==23.3.2 wheel setuptools
+```
+
+After running this command, proceed with the installation of other dependencies.
 
 ## Common Errors During Dataset Preprocessing and Model Training
 
