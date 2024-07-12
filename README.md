@@ -14,8 +14,6 @@ Written by Sucial. [Bilibili](https://space.bilibili.com/445022409) | [Github](h
 
 ---
 
-✨ **I wrote a script for a one-click setup environment and launching webUI for so-vits-svc: [so-vits-svc-webUI-QuickStart-bat](https://github.com/SUC-DriverOld/so-vits-svc-webUI-QuickStart-bat). Welcome to use it!**
-
 ✨ **Click to view: [Accompanying Video Tutorial](https://www.bilibili.com/video/BV1Hr4y197Cy/) | [UVR5 Vocal Separation Tutorial](https://www.bilibili.com/video/BV1F4421c7qU/) (Note: The accompanying video may be outdated. Refer to the latest tutorial documentation for accurate information!)**
 
 ✨ **Related Resources: [Official README Documentation](https://github.com/svc-develop-team/so-vits-svc) | [Common Error Solutions](https://www.yuque.com/umoubuton/ueupp5/ieinf8qmpzswpsvr) | [羽毛布団](https://space.bilibili.com/3493141443250876)**
