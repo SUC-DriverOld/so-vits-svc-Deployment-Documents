@@ -4,7 +4,7 @@
 
 [English](README.md) | 简体中文
 
-**最后更新时间：2024.7.12**
+**最后更新时间：2024.8.4**
 
 本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
 
@@ -29,22 +29,21 @@
 - [SoftVC VITS Singing Voice Conversion 本地部署教程](#softvc-vits-singing-voice-conversion-本地部署教程)
 - [教程目录](#教程目录)
 - [0. 用前须知](#0-用前须知)
-  - [任何国家，地区，组织和个人使用此项目必须遵守以下法律](#任何国家地区组织和个人使用此项目必须遵守以下法律)
-    - [《民法典》](#民法典)
-    - [第一千零一十九条](#第一千零一十九条)
-    - [第一千零二十四条](#第一千零二十四条)
-    - [第一千零二十七条](#第一千零二十七条)
-    - [《中华人民共和国宪法》|《中华人民共和国刑法》|《中华人民共和国民法典》|《中华人民共和国合同法》](#中华人民共和国宪法中华人民共和国刑法中华人民共和国民法典中华人民共和国合同法)
+    - [任何国家，地区，组织和个人使用此项目必须遵守以下法律](#任何国家地区组织和个人使用此项目必须遵守以下法律)
+      - [《民法典》](#民法典)
+      - [第一千零一十九条](#第一千零一十九条)
+      - [第一千零二十四条](#第一千零二十四条)
+      - [第一千零二十七条](#第一千零二十七条)
+      - [《中华人民共和国宪法》|《中华人民共和国刑法》|《中华人民共和国民法典》|《中华人民共和国合同法》](#中华人民共和国宪法中华人民共和国刑法中华人民共和国民法典中华人民共和国合同法)
   - [0.1 使用规约](#01-使用规约)
   - [0.2 硬件需求](#02-硬件需求)
   - [0.3 提前准备](#03-提前准备)
 - [1. 环境依赖](#1-环境依赖)
   - [1.1 so-vits-svc4.1 源码](#11-so-vits-svc41-源码)
-  - [1.2 Cuda](#12-cuda)
-  - [1.3 Python](#13-python)
-  - [1.4 Pytorch](#14-pytorch)
-  - [1.5 其他依赖项安装](#15-其他依赖项安装)
-  - [1.6 FFmpeg](#16-ffmpeg)
+  - [1.2 Python](#12-python)
+  - [1.3 Pytorch](#13-pytorch)
+  - [1.4 其他依赖项安装](#14-其他依赖项安装)
+  - [1.5 FFmpeg](#15-ffmpeg)
 - [2. 配置及训练](#2-配置及训练)
   - [2.1 关于兼容 4.0 模型的问题](#21-关于兼容-40-模型的问题)
   - [2.2 预先下载的模型文件](#22-预先下载的模型文件)
@@ -169,36 +168,13 @@
 git clone https://github.com/svc-develop-team/so-vits-svc.git
 ```
 
-## 1.2 Cuda
+## 1.2 Python
 
-- 在 cmd 控制台里输入 `nvidia-smi.exe` 以查看显卡驱动版本和对应的 cuda 版本
-
-- 前往 [NVIDIA-CUDA](https://developer.nvidia.com/cuda-toolkit) 官网下载与系统**对应**的 Cuda 版本
-- 以 [Cuda-11.7](<(https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local)>) 版本为例，根据自己的系统和需求选择安装（一般本地 Windows 用户请依次选择`Windows`, `x86_64`, `系统版本`, `exe(local)`）
-
-- 安装成功之后在 cmd 控制台中输入`nvcc -V`, 出现类似以下内容则安装成功：
-
-```bash
-nvcc: NVIDIA (R) Cuda compiler driver
-Copyright (c) 2005-2022 NVIDIA Corporation
-Built on Tue_May__3_19:00:59_Pacific_Daylight_Time_2022
-Cuda compilation tools, release 11.7, V11.7.64
-Build cuda_11.7.r11.7/compiler.31294372_0
-```
-
-> [!NOTE]
->
-> 1. `nvidia-smi.exe` 中显示的 CUDA 版本号具有向下兼容性。例如我显示的是 12.4，但我可以安装 <=12.4 的任意版本 CUDA 版本进行安装。
-> 2. CUDA 需要与下方 [1.4 Pytorch](#14-pytorch) 版本相匹配。
-> 3. CUDA 卸载方法：打开控制面板-程序-卸载程序，将带有 `NVIDIA CUDA` 的程序全部卸载即可（一共 5 个）。
-
-## 1.3 Python
-
-- 前往 [Python 官网](https://www.python.org/) 下载 Python3.8.9 安装并**添加系统环境变量**。（若使用 conda 配置 python 遇到没有 3.8.9 版本也可以直接选择 3.8）详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述。
+- 前往 [Python 官网](https://www.python.org/) 下载 Python3.10.11 安装并**添加系统环境变量**。（若使用 conda 配置 python 遇到没有 3.10.11 版本也可以直接选择 3.10）详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述。
 
 ```bash
 # conda配置方法, 将YOUR_ENV_NAME替换成你想要创建的虚拟环境名字。
-conda create -n YOUR_ENV_NAME python=3.8 -y
+conda create -n YOUR_ENV_NAME python=3.10 -y
 conda activate YOUR_ENV_NAME
 # 此后每次执行命令前，请确保处于该虚拟环境下！
 ```
@@ -239,11 +215,11 @@ pip install PACKAGE_NAME -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-## 1.4 Pytorch
+## 1.3 Pytorch
 
 > [!IMPORTANT]
 >
-> ✨ 此处安装的 Pytorch 需要与 [1.2 Cuda](#12-cuda) 安装的 Cuda 版本相匹配。例如我安装的是 12.1 的 Cuda，则我应该选择 12.1 的 Pytorch 版本进行安装。我个人使用的是 pytorch2.0.1+cu117 未出现明显问题，高版本请自己尝试。
+> ✨ 此处建议安装pytorch版本11.7或11.8，12.0及以上版本可能不适用.
 
 - 我们需要 **单独安装** `torch`, `torchaudio`, `torchvision` 这三个库，直接前往 [Pytorch 官网](https://pytorch.org/get-started/locally/) 选择所需版本然后复制 Run this Command 栏显示的命令至控制台安装即可。旧版本的 Pyorch 可以从 [此处](https://pytorch.org/get-started/previous-versions/) 下载到。
 - 安装完 `torch`, `torchaudio`, `torchvision` 这三个库之后，在 cmd 控制台运用以下命令检测 torch 能否成功调用 CUDA。最后一行出现 `True` 则成功，出现`False` 则失败，需要重新安装正确的版本。
@@ -267,7 +243,7 @@ print(torch.cuda.is_available())
 pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu117
 ```
 
-## 1.5 其他依赖项安装
+## 1.4 其他依赖项安装
 
 > [!IMPORTANT]
 > ✨ 在开始其他依赖项安装之前，**请务必下载并安装** [Visual Studio 2022](https://visualstudio.microsoft.com/) 或者 [Microsoft C++ 生成工具](https://visualstudio.microsoft.com/zh-hans/visual-cpp-build-tools/)（体积较前者更小）。**勾选并安装组件包：“使用 C++的桌面开发”**，执行修改并等待其安装完成。
@@ -292,7 +268,7 @@ pip install --upgrade pydantic==1.10.12
 pip install --upgrade gradio==3.41.2
 ```
 
-## 1.6 FFmpeg
+## 1.5 FFmpeg
 
 - 前往 [FFmpeg 官网](https://ffmpeg.org/) 下载。解压至任意位置并在环境变量中添加 Path 。定位至 `.\ffmpeg\bin`（详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述）
 - 安装完成后在 cmd 控制台中输入 `ffmpeg -version` 出现类似以下内容则安装成功：
@@ -986,7 +962,7 @@ ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9
 
 解决方法有两种：
 
-- 升级 python 至 3.10，其余操作不变。
+- 升级 python 至 3.10.11，其余操作不变。
 - （建议）保持 python 版本不变，先 `pip install networkx==3.0` 之后再进行 Pytorch 的安装。
 
 **2. 依赖找不到导致的无法安装**

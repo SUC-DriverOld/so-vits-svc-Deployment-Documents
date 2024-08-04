@@ -4,7 +4,7 @@
 
 English | [简体中文](README_zh_CN.md)
 
-**Last Updated: July 12, 2024.**
+**Last Updated: August 4, 2024.**
 
 This help document provides detailed installation, debugging, and inference tutorials for the project [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc). You can also directly refer to the official [README](https://github.com/svc-develop-team/so-vits-svc#readme) documentation.
 
@@ -29,22 +29,21 @@ Written by Sucial. [Bilibili](https://space.bilibili.com/445022409) | [Github](h
 - [SoftVC VITS Singing Voice Conversion Local Deployment Tutorial](#softvc-vits-singing-voice-conversion-local-deployment-tutorial)
 - [Tutorial Index](#tutorial-index)
 - [0. Before You Use](#0-before-you-use)
-  - [Any country, region, organization, or individual using this project must comply with the following laws:](#any-country-region-organization-or-individual-using-this-project-must-comply-with-the-following-laws)
-    - [《民法典》](#民法典)
-    - [第一千零一十九条](#第一千零一十九条)
-    - [第一千零二十四条](#第一千零二十四条)
-    - [第一千零二十七条](#第一千零二十七条)
-    - [《中华人民共和国宪法》|《中华人民共和国刑法》|《中华人民共和国民法典》|《中华人民共和国合同法》](#中华人民共和国宪法中华人民共和国刑法中华人民共和国民法典中华人民共和国合同法)
+    - [Any country, region, organization, or individual using this project must comply with the following laws:](#any-country-region-organization-or-individual-using-this-project-must-comply-with-the-following-laws)
+      - [《民法典》](#民法典)
+      - [第一千零一十九条](#第一千零一十九条)
+      - [第一千零二十四条](#第一千零二十四条)
+      - [第一千零二十七条](#第一千零二十七条)
+      - [《中华人民共和国宪法》|《中华人民共和国刑法》|《中华人民共和国民法典》|《中华人民共和国合同法》](#中华人民共和国宪法中华人民共和国刑法中华人民共和国民法典中华人民共和国合同法)
   - [0.1 Usage Regulations](#01-usage-regulations)
   - [0.2 Hardware Requirements](#02-hardware-requirements)
   - [0.3 Preparation](#03-preparation)
 - [1. Environment Dependencies](#1-environment-dependencies)
   - [1.1 so-vits-svc4.1 Source Code](#11-so-vits-svc41-source-code)
-  - [1.2 Cuda](#12-cuda)
-  - [1.3 Python](#13-python)
-  - [1.4 Pytorch](#14-pytorch)
-  - [1.5 Installation of Other Dependencies](#15-installation-of-other-dependencies)
-  - [1.6 FFmpeg](#16-ffmpeg)
+  - [1.2 Python](#12-python)
+  - [1.3 Pytorch](#13-pytorch)
+  - [1.4 Installation of Other Dependencies](#14-installation-of-other-dependencies)
+  - [1.5 FFmpeg](#15-ffmpeg)
 - [2. Configuration and Training](#2-configuration-and-training)
   - [2.1 Issues Regarding Compatibility with the 4.0 Model](#21-issues-regarding-compatibility-with-the-40-model)
   - [2.2 Pre-downloaded Model Files](#22-pre-downloaded-model-files)
@@ -83,7 +82,7 @@ Written by Sucial. [Bilibili](https://space.bilibili.com/445022409) | [Github](h
     - [5.2.2 Dynamic Voice Mixing](#522-dynamic-voice-mixing)
   - [5.3 Onnx Export](#53-onnx-export)
 - [6. Simple Mixing and Exporting Finished Product](#6-simple-mixing-and-exporting-finished-product)
-  - [Use Audio Host Software to Process Inferred Audio](#use-audio-host-software-to-process-inferred-audio)
+    - [Use Audio Host Software to Process Inferred Audio](#use-audio-host-software-to-process-inferred-audio)
 - [Appendix: Common Errors and Solutions](#appendix-common-errors-and-solutions)
   - [About Out of Memory (OOM)](#about-out-of-memory-oom)
   - [Common Errors and Solutions When Installing Dependencies](#common-errors-and-solutions-when-installing-dependencies)
@@ -170,37 +169,13 @@ You can download or clone the source code using one of the following methods:
    git clone https://github.com/svc-develop-team/so-vits-svc.git
    ```
 
-## 1.2 Cuda
+## 1.2 Python
 
-- Enter `nvidia-smi.exe` in the command prompt to check the version of your graphics driver and the corresponding CUDA version.
-
-- Go to the [NVIDIA-CUDA](https://developer.nvidia.com/cuda-toolkit) official website to download the CUDA version that matches your system.
-
-- For example, to install [Cuda-11.7](https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local), select options based on your system and requirements (generally, local Windows users should choose `Windows`, `x86_64`, `System Version`, `exe(local)`).
-
-- After successful installation, enter `nvcc -V` in the command prompt. If the output is similar to the following, the installation was successful:
-
-  ```bash
-  nvcc: NVIDIA (R) Cuda compiler driver
-  Copyright (c) 2005-2022 NVIDIA Corporation
-  Built on Tue_May__3_19:00:59_Pacific_Daylight_Time_2022
-  Cuda compilation tools, release 11.7, V11.7.64
-  Build cuda_11.7.r11.7/compiler.31294372_0
-  ```
-
-> [!NOTE]
->
-> 1. The CUDA version shown in `nvidia-smi.exe` is backward compatible. For example, if it shows 12.4, you can install any CUDA version <=12.4.
-> 2. CUDA needs to be compatible with the version of [Pytorch](#14-pytorch) below.
-> 3. To uninstall CUDA: Open Control Panel -> Programs -> Uninstall a program, and uninstall all programs with `NVIDIA CUDA` in their name (there are a total of 5).
-
-## 1.3 Python
-
-- Go to the [Python official website](https://www.python.org/) to download Python 3.8.9 and **add it to the system environment variables**. (If using conda to configure Python and 3.8.9 is unavailable, you can directly select 3.8). Detailed installation methods and adding Path are omitted here, as they can be easily found online.
+- Go to the [Python official website](https://www.python.org/) to download Python 3.10.11 and **add it to the system environment PATH**. (If using conda to configure Python and 3.10.11 is unavailable, you can directly select 3.10). Detailed installation methods and adding Path are omitted here, as they can be easily found online.
 
 ```bash
 # Conda configuration method, replace YOUR_ENV_NAME with the name of the virtual environment you want to create.
-conda create -n YOUR_ENV_NAME python=3.8 -y
+conda create -n YOUR_ENV_NAME python=3.10 -y
 conda activate YOUR_ENV_NAME
 # Ensure you are in this virtual environment before executing any commands!
 ```
@@ -215,11 +190,11 @@ conda activate YOUR_ENV_NAME
 
 **Regarding the Python version**: After testing, we found that Python 3.8.9 can stably run this project (though higher versions may also work).
 
-## 1.4 Pytorch
+## 1.3 Pytorch
 
 > [!IMPORTANT]
 >
-> ✨ The Pytorch installed here needs to match the CUDA version installed in [1.2 Cuda](#12-cuda). For example, if I installed CUDA 12.1, I should choose Pytorch version 12.1 for installation. Personally, I used pytorch2.0.1+cu117 without encountering significant issues. Please try higher versions at your own discretion.
+> ✨ We highly recommend you to install Pytorch 11.7 or 11.8. The version over 12.0 may not be compatible with the current project.
 
 - We need to **separately install** `torch`, `torchaudio`, `torchvision` libraries. Go directly to the [Pytorch official website](https://pytorch.org/get-started/locally/), choose the desired version, and copy the command displayed in the "Run this Command" section to the console to install. You can download older versions of Pytorch from [here](https://pytorch.org/get-started/previous-versions/).
 
@@ -244,7 +219,7 @@ print(torch.cuda.is_available())
 pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu117
 ```
 
-## 1.5 Installation of Other Dependencies
+## 1.4 Installation of Other Dependencies
 
 > [!IMPORTANT]
 > ✨ Before starting the installation of other dependencies, **make sure to download and install** [Visual Studio 2022](https://visualstudio.microsoft.com/) or [Microsoft C++ Build Tools](https://visualstudio.microsoft.com/zh-hans/visual-cpp-build-tools/) (the latter has a smaller size). **Select and install the component package: "Desktop development with C++"**, then execute the modification and wait for the installation to complete.
@@ -269,7 +244,7 @@ pip install --upgrade pydantic==1.10.12
 pip install --upgrade gradio==3.41.2
 ```
 
-## 1.6 FFmpeg
+## 1.5 FFmpeg
 
 - Go to the [FFmpeg official website](https://ffmpeg.org/) to download FFmpeg. Unzip it to any location and add the path to the environment variables. Navigate to `.\ffmpeg\bin` (detailed installation methods and adding Path are omitted here, as they can be easily found online).
 
