@@ -1,13 +1,9 @@
 <div align="center">
 
 # SoftVC VITS Singing Voice Conversion Local Deployment Tutorial
-
-English | [简体中文](README_zh_CN.md)
-
-**Last Updated: August 4, 2024.**
-
-This help document provides detailed installation, debugging, and inference tutorials for the project [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc). You can also directly refer to the official [README](https://github.com/svc-develop-team/so-vits-svc#readme) documentation.
-
+[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SUC-DriverOld/so-vits-svc-Deployment-Documents/blob/4.1/sovits4_for_colab.ipynb) <br>
+English | [简体中文](README_zh_CN.md) <br>
+This help document provides detailed installation, debugging, and inference tutorials for the project [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc). You can also directly refer to the official [README](https://github.com/svc-develop-team/so-vits-svc#readme) documentation. <br>
 Written by Sucial. [Bilibili](https://space.bilibili.com/445022409) | [Github](https://github.com/SUC-DriverOld)
 
 </div>
@@ -171,11 +167,11 @@ You can download or clone the source code using one of the following methods:
 
 ## 1.2 Python
 
-- Go to the [Python official website](https://www.python.org/) to download Python 3.10.11 and **add it to the system environment PATH**. (If using conda to configure Python and 3.10.11 is unavailable, you can directly select 3.10). Detailed installation methods and adding Path are omitted here, as they can be easily found online.
+- Go to the [Python official website](https://www.python.org/) to download Python 3.8 and **add it to the system environment PATH**. Detailed installation methods and adding Path are omitted here, as they can be easily found online.
 
 ```bash
 # Conda configuration method, replace YOUR_ENV_NAME with the name of the virtual environment you want to create.
-conda create -n YOUR_ENV_NAME python=3.10 -y
+conda create -n YOUR_ENV_NAME python=3.8 -y
 conda activate YOUR_ENV_NAME
 # Ensure you are in this virtual environment before executing any commands!
 ```

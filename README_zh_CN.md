@@ -1,13 +1,9 @@
 <div align="center">
 
 # SoftVC VITS Singing Voice Conversion 本地部署教程
-
-[English](README.md) | 简体中文
-
-**最后更新时间：2024.8.4**
-
-本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档
-
+[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SUC-DriverOld/so-vits-svc-Deployment-Documents/blob/4.1/sovits4_for_colab.ipynb) <br>
+[English](README.md) | 简体中文 <br>
+本帮助文档为项目 [so-vits-svc](https://github.com/svc-develop-team/so-vits-svc) 的详细安装、调试、推理教程，您也可以直接选择官方[README](https://github.com/svc-develop-team/so-vits-svc#readme)文档 <br>
 中文文档撰写：Sucial | [Bilibili 主页](https://space.bilibili.com/445022409)
 
 </div>
@@ -170,11 +166,11 @@ git clone https://github.com/svc-develop-team/so-vits-svc.git
 
 ## 1.2 Python
 
-- 前往 [Python 官网](https://www.python.org/) 下载 Python3.10.11 安装并**添加系统环境变量**。（若使用 conda 配置 python 遇到没有 3.10.11 版本也可以直接选择 3.10）详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述。
+- 前往 [Python 官网](https://www.python.org/) 下载 Python3.8 安装并**添加系统环境变量**。详细安装方法以及添加 Path 此处省略，网上随便一查都有，不再赘述。
 
 ```bash
 # conda配置方法, 将YOUR_ENV_NAME替换成你想要创建的虚拟环境名字。
-conda create -n YOUR_ENV_NAME python=3.10 -y
+conda create -n YOUR_ENV_NAME python=3.8 -y
 conda activate YOUR_ENV_NAME
 # 此后每次执行命令前，请确保处于该虚拟环境下！
 ```
@@ -962,7 +958,7 @@ ERROR: Package 'networkx' requires a different Python: 3.8.9 not in '>=3.9
 
 解决方法有两种：
 
-- 升级 python 至 3.10.11，其余操作不变。
+- 升级 python 至 3.10，其余操作不变。
 - （建议）保持 python 版本不变，先 `pip install networkx==3.0` 之后再进行 Pytorch 的安装。
 
 **2. 依赖找不到导致的无法安装**
